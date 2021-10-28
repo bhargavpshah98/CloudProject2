@@ -1,34 +1,40 @@
 <div class="row mt-5">
-    <div class="col-md-6 m-auto">
-      <div class="card card-body">
-        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>
-     
-        <form action="/users/login" method="POST">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              class="form-control"
-              placeholder="Enter Email"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-control"
-              placeholder="Enter Password"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
-        <p class="lead mt-4">
-          No Account? <a href="/users/register">Register</a> or <a href="/users/auth/google"> Login with <i class="fab fa-google"></i></a> / <a href="/users/auth/facebook"></i>Login with facebook</i></a>
-        </p>
-      </div>
+  <div  class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3"><i class="fas fa-user"></i>  Login</h1>
+  
+      <form action="/users/login" method="POST">
+        <div class="form-group">
+         
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            placeholder="Enter Email"
+          />
+        </div>
+        <div class="form-group">
+          
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            placeholder="Enter Password"
+          />
+        </div>
+        <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="exampleFormControlSelect1">
+          <option>Doctor</option>
+          <option>Patient</option>
+          
+        </select>
+        
+        <p><button style=" background-color: #8064A2;margin-top: 10%;" class="btn btn-primary btn-block">Submit</button></p>
+      </form>
+      <p class="text-center mb-3">
+        No Account? <a href="/users/register">Register</a> 
+      </p>
     </div>
   </div>
+</div>
