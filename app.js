@@ -2,6 +2,7 @@ var express = require('express');
 const expressLayouts=require('express-ejs-layouts');
 var app = express();
 var path=require("path")
+let users=require("./routes/users")
 
 
 
@@ -13,9 +14,7 @@ app.set('view engine','ejs')
   
   // about page
   
-  app.get('/',function(req,res){
-      res.render("login")
-  })
+app.use("/",users)
 
 
 

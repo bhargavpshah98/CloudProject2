@@ -7,10 +7,10 @@ const router=express.Router();
 // const User = require('./../models/user');
 
 //Login Page
-router.get('/login',(req,res)=>res.render('login'));
+router.get('/',(req,res)=>res.render('login'));
 
 //Register Page
-// router.get('/register',(req,res)=>res.render('register'));
+ router.get('/register',(req,res)=>res.render('register'));
 
 // //Register Handle
 // router.post('/register', (req,res)=>{
