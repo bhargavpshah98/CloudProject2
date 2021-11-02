@@ -3,6 +3,12 @@ var router = express.Router();
 const AWS = require("aws-sdk");
 var uuid = require('uuid');
 
+require("dotenv").config();
+AWS.config.update({
+  accessKeyId: process.env["ACCESS_KEY_ID"],
+  secretAccessKey: process.env["SECRET_ACCESS_KEY"],
+});
+
 function insertFormToDb(req, res) {
     const db = new AWS.DynamoDB();
     const dbInput = {
