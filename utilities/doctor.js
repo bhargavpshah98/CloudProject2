@@ -11,6 +11,10 @@ function insertDocToDb(req, res) {
             docEmail: { S: req.body.docEmail },
             docSpec: { S: req.body.docSpec },
             current_doctor: { BOOL: True },
+            docMobile:{S: req.body.docMobile},
+            gender: {S: req.body.gender},
+            birthdate: {S: req.body.birthdate},
+            clinicName: {S: req.body.clinicName}
           },
         };
         db.putItem(dbInput, function (putErr, putRes) {
