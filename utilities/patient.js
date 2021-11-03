@@ -3,26 +3,16 @@ var router = express.Router();
 const AWS = require("aws-sdk");
 var uuid = require('uuid');
 
-require("dotenv").config();
-AWS.config.update({
-  accessKeyId: process.env["ACCESS_KEY_ID"],
-  secretAccessKey: process.env["SECRET_ACCESS_KEY"],
-});
-
-function insertFormToDb(req, res) {
+function insertPatientToDb(req, res) {
     const db = new AWS.DynamoDB();
     const dbInput = {
-          TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+          TableName: process.env["DYNAMODB_TABLE_PATIENT"],
           Item: {
             id: { S: uuid.v1() },
             patientName: { S: req.body.patientName },
-            patientId: { S: req.body.patientId },
-            docName: { S: req.body.docName },
-            docId: { S: req.body.docId },
-            symptoms: { S: req.body.symptoms },
-            medName: { S: req.body.docId },
-            medQuantity: {N: req.body.medQuantity},
-            medUseTillDate: { S: req.body.medUseTillDate },
+            patientEmail: { S: req.body.patientEmail },
+            patientMobile: { N: req.body.patientMobile },
+            current_patient: { BOOL: True },
           },
         };
         db.putItem(dbInput, function (putErr, putRes) {
