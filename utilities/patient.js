@@ -1,5 +1,3 @@
-var express = require("express");
-var router = express.Router();
 const AWS = require("aws-sdk");
 var uuid = require('uuid');
 
