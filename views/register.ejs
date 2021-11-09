@@ -1,0 +1,116 @@
+
+
+<script>
+  function callApi(){
+  const name=  document.getElementById("name").value
+  const email=document.getElementById("email").value
+  const phone=document.getElementById("phone").value
+  const password=document.getElementById("password").value
+  const confirm=document.getElementById("password2").value
+  console.log("name",name,email,phone,password,confirm)
+  const data={
+    
+    name:name,
+    email:email,
+    phone:phone,
+    password:password,
+    confirm:confirm
+    }
+  const options={
+    method:"POST",
+    headers: {
+    
+    'Content-Type': 'application/json'
+  },
+    body:JSON.stringify(data)
+  }
+  fetch("/register",options).then(res=>{
+    console.log("Res",res)
+  }).catch(err=>{
+    console.log("Err",err)
+  })
+    
+  
+  }
+</script>
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <h1 class="text-center mb-3">
+          <i style="color: gray;" class="fas fa-user-plus"></i> SignUp
+        </h1>
+       
+        <form   >
+          <div class="form-group">
+            
+            <input
+              type="name"
+              id="name"
+              name="email"
+              class="form-control"
+              placeholder="Enter Name"
+              value="<%= typeof name != 'undefined' ? name : '' %>"
+            />
+          </div>
+          <div class="form-group">
+           
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter Email"
+              value="<%= typeof email != 'undefined' ? email : '' %>"
+            />
+          </div>
+          <div class="form-group">
+           
+            <input
+              type="phone"
+              id="phone"
+              name="phone"
+              class="form-control"
+              placeholder="Enter Phone number"
+              value="<%= typeof phone != 'undefined' ? phone : '' %>"
+            />
+          </div>
+          <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="exampleFormControlSelect1">
+            <option>Doctor</option>
+            <option>Patient</option>
+            
+          </select>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Create Password"
+              value="<%= typeof password != 'undefined' ? password : '' %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              class="form-control"
+              placeholder="Confirm Password"
+              value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+            />
+          </div>
+          <button
+          onclick="callApi()"
+          type="button"
+         
+          
+           class="btn btn-primary btn-block">
+            Register
+          </button>
+        </form>
+        <p class="lead mt-4">Have An Account? <a href="/login">Login</a></p>
+      </div>
+    </div>
+  </div>
