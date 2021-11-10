@@ -19,39 +19,39 @@ router.get('/',(req,res)=>res.render('login'));
  router.get('/register',(req,res)=>res.render('register'));
  router.get('/reg',(req,res)=>res.send("heelo"));
 
- router.post('/register', (req,res)=>{
-     console.log("register", process.env["DYNAMODB_TABLE_DOCTOR"])
-    const { name, email, password, confirm,phone} = req.body;
-    console.log("name",name,email,confirm,password,phone)
+//  router.post('/register', (req,res)=>{
+//      console.log("register", process.env["DYNAMODB_TABLE_DOCTOR"])
+//     const { name, email, password, confirm,phone} = req.body;
+//     console.log("name",name,email,confirm,password,phone)
   
-    if(name && email && password&& confirm&& phone){
-        console.log("condition satisfied", process.env["DYNAMODB_TABLE_DOCTOR"])
-    const db = new AWS.DynamoDB();
-    const dbInput = {
-          TableName: process.env["DYNAMODB_TABLE_DOCTOR"],
-          Item: {
-            id: { S: uuid.v1() },
-            docName: { S: req.body.name },
-            docEmail: { S: req.body.email },
-            docSpec: { S: req.body.docSpec },
-            current_doctor: { BOOL: true },
-          },
-        };
-        db.putItem(dbInput, function (putErr, putRes) {
-          if (putErr) {
-            console.log("Failed to put item in dynamodb: ", putErr);
-            res.status(404).json({
-              err: "Failed to Upload!",
-            });
-          } else {
-            console.log("Successfully written to dynamodb", putRes);
-            res.status(200).json({
-              message: "Upload is successful!",
-            });
-          }
-        });
-    }
-  });
+//     if(name && email && password&& confirm&& phone){
+//         console.log("condition satisfied", process.env["DYNAMODB_TABLE_DOCTOR"])
+//     const db = new AWS.DynamoDB();
+//     const dbInput = {
+//           TableName: process.env["DYNAMODB_TABLE_DOCTOR"],
+//           Item: {
+//             id: { S: uuid.v1() },
+//             docName: { S: req.body.name },
+//             docEmail: { S: req.body.email },
+//             docSpec: { S: req.body.docSpec },
+//             current_doctor: { BOOL: true },
+//           },
+//         };
+//         db.putItem(dbInput, function (putErr, putRes) {
+//           if (putErr) {
+//             console.log("Failed to put item in dynamodb: ", putErr);
+//             res.status(404).json({
+//               err: "Failed to Upload!",
+//             });
+//           } else {
+//             console.log("Successfully written to dynamodb", putRes);
+//             res.status(200).json({
+//               message: "Upload is successful!",
+//             });
+//           }
+//         });
+//     }
+//   });
   
 
  

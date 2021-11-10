@@ -12,7 +12,7 @@
     
     name:name,
     email:email,
-    phone:phone,
+   
     password:password,
     confirm:confirm
     }
@@ -24,11 +24,19 @@
   },
     body:JSON.stringify(data)
   }
-  fetch("/register",options).then(res=>{
-    console.log("Res",res)
-  }).catch(err=>{
-    console.log("Err",err)
-  })
+  fetch("/register").then(res=>{
+    //window.location.href=`http://localhost:3000/verify/${email}`
+    
+    
+   
+    }).catch(error=>{
+      console.log("error",error)
+    })
+   
+ 
+
+  
+  
     
   
   }
