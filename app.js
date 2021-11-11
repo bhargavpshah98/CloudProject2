@@ -9,6 +9,7 @@ const AWS = require('aws-sdk');
 const request = require('request');
 const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
+const insertUtility=require("./utilities/doctor")
 let users=require("./routes/users")
 //app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
@@ -19,7 +20,7 @@ app.set('view engine','ejs')
 //app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'views')));
 const poolData = {    
-  UserPoolId : "", // Your user pool id here    
+  UserPoolId : "us-west-1_x1klxacrm", // Your user pool id here    
   ClientId : "5nbvps4hlmh0a66mb4k771ns6f" // Your client id here
   }; 
   const pool_region = 'us-east-1';
@@ -41,33 +42,33 @@ app.use("/",users);
 
 
     //register
-    app.post("/register",function(req,res,next){
+    app.post("/register",function(req,res){
       const { name, email, password, confirm,} = req.body;
          console.log("name",name,email,confirm,password)
       var attributeList = [];
-      //  attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
-      //  attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:"female"}));
-      //   attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
-  // pool.signUp(email,password,attributeList,null,function(err,result){
-  //   if (err) {
-  //     console.log(err);
-  //     res.status(500).send({message:"Internal error"})
-  //     //return;
-  // }
-  // console.log("Result",result)
-  // cognitoUser = result.user;
-  // console.log('user name is ' + cognitoUser.getUsername());
-  //res.redirect(`/verify/${cognitoUser.getUsername()}`)
-  //res.status(200).json({message:"Successfull",data:"abc"})
-  //res.redirect("/")
+       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
+       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:"female"}));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
+  pool.signUp(email,password,attributeList,null,function(err,result){
+    if (err) {
+      console.log(err);
+      res.status(500).send({message:"Internal error"})
+      //return;
+  }
+  console.log("Result",result)
+  cognitoUser = result.user;
+  console.log('user name is ' + cognitoUser.getUsername());
   
-  //res.redirect("http://google.com/")
-  //res.render("verify")
-  res.redirect("/verify")
+  res.status(200).json({message:"Successful"})
+  
+  
+  //insertUtility.insertDocToDb("req","res")
+  
  
 
-// });
+ });
 });
+
 //verify
 app.post('/verifyuser',function(req,res){
   console.log("res into verify",req.body)
@@ -88,15 +89,15 @@ app.post('/verifyuser',function(req,res){
 })
 //login
 app.post("/login",function(req,res){
-  console.log("login")
+  console.log("login",req.body)
  const authentication_details=new AmazonCognitoIdentity.AuthenticationDetails(
    {
-    Username: "shruthisrinivasan97@gmail.com",
-    Password: "Qwerty@1234"
+    Username: req.body.email,
+    Password: req.body.password
    }
  )
 var userData = {
-  Username : 'shruthisrinivasan98@gmail.com',
+  Username : req.body.email,
   Pool : pool
 };
 var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
@@ -105,23 +106,29 @@ cognitoUser.authenticateUser(authentication_details, {
       console.log('access token + ' + result.getAccessToken().getJwtToken());
       console.log('id token + ' + result.getIdToken().getJwtToken());
       console.log('refresh token + ' + result.getRefreshToken().getToken());
+      res.send({message:"Success",token:result.getIdToken().getJwtToken()})
   },
   onFailure: function(err) {
-      console.log(err);
+      console.log("error in onfailure",err);
+      res.status(200).json({message:"Incorrect Password"})
+      //res.sendStatus(500).send({"message":"Internal error"})
   },
 
 });
 
 
 });
-//
-app.get(`/verify`,function(req,res){;
-   console.log("verify render",req.params)
-  // const name=req.params
-  //res.render("verify",{name:"abc"})
-  res.render("verify")
- //res.render("login")
+app.get("/dashboard",function(req,res){
+  res.render("dashboard")
 })
+//
+// app.get(`/verifycode`,function(req,res){;
+//    console.log("verify render",req.params)
+//   // const name=req.params
+//   //res.render("verify",{name:"abc"})
+//   res.render("verify")
+//  //res.render("login")
+// })
 
 
 

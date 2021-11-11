@@ -24,8 +24,10 @@
   },
     body:JSON.stringify(data)
   }
-  fetch("/register").then(res=>{
-    //window.location.href=`http://localhost:3000/verify/${email}`
+  fetch("/register",options).then(res=>{
+    console.log("res",res)
+
+    window.location.href=`http://localhost:3000/`
     
     
    

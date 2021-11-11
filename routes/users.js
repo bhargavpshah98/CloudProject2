@@ -18,6 +18,13 @@ router.get('/',(req,res)=>res.render('login'));
 //Register Page
  router.get('/register',(req,res)=>res.render('register'));
  router.get('/reg',(req,res)=>res.send("heelo"));
+ router.get('/verifycode',function(req,res){;
+    console.log("verify render",req.params)
+   // const name=req.params
+   //res.render("verify",{name:"abc"})
+   res.render("verify")
+  //res.render("login")
+ })
 
 //  router.post('/register', (req,res)=>{
 //      console.log("register", process.env["DYNAMODB_TABLE_DOCTOR"])
