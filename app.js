@@ -54,8 +54,13 @@ app.use("/",users);
         attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"custom:userType",Value:userType}))
   pool.signUp(email,password,attributeList,null,function(err,result){
     if (err) {
-      console.log(err);
+      console.log("error",err);
+      if(err=="UsernameExistsException: An account with the given email already exists."){
+        res.status(403).send({message:"User exists already"})
+      }
+      else{
       res.status(500).send({message:"Internal error"})
+      }
       //return;
   }
   else{
@@ -63,7 +68,7 @@ app.use("/",users);
   cognitoUser = result.user;
   console.log('user name is ' + cognitoUser.getUsername());
   
-  res.status(200).json({message:"Successful"})
+  res.status(200).send({message:"Success"})
   }
   
   
@@ -119,7 +124,12 @@ console.log("Decoded",decoded)
   },
   onFailure: function(err) {
       console.log("error in onfailure",err);
+      if(err=="NotAuthorizedException: Incorrect username or password."){
+        res.status(404).send({message:"User does not exist"})
+      }
+      else{
       res.status(200).json({message:"Incorrect Password"})
+      }
       //res.sendStatus(500).send({"message":"Internal error"})
   },
 

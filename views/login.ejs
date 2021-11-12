@@ -80,7 +80,13 @@
       window.location.href="http://localhost:3000/dashboard"
       }
       else{
+        console.log("else",json.message)
+        if(json.message=="User does not exist"){
+          alert("User does not exist")
+        }
+        else{
         alert("You have entered an invalid password")
+        }
       }
     }).catch(err=>{
       console.log("err",err)

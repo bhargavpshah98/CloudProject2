@@ -29,8 +29,19 @@
     body:JSON.stringify(data)
   }
   fetch("/register",options).then(res=>{
-    console.log("res",res)
-     window.location.href=`http://localhost:3000/`
+    res.json().then(json=>{
+      if(json.message=="Success"){
+        window.location.href=`http://localhost:3000/`
+
+      }
+      else{
+        console.log("json",json)
+        const msg=json.message
+        alert(msg)
+      }
+    })
+    
+     
     }).catch(error=>{
       console.log("error",error)
     })
