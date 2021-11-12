@@ -8,10 +8,13 @@
   const password=document.getElementById("password").value
   const confirm=document.getElementById("password2").value;
   const user=document.getElementById("selectUser").value;
+  const dob=document.getElementById("birthday").value;
+  const gender=document.getElementById("selectGender").value
+  const address=document.getElementById("address").value
 
-  console.log("user",user)
-  if(name && name.length>0 && email && email.length>0 && password && password.length>0 && password==confirm){
-  const isDoctor=user=="Doctor"?1:0
+ 
+  if(name && name.length>0 && email && email.length>0 && password && password.length>0 && password==confirm && address && address.length>0 && gender && gender.length>0 && dob.length>0){
+  
   const data={
     
     name:name,
@@ -54,6 +57,7 @@
       alert("Please enter all the fields")
     }
   }
+  
    
  
 
@@ -110,6 +114,29 @@
             <option>Patient</option>
             
           </select>
+          <select style="border-top: transparent;border-left: transparent;border-right: transparent;margin-top: 20px;" class="form-control" id="selectGender">
+            <!-- <option>Select user type</option> -->
+            <option>Female</option>
+            <option>Male</option>
+            <option>Others</option>
+            
+          </select>
+          <div style="margin-top: 15px;">
+            <input type="date" id="birthday" name="birthday">
+
+          </div>
+         
+          <div class="form-group">
+           
+            <input
+              type="text"
+              id="address"
+              
+              class="form-control"
+              placeholder="Enter your address"
+             
+            />
+          </div>
           <div class="form-group">
           
             <input
