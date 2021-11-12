@@ -10,7 +10,9 @@ const request = require('request');
 const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
 const insertUtility=require("./utilities/doctor")
-let users=require("./routes/users")
+let users=require("./routes/users");
+const { use } = require('./routes/users');
+const decodeJwt=require("jwt-decode")
 //app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(express.json())
@@ -43,23 +45,26 @@ app.use("/",users);
 
     //register
     app.post("/register",function(req,res){
-      const { name, email, password, confirm,} = req.body;
-         console.log("name",name,email,confirm,password)
+      const { name, email, password, confirm,userType} = req.body;
+         console.log("name",name,email,confirm,password,userType,typeof(userType))
       var attributeList = [];
        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:"female"}));
         attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"custom:userType",Value:userType}))
   pool.signUp(email,password,attributeList,null,function(err,result){
     if (err) {
       console.log(err);
       res.status(500).send({message:"Internal error"})
       //return;
   }
+  else{
   console.log("Result",result)
   cognitoUser = result.user;
   console.log('user name is ' + cognitoUser.getUsername());
   
   res.status(200).json({message:"Successful"})
+  }
   
   
   //insertUtility.insertDocToDb("req","res")
@@ -88,7 +93,7 @@ app.post('/verifyuser',function(req,res){
 
 })
 //login
-app.post("/login",function(req,res){
+app.post("/login",async(req,res)=>{
   console.log("login",req.body)
  const authentication_details=new AmazonCognitoIdentity.AuthenticationDetails(
    {
@@ -103,10 +108,14 @@ var userData = {
 var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
 cognitoUser.authenticateUser(authentication_details, {
   onSuccess: function (result) {
-      console.log('access token + ' + result.getAccessToken().getJwtToken());
-      console.log('id token + ' + result.getIdToken().getJwtToken());
-      console.log('refresh token + ' + result.getRefreshToken().getToken());
-      res.send({message:"Success",token:result.getIdToken().getJwtToken()})
+    console.log("user",result.getIdToken().getJwtToken())
+    var token = result.getIdToken().getJwtToken();
+var decoded = decodeJwt(token);
+console.log("Decoded",decoded)
+    
+  
+   
+      res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
   },
   onFailure: function(err) {
       console.log("error in onfailure",err);

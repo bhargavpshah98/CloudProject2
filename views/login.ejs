@@ -72,8 +72,16 @@
   fetch("/login",options).then(res=>{
     res.json().then(json=>{
       console.log("json",json)
+      if(json.message=="Success"){
+
+      
       localStorage.setItem("token",json.token)
+      localStorage.setItem("data",JSON.stringify(json.data))
       window.location.href="http://localhost:3000/dashboard"
+      }
+      else{
+        alert("You have entered an invalid password")
+      }
     }).catch(err=>{
       console.log("err",err)
     })

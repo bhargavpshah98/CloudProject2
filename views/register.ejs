@@ -4,17 +4,21 @@
   function callApi(){
   const name=  document.getElementById("name").value
   const email=document.getElementById("email").value
-  const phone=document.getElementById("phone").value
+  //const phone=document.getElementById("phone").value
   const password=document.getElementById("password").value
-  const confirm=document.getElementById("password2").value
-  console.log("name",name,email,phone,password,confirm)
+  const confirm=document.getElementById("password2").value;
+  const user=document.getElementById("selectUser").value;
+
+  console.log("user",user)
+  if(name && name.length>0 && email && email.length>0 && password && password.length>0 && password==confirm){
+  const isDoctor=user=="Doctor"?1:0
   const data={
     
     name:name,
     email:email,
-   
     password:password,
-    confirm:confirm
+    confirm:confirm,
+    userType:user
     }
   const options={
     method:"POST",
@@ -26,14 +30,19 @@
   }
   fetch("/register",options).then(res=>{
     console.log("res",res)
-
-    window.location.href=`http://localhost:3000/`
-    
-    
-   
+     window.location.href=`http://localhost:3000/`
     }).catch(error=>{
       console.log("error",error)
     })
+  }
+  else{
+    if(password!=confirm){
+      alert("Password mismatch")
+    }
+    else{
+      alert("Please enter all the fields")
+    }
+  }
    
  
 
@@ -54,7 +63,7 @@
           <div class="form-group">
             
             <input
-              type="name"
+              type="email"
               id="name"
               name="email"
               class="form-control"
@@ -73,7 +82,7 @@
               value="<%= typeof email != 'undefined' ? email : '' %>"
             />
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
            
             <input
               type="phone"
@@ -83,14 +92,15 @@
               placeholder="Enter Phone number"
               value="<%= typeof phone != 'undefined' ? phone : '' %>"
             />
-          </div>
-          <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="exampleFormControlSelect1">
+          </div> -->
+          <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="selectUser">
+            <!-- <option>Select user type</option> -->
             <option>Doctor</option>
             <option>Patient</option>
             
           </select>
           <div class="form-group">
-            <label for="password">Password</label>
+          
             <input
               type="password"
               id="password"
@@ -101,7 +111,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="password2">Confirm Password</label>
+           
             <input
               type="password"
               id="password2"
