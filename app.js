@@ -13,6 +13,14 @@ const insertUtility=require("./utilities/doctor")
 let users=require("./routes/users");
 const { use } = require('./routes/users');
 const decodeJwt=require("jwt-decode")
+
+require("dotenv").config();
+AWS.config.update({
+  accessKeyId: process.env["ACCESS_KEY_ID"],
+  secretAccessKey: process.env["SECRET_ACCESS_KEY"],
+  region: process.env["AWS_REGION"] 
+});
+
 //app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(express.json())
@@ -69,15 +77,41 @@ app.use("/",users);
   console.log('user name is ' + cognitoUser.getUsername());
   
   res.status(200).send({message:"Success"})
+  insertDocToDb(req,res);
   }
   
   
   //insertUtility.insertDocToDb("req","res")
-  
+
+
+  function insertDocToDb(req,res) {
+
+      const db = new AWS.DynamoDB();
+      const dbInput = {
+          TableName: process.env["DYNAMODB_TABLE_USER"],
+             Item: {
+               Name: { S: req.body.name },
+               email: { S: req.body.email },
+               userType: { S: req.body.userType },
+               gender: {S: req.body.gender}
+             },
+           };
+           db.putItem(dbInput, function (putErr, putRes) {
+             if (putErr) {
+               console.log("Failed to put item in dynamodb: ", putErr);
+               res.status(404).json({
+                 err: "Failed to Upload!",
+               });
+             } else {
+               console.log("Successfully written to dynamodb", putRes);
+             }
+           });
+        }
  
 
  });
 });
+
 
 //verify
 app.post('/verifyuser',function(req,res){
@@ -93,7 +127,6 @@ app.post('/verifyuser',function(req,res){
      console.log("error",error)
    }
    console.log("results from verify",results)
-
  })
 
 })
