@@ -44,6 +44,7 @@ app.use("/",users);
   console.log('Server is listening on port 3000');
 
   app.get ("/welcome", function (req,res) {
+  console.log("process",  process.env["DYNAMODB_TABLE_user"])
     res.render ( "welcome.ejs" );	
     } );
   app.get ("/loggedin", function (req,res) {
@@ -173,14 +174,54 @@ console.log("Decoded",decoded)
 app.get("/dashboard",function(req,res){
   res.render("dashboard")
 })
-//
-// app.get(`/verifycode`,function(req,res){;
-//    console.log("verify render",req.params)
-//   // const name=req.params
-//   //res.render("verify",{name:"abc"})
-//   res.render("verify")
-//  //res.render("login")
-// })
+app.get("/getPatient",async(req,res)=>{
+  
+  const db = new AWS.DynamoDB();
+ let params={
+   TableName:process.env["DYNAMODB_TABLE_USER"],
+  
+ }
+ await db.scan(params,function(err,data){
+   if(err){
+     console.log("err",err)
+     res.status(500).status({message:"Failure"})
+   }
+   else{
+     //console.log("data",data)
+     res.status(200).send({message:"Success", users:data})
+   }
+ })
+
+     
+    })
+
+//})
+
+
+function getPatients(req,res) {
+
+  const db = new AWS.DynamoDB();
+ let scanningParam={
+   TableName:process.env["DYNAMODB_TABLE_USER"],
+   Key:{
+     "userType":'Patient'
+   }
+ }
+ db.get(scanningParam,function(err,data){
+   if(err){
+     console.log("err",err)
+   }
+   else{
+     console.log("data",data)
+   }
+ })
+     
+    }
+
+
+
+
+
 
 
 
