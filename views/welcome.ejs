@@ -13,8 +13,9 @@ tr,td{
 
 }
 body {background-color: rgb(243, 221, 212);}
-.button1:hover {border-radius: 12px;border: 2px solid #fdfffd; transition: all 0.5s;
-  cursor: pointer;box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);}
+.button1{border-radius: 12px;  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);color:#fff;}
 
 .button1 span {
   cursor: pointer;
@@ -31,15 +32,13 @@ body {background-color: rgb(243, 221, 212);}
   right: -20px;
   transition: 0.5s;
 }
-
 .button1:hover span {
-  padding-right: 20px;
+  padding-right: 25px;
 }
 
 .button1:hover span:after {
   opacity: 1;
-  right: 0;
-}
+  right: 0;}
 
 .center {
   text-align: center;
@@ -49,6 +48,9 @@ body {background-color: rgb(243, 221, 212);}
                          1px -1px 0 #000,
                         -1px -1px 0 #000;
 }
+
+
+
 </style>
 
 
@@ -58,9 +60,9 @@ body {background-color: rgb(243, 221, 212);}
 
 <table align="center">
     <tr>
-        <td><p><button onclick="window.location.href='https://prescriptionmanager.auth.us-east-1.amazoncognito.com/login?client_id=4an50dudcg029mb3gve2d0pmkl&response_type=code&scope=email+openid&redirect_uri=http://localhost:3000/loggedin';" class="button1" style=" background-color: rgb(120,196,246);margin-top: 10%;font-size: 35px;padding: 30px 80px "><span>Patient</span></button></p></td>
+        <td><p><button onclick="window.location.href='https://prescriptionmanager.auth.us-east-1.amazoncognito.com/login?client_id=4an50dudcg029mb3gve2d0pmkl&response_type=token&scope=email+openid+phone+profile&redirect_uri=http://localhost:3000/loggedin';" class="button1" style=" background-color: rgb(120,196,246);margin-top: 10%;font-size: 35px;padding: 30px 80px "><span>Patient</span></button></p></td>
         <td><img src="homeImg.png" alt="" height=330 width=330></img></td>
-        <td><p><button class="button1" style=" background-color: rgb(120,196,246);margin-top: 10%;font-size: 35px;padding: 30px 80px"></a><span>Doctor</span></button></p></td>
+        <td><p><button  onclick="window.location.href='https://prescriptionmanager1.auth.us-east-1.amazoncognito.com/login?client_id=2ttcrnkb4jmehkp79ccekhoo5r&response_type=token&scope=email+openid+phone+profile&redirect_uri=http://localhost:3000/loggedin';" class="button1" style=" background-color: rgb(120,196,246);margin-top: 10%;font-size: 35px;padding: 30px 80px"></a><span>Doctor</span></button></p></td>
         
     </tr>
     </table>

@@ -1,0 +1,177 @@
+
+
+<script>
+  function callApi(){
+  const name=  document.getElementById("name").value
+  const email=document.getElementById("email").value
+  //const phone=document.getElementById("phone").value
+  const password=document.getElementById("password").value
+  const confirm=document.getElementById("password2").value;
+  const user=document.getElementById("selectUser").value;
+  const dob=document.getElementById("birthday").value;
+  const gender=document.getElementById("selectGender").value
+  const address=document.getElementById("address").value
+
+ 
+  if(name && name.length>0 && email && email.length>0 && password && password.length>0 && password==confirm && address && address.length>0 && gender && gender.length>0 && dob.length>0){
+  
+  const data={
+    
+    name:name,
+    email:email,
+    password:password,
+    confirm:confirm,
+    userType:user,
+    gender:gender,
+    dob:dob,
+    address:address
+    }
+  const options={
+    method:"POST",
+    headers: {
+    
+    'Content-Type': 'application/json'
+  },
+    body:JSON.stringify(data)
+  }
+  fetch("/register",options).then(res=>{
+    res.json().then(json=>{
+      if(json.message=="Success"){
+        window.location.href=`http://localhost:3000/`
+
+      }
+      else{
+        console.log("json",json)
+        const msg=json.message
+        alert(msg)
+      }
+    })
+    
+     
+    }).catch(error=>{
+      console.log("error",error)
+    })
+  }
+  else{
+    if(password!=confirm){
+      alert("Password mismatch")
+    }
+    else{
+      alert("Please enter all the fields")
+    }
+  }
+  
+   
+ 
+
+  
+  
+    
+  
+  }
+</script>
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <h1 class="text-center mb-3">
+          <i style="color: gray;" class="fas fa-user-plus"></i> SignUp
+        </h1>
+       
+        <form   >
+          <div class="form-group">
+            
+            <input
+              type="email"
+              id="name"
+              name="email"
+              class="form-control"
+              placeholder="Enter Name"
+              value="<%= typeof name != 'undefined' ? name : '' %>"
+            />
+          </div>
+          <div class="form-group">
+           
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter Email"
+              value="<%= typeof email != 'undefined' ? email : '' %>"
+            />
+          </div>
+          <!-- <div class="form-group">
+           
+            <input
+              type="phone"
+              id="phone"
+              name="phone"
+              class="form-control"
+              placeholder="Enter Phone number"
+              value="<%= typeof phone != 'undefined' ? phone : '' %>"
+            />
+          </div> -->
+          <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="selectUser">
+            <!-- <option>Select user type</option> -->
+            <option>Doctor</option>
+            <option>Patient</option>
+            
+          </select>
+          <select style="border-top: transparent;border-left: transparent;border-right: transparent;margin-top: 20px;" class="form-control" id="selectGender">
+            <!-- <option>Select user type</option> -->
+            <option>Female</option>
+            <option>Male</option>
+            <option>Others</option>
+            
+          </select>
+          <div style="margin-top: 15px;">
+            <input type="date" id="birthday" name="birthday">
+
+          </div>
+         
+          <div class="form-group">
+           
+            <input
+              type="text"
+              id="address"
+              
+              class="form-control"
+              placeholder="Enter your address"
+             
+            />
+          </div>
+          <div class="form-group">
+          
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Create Password"
+              value="<%= typeof password != 'undefined' ? password : '' %>"
+            />
+          </div>
+          <div class="form-group">
+           
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              class="form-control"
+              placeholder="Confirm Password"
+              value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+            />
+          </div>
+          <button
+          onclick="callApi()"
+          type="button"
+         
+          
+           class="btn btn-primary btn-block">
+            Register
+          </button>
+        </form>
+        <p class="lead mt-4">Have An Account? <a href="/login">Login</a></p>
+      </div>
+    </div>
+  </div>
