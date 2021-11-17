@@ -9,6 +9,12 @@ const router=express.Router();
 //Login Page
 router.get('/',(req,res)=>res.render('login'));
 
+router.get('/dashboard', (req, res)=>res.render('dashboard'));
+
+router.get('/prescription', (req, res)=>res.render('prescription'));
+
+router.get('/prescription-view', (req, res)=>res.render('prescription-view'));
+
 //Register Page
  router.get('/register',(req,res)=>res.render('register'));
 

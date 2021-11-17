@@ -15,10 +15,24 @@ app.use(express.static(path.join(__dirname, 'views')));
 
   
   // about page
-  
+
 app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
+
+
+  app.get('/dashboard',function(req,res){
+    res.render("dashboard")
+})
+
+app.get('/prescription-upload',function(req,res){
+  res.render("prescription-upload")
+})
+
+app.get('/prescription-download',function(req,res){
+  res.render("prescription-download")
+})
+
 
   app.get ("/welcome", function (req,res) {
     res.render ( "welcome.ejs" );	
