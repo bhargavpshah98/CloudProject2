@@ -48,12 +48,12 @@ app.use("/",users);
     res.render("dashboard")
 })
 
-app.get('/prescription-upload',function(req,res){
-  res.render("prescription-upload")
+app.get('/prescription',function(req,res){
+  res.render("prescription")
 })
 
-app.get('/prescription-download',function(req,res){
-  res.render("prescription-download")
+app.get('/addprescription',function(req,res){
+  res.render("addprescription")
 })
 
 
@@ -205,9 +205,7 @@ app.get("/getPatient",async(req,res)=>{
      res.status(200).send({message:"Success", users:data})
    }
  })
-
-     
-    })
+})
 
 //})
 
