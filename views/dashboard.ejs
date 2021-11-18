@@ -3,132 +3,52 @@
  const data=localStorage.getItem("data")
  console.log("token",JSON.parse(data))
 
- function load() {
-   var data=[]
+ 
        
-  fetch("/getPatient").then(res=>{
-    res.json().then(json=>{
-      console.log("json",json)
-      var data=json.users.Items
-      //console.log("d",d)
-    //   data=[
-    //     {
-    //   "name":"Shruthi",
-    //   "dob":"23 June 1997",
-    //   "gender":"Female",
-    //   "email":"shruthisrinivasan97@gamil.com"
-    //   },
-    //   {
-    //   "name":"Preethi",
-    //   "dob":"1 July 1993",
-    //   "gender":"Female",
-    //   "email":"preethisrinivasan@gmail.com"
-    //   },
-    // ]
-      data.forEach(ele=>{
-        if(ele.userType.S=="Patient"){
-        console.log("ele",ele)
-      var table=document.getElementById("tableBody");
-     
-      var tr=document.createElement("tr");
-      for(let i=0;i<6;i++){
-        let td=document.createElement('td');
-       var col=''
-      if(i==1){
-        col=ele.Name
-      }
-      else if(i==2){
-        col=ele.gender
-      }
-      else if(i==3){
-        col="DOB"
-      }
-      else if(i==4){
-        col=ele.email
-      }
-      if(i==0){
-        let div=document.createElement('div');
-        div.setAttribute("style","display:flex; justify-content:center;align-items:center,text-align:center;");
-
-        let img=document.createElement("img");
-        img.src= "https://bootdey.com/img/Content/user_2.jpg";
-        div.appendChild(img)
-        td.appendChild(div)
-        tr.appendChild(td)
-      }
-      else if(i==5){
-        let button=document.createElement("button");
-        button.innerHTML="View"
-       button.className="btn btn-primary"
-        td.append(button)
-        //td.setAttribute("style","justify-content:center;align-items:center;background-color:red")
-
-        tr.append(td)
-      }
-      else{
-        console.log("col",col)
-        let text=document.createTextNode(col.S)
-        //text.style.fontSize='50px'
-       let div=document.createElement("div");
-       div.setAttribute("style","display:flex; justify-content:center;align-items:center,text-align:center;");
-       div.appendChild(text)
-  
-        td.appendChild(div)
-        tr.appendChild(td)
-      }
-    }
-      
-      table.appendChild(tr)
-  }
-      
-
-    })
-
-      
-
-}).catch(err=>{
-      console.log("err",err)
-    })
-  }).catch(error=>{
-      console.log("error",error)
-    })
-   
-  }
+ 
 
    
  
 
-      window.onload = load;
+     // window.onload = load;
 </script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <hr>
 <div >
-    <div class="row">
-        <div >
-            <div >
-                <div >
-                    <div>
+   
                         <table
                          
                           style="background-color: aquamarine;">
-                            <thead>
-                                <tr>
-                                <th style="width: 200px;" class="text-center"><span>Patient</span></th>
-                                <th style="width: 200px;"class="text-center"><span>Name</span></th>
-                                <th style="width: 200px;" class="text-center"><span>Gender</span></th>
-                                <th style="width: 200px;" class="text-center"><span>DOB</span></th>
-                                <th style="width: 200px;" class="text-center"><span>Email</span></th>
-                                <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody">
+                         <thead>
+                         <div style="display: flex;">
+                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Name</h6>
+                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Gender</h6>
+                           <h6 style="width: 200px;text-align: center;font-weight: bold;">DOB</h6>
+                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Email</h6>
+                         </div>
+                         </tr>
+                           
+                         </thead>
+                            <tbody>    
+                              <% data.forEach(function (data) { %>
+            
+  
+                                  <tr style="background-color: antiquewhite;display: flex;" >
+                                      <td style="width: 200px;text-align: center;"><%= data.Name.S %></td>
+                                      <td style="width: 200px;text-align: center;"><%= data.gender.S %></td>
+                                      <td style="width: 200px;text-align: center;"> DOB</td>
+                                      <td style="width: 200px;text-align: center;"><%= data.email.S %> </td>
+                                      <td><button class="btn btn-primary">View</button></td>
+                                     
+                                  </tr>
+                                  
 
-                            </tbody>
+                                 
+                                  <% }) %>
+                          </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    
+   </div>
+
+
  
