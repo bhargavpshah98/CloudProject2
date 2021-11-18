@@ -44,7 +44,7 @@ app.use("/",users);
   console.log('Server is listening on port 3000');
 
 
-  app.get('/dashboard',function(req,res){
+app.get('/dashboard',function(req,res){
     res.render("dashboard")
 })
 
@@ -67,7 +67,7 @@ app.get('/addprescription',function(req,res){
 
 
     //register
-    app.post("/register",function(req,res){
+  app.post("/register",function(req,res){
       const { name, email, password, confirm,userType} = req.body;
          console.log("name",name,email,confirm,password,userType,typeof(userType))
       var attributeList = [];
@@ -121,9 +121,7 @@ app.get('/addprescription',function(req,res){
                console.log("Successfully written to dynamodb", putRes);
              }
            });
-        }
- 
-
+          }
  });
 });
 
@@ -165,10 +163,7 @@ cognitoUser.authenticateUser(authentication_details, {
     var token = result.getIdToken().getJwtToken();
 var decoded = decodeJwt(token);
 console.log("Decoded",decoded)
-    
-  
-   
-      res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
+res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
   },
   onFailure: function(err) {
       console.log("error in onfailure",err);
@@ -182,12 +177,8 @@ console.log("Decoded",decoded)
   },
 
 });
-
-
 });
-app.get("/dashboard",function(req,res){
-  res.render("dashboard")
-})
+
 app.get("/getPatient",async(req,res)=>{
   
   const db = new AWS.DynamoDB();
@@ -206,31 +197,6 @@ app.get("/getPatient",async(req,res)=>{
    }
  })
 })
-
-//})
-
-
-function getPatients(req,res) {
-
-  const db = new AWS.DynamoDB();
- let scanningParam={
-   TableName:process.env["DYNAMODB_TABLE_USER"],
-   Key:{
-     "userType":'Patient'
-   }
- }
- db.get(scanningParam,function(err,data){
-   if(err){
-     console.log("err",err)
-   }
-   else{
-     console.log("data",data)
-   }
- })
-     
-    }
-
-
 
 
 
