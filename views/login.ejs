@@ -26,11 +26,7 @@
            
           />
         </div>
-        <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="exampleFormControlSelect1">
-          <option>Doctor</option>
-          <option>Patient</option>
-          
-        </select>
+       
         
         <p><button
           onclick="callApi()"
@@ -72,8 +68,22 @@
   fetch("/login",options).then(res=>{
     res.json().then(json=>{
       console.log("json",json)
+      if(json.message=="Success"){
+
+      
       localStorage.setItem("token",json.token)
+      localStorage.setItem("data",JSON.stringify(json.data))
       window.location.href="http://localhost:3000/dashboard"
+      }
+      else{
+        console.log("else",json.message)
+        if(json.message=="User does not exist"){
+          alert("User does not exist")
+        }
+        else{
+        alert("You have entered an invalid password")
+        }
+      }
     }).catch(err=>{
       console.log("err",err)
     })
