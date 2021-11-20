@@ -2,25 +2,53 @@
  const token= localStorage.getItem("token");
  const data=localStorage.getItem("data")
  console.log("token",JSON.parse(data))
+
+ 
+       
+ 
+
+   
+ 
+
+     // window.onload = load;
 </script>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<hr>
+<div >
+   
+                        <table
+                         
+                        >
+                         <thead>
+                         <div style="display: flex;">
+                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Name</h6>
+                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Gender</h6>
+                           <h6 style="width: 200px;text-align: center;font-weight: bold">DOB</h6>
+                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Email</h6>
+                         </div>
+                         </tr>
+                           
+                         </thead>
+                            <tbody>    
+                              <% data.forEach(function (data) { %>
+            
+  
+                                  <tr style="display: flex;" >
+                                      <td style="width: 200px;text-align: center;"><%= data.Name.S %></td>
+                                      <td style="width: 200px;text-align: center;"><%= data.gender.S %></td>
+                                      <td style="width: 200px;text-align: center;"> DOB</td>
+                                      <td style="width: 200px;text-align: center;"><%= data.email.S %> </td>
+                                      <td><button class="btn btn-primary">View</button></td>
+                                     
+                                  </tr>
+                                  
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+                                 
+                                  <% }) %>
+                          </tbody>
+                        </table>
+                    
+   </div>
 
-    <div class="collapse navbar-collapse" id="navbarColor02">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/dashboard">Welcome,<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/prescription">Prescriptions</a>
-        </li>
-      </ul>
-      <span class="navbar-text">
-        <a href="/users/logout" >Logout</a>
-      </span>
-    </div>
-  </nav>
+
  

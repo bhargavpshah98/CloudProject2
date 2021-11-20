@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+           
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>    
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/dashboard">Welcome,</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/addprescription">Prescriptions<span class="sr-only">(current)</span></a>
+                    </li>
+                    </ul>
+                    <span class="navbar-text">
+                    <a href="/users/logout" >Logout</a>
+                    </span>
+                </div>
+        </nav>
+            
+            <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+                <div class="card card-body">
+                <h1 class="text-center mb-3">
+                        <i class="far fa-calendar-plus"></i>
+                </h1><form action="/schedule/add" method="POST">
+                    <input type="hidden" name="user" value="user">
+                    <table>
+                    <tr>
+                        <td colspan="2">
+                        <div class="input-field">
+                            <label for="sName">Prescription Name</label>
+                            <input
+                                type="text"
+                                id="sName"
+                                name="sName"
+                                class="form-control"
+                                value=""
+                            />
+                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-field">
+                                <label for="pName">Patient Name</label>
+                                <input
+                                    type="text"
+                                    id="pName"
+                                    name="pName"
+                                    class="form-control"
+                                    value=""
+                                />
+                            </div>
+                        </td>
+                        <td>
+                        <div class="input-field">
+                            <label for="tablet">Medicine Name</label>
+                            <input
+                                type="text"
+                                id="tablet"
+                                name="tablet"
+                                class="form-control"
+                                value=""
+                            />
+                        </div>
+                        </td>            
+                    </tr>
+                    <tr>
+                        <td><div class="input-field">
+                            <input type="date" id="startDate" name="startDate" class="datepicker" 
+                            value="" />
+                            <label for="startDate">Start Date</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <input type="date" id="endDate" name="endDate" class="datepicker"
+                                value="" />
+                                <label for="endDate">End Date</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-field">
+                            <label for="morningCnt">Morning Medicine count</label>
+                            <input
+                                type="text"
+                                id="morningCnt"
+                                name="morningCnt"
+                                class="form-control"
+                                value=""
+                            /> 
+                        </td>
+                        </div>
+                        <td>
+                            <div class="input-field">
+                            <label for="middayCnt">Midday Medicine count</label>
+                            <input
+                                type="text"
+                                id="middayCnt"
+                                name="middayCnt"
+                                class="form-control"
+                                value=""
+                            /> 
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-field">                
+                            <label for="eveningCnt">Evening Medicine count</label>
+                            <input
+                                type="text"
+                                id="eveningCnt"
+                                name="eveningCnt"
+                                class="form-control"
+                                value=""
+                            /> 
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">                
+                            <label for="bedtimeCnt">Bedtime Medicine count</label>
+                            <input
+                                type="text"
+                                id="bedtimeCnt"
+                                name="bedtimeCnt"
+                                class="form-control"
+                                value=""
+                            /> 
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+                    <table>
+                        <tr>
+                            <td>
+                                <button type="submit" name="confirmBtn" value="confirm" class="btn btn-primary btn-block">Generate PDF</button>
+                            </td>
+                        </tr>
+                    </table>
+             
+                </form>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const Calender=document.querySelector('.datepicker');
+        M.Datepicker.init(Calender,{});        
+    </script>
+</body>
+</html>
