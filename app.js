@@ -77,14 +77,14 @@ app.use("/",users);
   console.log('user name is ' + cognitoUser.getUsername());
   
   res.status(200).send({message:"Success"})
-  insertDocToDb(req,res);
+  insertUserToDb(req,res);
   }
   
   
   //insertUtility.insertDocToDb("req","res")
 
 
-  function insertDocToDb(req,res) {
+  function insertUserToDb(req,res) {
 
       const db = new AWS.DynamoDB();
       const dbInput = {
