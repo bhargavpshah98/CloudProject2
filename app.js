@@ -172,6 +172,9 @@ res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded
         res.status(404).send({message:"User does not exist"})
       }
       else{
+        if(err=="UserNotConfirmedException: User is not confirmed."){
+          res.status(200).json({message:"User not confirmed"})
+        }
       res.status(200).json({message:"Incorrect Password"})
       }
       //res.sendStatus(500).send({"message":"Internal error"})

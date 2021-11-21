@@ -86,7 +86,12 @@
           alert("User does not exist")
         }
         else{
+          if(json.message=="User not confirmed"){
+            alert("Please verify your mail")
+          }
+          else{
         alert("You have entered an invalid password")
+          }
         }
       }
     }).catch(err=>{
