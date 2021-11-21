@@ -45,9 +45,9 @@ app.use("/",users);
   console.log('Server is listening on port 3000');
 
 
-app.get('/dashboard',function(req,res){
-    res.render("dashboard")
-})
+// app.get('/dashboard',function(req,res){
+//     res.render("dashboard")
+// })
 
 app.get('/prescription',function(req,res){
   res.render("prescription")
@@ -63,10 +63,10 @@ app.get('/addprescription',function(req,res){
 
   app.get ("/welcome", function (req,res) {
   console.log("process",  process.env["DYNAMODB_TABLE_user"])
-    res.render ( "welcome.ejs" );	
+    res.render ( "welcome.ejs" ); 
     } );
   app.get ("/loggedin", function (req,res) {
-    res.render ( "loggedin.ejs" );	
+    res.render ( "loggedin.ejs" );  
     } );
 
 
@@ -96,14 +96,14 @@ app.get('/addprescription',function(req,res){
   console.log('user name is ' + cognitoUser.getUsername());
   
   res.status(200).send({message:"Success"})
-  insertDocToDb(req,res);
+  insertUserToDb(req,res);
   }
   
   
   //insertUtility.insertDocToDb("req","res")
 
 
-  function insertDocToDb(req,res) {
+  function insertUserToDb(req,res) {
 
       const db = new AWS.DynamoDB();
       const dbInput = {
@@ -163,11 +163,12 @@ var userData = {
 var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
 cognitoUser.authenticateUser(authentication_details, {
   onSuccess: function (result) {
-    console.log("user",result.getIdToken().getJwtToken())
+   
     var token = result.getIdToken().getJwtToken();
 var decoded = decodeJwt(token);
-console.log("Decoded",decoded)
+
 res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
+//res.redirect("/dashboard")
   },
   onFailure: function(err) {
       console.log("error in onfailure",err);
@@ -183,40 +184,28 @@ res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded
 });
 });
 
-app.get("/dashboard",async(req,res)=>{
+app.get("/dashboardview",async(req,res)=>{
+  console.log("Request query",req.query)
+ if(req.query.userType=="Doctor"){
+   console.log("doctoe")
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
+  
 
 
   res.render("dashboard",{data:results})
-  })
-app.get("/getPatient",async(req,res)=>{
-  
-  const db = new AWS.DynamoDB();
- let params={
-   TableName:process.env["DYNAMODB_TABLE_USER"],
-  
  }
- await db.scan(params,function(err,data){
-   if(err){
-     console.log("err",err)
-     res.status(500).status({message:"Failure"})
-   }
-   else{
-     //console.log("data",data)
-     res.status(200).send({message:"Success", users:data})
-   }
- })
-})
+ else{
+  res.render("dashboard",{data:[]})
 
+ }
+  })
 
 
 function getPatients(req,res) {
-  console.log("getpatienst function")
+  console.log("getpatient function")
   return new Promise((resolve,reject)=>{
-
- 
 
   const db = new AWS.DynamoDB();
  let scanningParam={
@@ -230,6 +219,8 @@ function getPatients(req,res) {
    }
    else{
      //console.log("data",data)
+     
+     
      resolve(data)
    }
  })
@@ -239,9 +230,3 @@ function getPatients(req,res) {
 
 
 
-
-
-  
-       
-
-  

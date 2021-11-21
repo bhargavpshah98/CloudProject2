@@ -15,7 +15,7 @@ require('dotenv').config();
 
 router.get('/',(req,res)=>res.render('login'));
 
-router.get('/dashboard', (req, res)=>res.render('dashboard'));
+//router.get('/dashboard', (req, res)=>res.render('dashboard'));
 
 router.get('/prescription', (req, res)=>res.render('prescription'));
 

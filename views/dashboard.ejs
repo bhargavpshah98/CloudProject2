@@ -8,7 +8,7 @@
 </script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <hr>
-<div >
+<div id="doctorMain" >
    
                         <table
                          
@@ -25,6 +25,7 @@
                          </thead>
                             <tbody>    
                               <% data.forEach(function (data) { %>
+                                <% if(data.userType.S=="Patient") { %>
             
   
                                   <tr style="display: flex;" >
@@ -35,6 +36,7 @@
                                       <td><button class="btn btn-primary">View</button></td>
                                      
                                   </tr>
+                                  <% } %>
                                   
 
                                  

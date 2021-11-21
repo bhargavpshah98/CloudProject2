@@ -69,11 +69,16 @@
     res.json().then(json=>{
       console.log("json",json)
       if(json.message=="Success"){
+        const type=json.data;
+      console.log("type",typeof(type),Object.keys(type))
+      console.log("custom",type["custom:userType"])
+      const userType=type["custom:userType"]
+
 
       
       localStorage.setItem("token",json.token)
       localStorage.setItem("data",JSON.stringify(json.data))
-      window.location.href="http://localhost:3000/dashboard"
+      window.location.href=`http://localhost:3000/dashboardview?userType=${userType}`
       }
       else{
         console.log("else",json.message)
@@ -89,7 +94,7 @@
     })
     
 
-    //window.location.href=`http://localhost:3000/`
+   
     
     
    
