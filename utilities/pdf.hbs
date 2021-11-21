@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+<style type="text/css">
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight:200;
+}
+table {
+    width: 100%;
+}
+table tr td {
+    border: 1px solid black;
+    padding: 8px;
+}
+</style>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,27 +19,7 @@
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-           
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>    
-                <div class="collapse navbar-collapse" id="navbarColor02">
-                    <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/dashboard">Welcome,</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/addprescription">Prescriptions<span class="sr-only">(current)</span></a>
-                    </li>
-                    </ul>
-                    <span class="navbar-text">
-                    <a href="/users/logout" >Logout</a>
-                    </span>
-                </div>
-        </nav>
-            
+    <div>            
             <div class="row mt-5">
             <div class="col-md-6 m-auto">
                 <div class="card card-body">
@@ -59,7 +51,7 @@
                                     id="pName"
                                     name="pName"
                                     class="form-control"
-                                    value=""
+                                    value={{name}}
                                 />
                             </div>
                         </td>
@@ -71,7 +63,7 @@
                                 id="tablet"
                                 name="tablet"
                                 class="form-control"
-                                value=""
+                                value={{medname}}
                             />
                         </div>
                         </td>            
@@ -145,25 +137,11 @@
                         </td>
                     </tr>
                 </table>
-                
-                    <table>
-                        <tr>
-                            <td>
-                                <button type="submit" name="confirmBtn" value="confirm" class="btn btn-primary btn-block" onclick="'<%= utils.createpdf() %>'">Generate PDF</button></td>
-                        </tr>
-                    </table>
-             
                 </form>
                 
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        const Calender=document.querySelector('.datepicker');
-
-        M.Datepicker.init(Calender,{});
-        function makepdf(foo) { console.log(foo);}         
-    </script>
 </body>
 </html>
