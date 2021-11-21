@@ -73,7 +73,14 @@
       
       localStorage.setItem("token",json.token)
       localStorage.setItem("data",JSON.stringify(json.data))
-      window.location.href="http://localhost:3000/dashboard"
+     
+      const type=json.data;
+      console.log("type",typeof(type),Object.keys(type))
+      console.log("custom",type["custom:userType"])
+      const userType=type["custom:userType"]
+    
+
+      window.location.href=`http://localhost:3000/dashboard?user=${userType}`
       }
       else{
         console.log("else",json.message)

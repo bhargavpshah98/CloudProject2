@@ -12,7 +12,8 @@ const jwt = require('jsonwebtoken');
 const insertUtility=require("./utilities/doctor")
 let users=require("./routes/users");
 const { use } = require('./routes/users');
-const decodeJwt=require("jwt-decode")
+const decodeJwt=require("jwt-decode");
+const { query } = require('express');
 
 require("dotenv").config();
 AWS.config.update({
@@ -172,12 +173,18 @@ console.log("Decoded",decoded)
 
 });
 app.get("/dashboard",async(req,res)=>{
+  console.log("Req.query",req.query)
+  if(req,query.user=="Doctor"){
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
 
 
   res.render("dashboard",{data:results})
+  }
+  else{
+    res.render("dashboard",{data:[]})
+  }
 })
 app.get("/getPatient",async(req,res)=>{
   
