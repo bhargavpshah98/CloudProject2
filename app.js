@@ -13,6 +13,7 @@ const insertUtility=require("./utilities/doctor")
 let users=require("./routes/users");
 const { use } = require('./routes/users');
 const decodeJwt=require("jwt-decode")
+const formtopdf = require('./utilities/formtopdf')
 
 require("dotenv").config();
 AWS.config.update({
@@ -53,7 +54,10 @@ app.get('/prescription',function(req,res){
 })
 
 app.get('/addprescription',function(req,res){
-  res.render("addprescription")
+  console.log(formtopdf)
+  res.render("addprescription", {
+    utils: formtopdf
+  })
 })
 
 
