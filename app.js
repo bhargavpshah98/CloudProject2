@@ -182,10 +182,12 @@ res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded
 
 app.get("/dashboardview",async(req,res)=>{
   console.log("Request query",req.query)
- if(req.query=="Doctor"){
+ if(req.query.userType=="Doctor"){
+   console.log("doctoe")
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
+  
 
 
   res.render("dashboard",{data:results})
@@ -213,6 +215,8 @@ function getPatients(req,res) {
    }
    else{
      //console.log("data",data)
+     
+     
      resolve(data)
    }
  })

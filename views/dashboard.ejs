@@ -32,6 +32,7 @@
                          </thead>
                             <tbody>    
                               <% data.forEach(function (data) { %>
+                                <% if(data.userType.S=="Patient") { %>
             
   
                                   <tr style="display: flex;" >
@@ -42,6 +43,7 @@
                                       <td><button class="btn btn-primary">View</button></td>
                                      
                                   </tr>
+                                  <% } %>
                                   
 
                                  
