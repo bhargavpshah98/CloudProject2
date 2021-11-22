@@ -12,6 +12,7 @@ table tr td {
 }
 </style>
 <html lang="en">
+<center>Prescription Details</center>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +38,7 @@ table tr td {
                                 id="sName"
                                 name="sName"
                                 class="form-control"
-                                value=""
+                                value={{prescription}}
                             />
                         </div>
                         </td>
@@ -63,7 +64,7 @@ table tr td {
                                 id="tablet"
                                 name="tablet"
                                 class="form-control"
-                                value={{medname}}
+                                value={{medicine}}
                             />
                         </div>
                         </td>            
@@ -71,14 +72,14 @@ table tr td {
                     <tr>
                         <td><div class="input-field">
                             <input type="date" id="startDate" name="startDate" class="datepicker" 
-                            value="" />
+                            value={{sdate}} />
                             <label for="startDate">Start Date</label>
                             </div>
                         </td>
                         <td>
                             <div class="input-field">
                                 <input type="date" id="endDate" name="endDate" class="datepicker"
-                                value="" />
+                                value={{edate}} />
                                 <label for="endDate">End Date</label>
                             </div>
                         </td>
@@ -92,7 +93,7 @@ table tr td {
                                 id="morningCnt"
                                 name="morningCnt"
                                 class="form-control"
-                                value=""
+                                value={{morning}}
                             /> 
                         </td>
                         </div>
@@ -104,7 +105,7 @@ table tr td {
                                 id="middayCnt"
                                 name="middayCnt"
                                 class="form-control"
-                                value=""
+                                value={{midday}}
                             /> 
                             </div>
                         </td>
@@ -119,7 +120,7 @@ table tr td {
                                 id="eveningCnt"
                                 name="eveningCnt"
                                 class="form-control"
-                                value=""
+                                value={{evening}}
                             /> 
                             </div>
                         </td>
@@ -131,7 +132,7 @@ table tr td {
                                 id="bedtimeCnt"
                                 name="bedtimeCnt"
                                 class="form-control"
-                                value=""
+                                value={{bedtime}}
                             /> 
                             </div>
                         </td>

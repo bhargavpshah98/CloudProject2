@@ -50,20 +50,6 @@
                         </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2">
-                        <div class="input-field">
-                            <label for="sName">Select Prescription</label>
-                    <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="selectUser">
-                        <!-- <option>Select user type</option> -->
-
-                        <option>Doctor</option>
-                        <option>Patient</option>
-                        </div>
-                        </td>
-                    </tr>
-                      </select>
-                    <tr>
                         <td>
                             <div class="input-field">
                                 <label for="pName">Patient Name</label>
@@ -162,7 +148,7 @@
                     <table>
                         <tr>
                             <td>
-                                <button type="submit" name="confirmBtn" value="confirm" class="btn btn-primary btn-block" onclick="'<%= utils.createpdf() %>'">Generate PDF</button></td>
+                                <button type="button" onclick="callApi()">Generate PDF</button></td>
                         </tr>
                     </table>
              
@@ -176,7 +162,42 @@
         const Calender=document.querySelector('.datepicker');
 
         M.Datepicker.init(Calender,{});
-        function makepdf(foo) { console.log(foo);}         
+          
+        function callApi(){
+            const prescription =  document.getElementById("sName").value
+  const name=document.getElementById("pName").value
+  const medicine=document.getElementById("tablet").value
+  const sdate=document.getElementById("startDate").value;
+  const edate=document.getElementById("endDate").value;
+  const morning=document.getElementById("morningCnt").value;
+  const midday=document.getElementById("middayCnt").value;
+  const evening=document.getElementById("eveningCnt").value;
+  const bedtime=document.getElementById("bedtimeCnt").value;
+  const data={
+      prescription,
+      name,
+      medicine,
+      sdate,
+      edate,
+      morning,
+      midday,
+      evening,
+      bedtime
+}
+const options={
+    method:"POST",
+    headers: {
+    
+    'Content-Type': 'application/json'
+  },
+    body:JSON.stringify(data)
+  }
+            fetch("/pdf",options).then(req=>{
+                
+            }).catch(err=>{
+
+            })
+        }      
     </script>
 </body>
 </html>

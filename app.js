@@ -14,6 +14,10 @@ let users=require("./routes/users");
 const { use } = require('./routes/users');
 const decodeJwt=require("jwt-decode")
 const formtopdf = require('./utilities/formtopdf')
+const fs=require("fs")
+var PDFDocument = require('pdfkit');
+const { Console } = require('console');
+
 
 require("dotenv").config();
 AWS.config.update({
@@ -251,6 +255,39 @@ function getPatients(req,res) {
  })
 })
 }
+app.post("/pdf",async(req,res)=>{
+  const s3=new AWS.S3();
+  console.log("req,para",req.body)
+ const response= await formtopdf.createpdf(req.body);
+ console.log("Res",response)
+ //PDFDocument.pipe(fs.createWriteStream(response));
+//PDFDocument.end();
+ 
+  fs.readFile(response, function (err, data) {
+    if (err) {
+      console.log(err);
+    }
+    s3.upload({
+      Bucket: "prescriptionmanager",
+      Key: response,
+      Body: data,
+      ContentType:'application/pdf',
+      ACL:'public-read'
+      
+    }, function(err, dataD) {
+      if (err) {
+        console.log(err);
+      }
+      console.log("DATA FROM S3",dataD)
+      //res.status(200).send({"message":"Success"})
+    });
+  });
+
+ 
+
+
+
+})
 
 
 
