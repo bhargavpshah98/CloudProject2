@@ -13,6 +13,7 @@ const insertUtility=require("./utilities/doctor")
 let users=require("./routes/users");
 const { use } = require('./routes/users');
 const decodeJwt=require("jwt-decode")
+const formtopdf = require('./utilities/formtopdf')
 
 require("dotenv").config();
 AWS.config.update({
@@ -43,26 +44,26 @@ app.use("/",users);
   console.log('Server is listening on port 3000');
 
 
-// app.get('/dashboard',function(req,res){
-//     res.render("dashboard")
-// })
-
 app.get('/prescription',function(req,res){
   res.render("prescription")
 })
 
 app.get('/addprescription',function(req,res){
-  res.render("addprescription")
+  console.log(formtopdf)
+  res.render("addprescription", {
+    utils: formtopdf
+  })
 })
 
 
-app.get ("/welcome", function (req,res) {
-console.log("process",  process.env["DYNAMODB_TABLE_user"])
-  res.render ( "welcome.ejs" );	
-  } );
-app.get ("/loggedin", function (req,res) {
-  res.render ( "loggedin.ejs" );	
-  } );
+
+  app.get ("/welcome", function (req,res) {
+  console.log("process",  process.env["DYNAMODB_TABLE_user"])
+    res.render ( "welcome.ejs" ); 
+    } );
+  app.get ("/loggedin", function (req,res) {
+    res.render ( "loggedin.ejs" );  
+    } );
 
 
     //register
@@ -158,11 +159,12 @@ var userData = {
 var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
 cognitoUser.authenticateUser(authentication_details, {
   onSuccess: function (result) {
-    console.log("user",result.getIdToken().getJwtToken())
+   
     var token = result.getIdToken().getJwtToken();
 var decoded = decodeJwt(token);
-console.log("Decoded",decoded)
+
 res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
+//res.redirect("/dashboard")
   },
   onFailure: function(err) {
       console.log("error in onfailure",err);
@@ -170,6 +172,9 @@ res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded
         res.status(404).send({message:"User does not exist"})
       }
       else{
+        if(err=="UserNotConfirmedException: User is not confirmed."){
+          res.status(200).json({message:"User not confirmed"})
+        }
       res.status(200).json({message:"Incorrect Password"})
       }
       //res.sendStatus(500).send({"message":"Internal error"})
@@ -178,14 +183,20 @@ res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded
 });
 });
 
-app.get("/dashboard",async(req,res)=>{
+app.get("/dashboardview",async(req,res)=>{
+  console.log("Request query",req.query)
+ if(req.query.userType=="Doctor"){
+   console.log("doctoe")
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
-
-
   res.render("dashboard",{data:results})
-  })
+
+ }
+ else{
+  res.render("dashboard",{data:[]})
+ }
+})
 
 
 function getPatients(req,res) {
@@ -213,9 +224,3 @@ function getPatients(req,res) {
 
 
 
-
-
-  
-       
-
-  

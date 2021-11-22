@@ -15,6 +15,7 @@ require('dotenv').config();
 
 router.get('/',(req,res)=>res.render('login'));
 
+
 //Register Page
  router.get('/register',(req,res)=>res.render('register'));
  router.get('/reg',(req,res)=>res.send("heelo"));
