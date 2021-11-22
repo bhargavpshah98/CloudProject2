@@ -96,7 +96,9 @@ app.get('/addprescription',function(req,res){
   console.log('user name is ' + cognitoUser.getUsername());
   
   res.status(200).send({message:"Success"})
+  verifyEmail(email)
   insertUserToDb(req,res);
+  
   }
   
   
@@ -248,15 +250,81 @@ app.post("/pdf",async(req,res)=>{
         console.log(err);
       }
       console.log("DATA FROM S3",dataD)
+
       //res.status(200).send({"message":"Success"})
     });
   });
-
- 
-
-
-
 })
+
+function verifyEmail(mail){
+  console.log("verufyemail function entered")
+  var ses=new AWS.SES()
+  var params = {
+    EmailAddress: mail
+ };
+  
+ ses.verifyEmailAddress(params, function(err, data) {
+    if(err) {
+      console.log("Err",err)
+        //res.send(err);
+    }
+    else {
+      console.log("data--->",data)
+       
+    }
+  
+ });
+}
+function sendEmail(email,name){
+
+
+
+  var params = {
+    Destination: { /* required */
+      CcAddresses: [
+        'medex@gmail.com',
+        /* more items */
+      ],
+      ToAddresses: [
+       email,
+        /* more items */
+      ]
+    },
+    Message: { /* required */
+      Body: { /* required */
+        Html: {
+         Charset: "UTF-8",
+         Data: "A new prescription has been added to you.Login to your application to view"
+        },
+        Text: {
+         Charset: "UTF-8",
+         Data: `Dear ${name}, A new prescription has been added to you.Login to your application to view`
+        }
+       },
+       Subject: {
+        Charset: 'UTF-8',
+        Data: 'Prescription Added.'
+       }
+      },
+    Source: 'shruthisrinivasan97@gmail.com', /* required */
+    ReplyToAddresses: [
+       'shruthisrinivasan97@gmail.com',
+      /* more items */
+    ],
+  };
+  // Create the promise and SES service object
+ var sendPromise = new AWS.SES({"accessKeyId":  process.env["ACCESS_KEY_ID"], "secretAccessKey":  process.env["SECRET_ACCESS_KEY"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
+  // Handle promise's fulfilled/rejected states
+ sendPromise.then(
+   function(data) {
+     console.log("data-->",data.MessageId);
+   }).catch(
+     function(err) {
+     console.error("errorr-->",err, err.stack);
+   });
+
+}
+
 
 
 
