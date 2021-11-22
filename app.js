@@ -229,6 +229,12 @@ function getPatients(req,res) {
  })
 })
 }
+app.post("/pdf",async(req,res)=>{
+  console.log("req,para",req.body)
+ const response= await formtopdf.createpdf(req.body);
+ console.log("Res",response)
+
+})
 
 
 

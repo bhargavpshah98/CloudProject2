@@ -19,7 +19,8 @@ hbs.registerHelper('dateFormat', function(value, format) {
     return moment(value).format(format);
 });
 
-const createpdf = async function() {
+const createpdf = async function(data) {
+    console.log("data pdf")
     try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
@@ -36,6 +37,7 @@ const createpdf = async function() {
             printBackground: true
         });
         console.log(1);
+        return true
 
     /*    const s3result = await s3
       .upload({
@@ -47,12 +49,13 @@ const createpdf = async function() {
       })
       .promise();
 */
-        console.log('done');
-        await browser.close();
-        process.exit();
+        // console.log('done');
+        // await browser.close();
+        // process.exit();
     }
     catch (e) {
         console.log('our error', e);
+        return false
     }
 }
 
