@@ -198,6 +198,37 @@ app.get("/dashboardview",async(req,res)=>{
  }
 })
 
+app.get("/prescriptionview",async(req,res)=>{
+  console.log("Prescription Request query",req.query)
+  const response= await getPatientPrescriptions(req.query.email)
+  const results=response.Items
+  console.log("results",results)
+  res.render("prescription",{data:results})
+
+ })
+ 
+function getPatientPrescriptions(req, res){
+  return new Promise((resolve,reject)=>{
+
+  const db = new AWS.DynamoDB();
+   let scanningParam={
+     //KeyConditionExpression: 'patientEmail =: patientEmail',
+     //ExpressionAttributeNames: {"#PE": "PatientEmail"},
+     //ProjectionExpression : "#PE",
+     TableName:process.env["DYNAMODB_TABLE_PRESCRIPTION"], 
+   }
+    db.scan(scanningParam,function(err,data){
+     if(err){
+       console.log("err",err)
+       reject(err)
+     }
+     else{
+       //console.log("data",data)
+       resolve(data)
+     }
+   })
+  })
+}
 
 function getPatients(req,res) {
   console.log("getpatient function")
