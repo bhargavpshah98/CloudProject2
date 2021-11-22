@@ -38,15 +38,14 @@ const poolData = {
 
   
   // about page
-
 app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
 
 
-app.get('/dashboard',function(req,res){
-    res.render("dashboard")
-})
+// app.get('/dashboard',function(req,res){
+//     res.render("dashboard")
+// })
 
 app.get('/prescription',function(req,res){
   res.render("prescription")
@@ -57,13 +56,13 @@ app.get('/addprescription',function(req,res){
 })
 
 
-  app.get ("/welcome", function (req,res) {
-  console.log("process",  process.env["DYNAMODB_TABLE_user"])
-    res.render ( "welcome.ejs" );	
-    } );
-  app.get ("/loggedin", function (req,res) {
-    res.render ( "loggedin.ejs" );	
-    } );
+app.get ("/welcome", function (req,res) {
+console.log("process",  process.env["DYNAMODB_TABLE_user"])
+  res.render ( "welcome.ejs" );	
+  } );
+app.get ("/loggedin", function (req,res) {
+  res.render ( "loggedin.ejs" );	
+  } );
 
 
     //register
@@ -187,32 +186,11 @@ app.get("/dashboard",async(req,res)=>{
 
   res.render("dashboard",{data:results})
   })
-app.get("/getPatient",async(req,res)=>{
-  
-  const db = new AWS.DynamoDB();
- let params={
-   TableName:process.env["DYNAMODB_TABLE_USER"],
-  
- }
- await db.scan(params,function(err,data){
-   if(err){
-     console.log("err",err)
-     res.status(500).status({message:"Failure"})
-   }
-   else{
-     //console.log("data",data)
-     res.status(200).send({message:"Success", users:data})
-   }
- })
-})
-
 
 
 function getPatients(req,res) {
-  console.log("getpatienst function")
+  console.log("getpatient function")
   return new Promise((resolve,reject)=>{
-
- 
 
   const db = new AWS.DynamoDB();
  let scanningParam={
