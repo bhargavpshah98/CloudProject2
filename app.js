@@ -39,15 +39,10 @@ const poolData = {
 
   
   // about page
-
 app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
 
-
-// app.get('/dashboard',function(req,res){
-//     res.render("dashboard")
-// })
 
 app.get('/prescription',function(req,res){
   res.render("prescription")
@@ -59,6 +54,7 @@ app.get('/addprescription',function(req,res){
     utils: formtopdf
   })
 })
+
 
 
   app.get ("/welcome", function (req,res) {
@@ -194,16 +190,13 @@ app.get("/dashboardview",async(req,res)=>{
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
-  
-
-
   res.render("dashboard",{data:results})
+
  }
  else{
   res.render("dashboard",{data:[]})
-
  }
-  })
+})
 
 
 function getPatients(req,res) {
@@ -222,8 +215,6 @@ function getPatients(req,res) {
    }
    else{
      //console.log("data",data)
-     
-     
      resolve(data)
    }
  })
