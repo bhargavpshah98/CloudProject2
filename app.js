@@ -1,6 +1,7 @@
 var express = require('express');
 const expressLayouts=require('express-ejs-layouts');
 var app = express();
+var uuid = require('uuid');
 var bodyParser=require("body-parser")
 var path=require("path")
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
@@ -280,14 +281,44 @@ app.post("/pdf",async(req,res)=>{
       }
       console.log("DATA FROM S3",dataD)
       //res.status(200).send({"message":"Success"})
+      const db = new AWS.DynamoDB();
+      const dbInput = {
+            TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+            Item: {
+              id: { S: uuid.v1() },
+              patientName: { S: req.body.name },
+              prescriptionName: {S: req.body.prescription},
+              medicine: {S: req.body.medicine},
+              patientEmail: { S: req.body.patientEmail},
+              startDate: { S: req.body.sdate },
+              endDate: { S: req.body.edate },
+              morningCount: { N: req.body.morning },
+              middayCount: { N: req.body.midday },
+              eveningCount: {N: req.body.evening},
+              bedtimeCount: {N: req.body.bedtime},
+              cloudfrontKey: { S: dataD.key },
+            },
+          };
+          db.putItem(dbInput, function (putErr, putRes) {
+            if (putErr) {
+              console.log("Failed to put item in dynamodb: ", putErr);
+              res.status(404).json({
+                err: "Failed to Upload!",
+              });
+            } else {
+              console.log("Successfully written to dynamodb", putRes);
+              res.status(200).json({
+                message: "Upload is successful!",
+              });
+            }
+          });
     });
   });
-
- 
-
-
-
 })
+
+
+
+app.use('/delete',require('./routes/prescription-delete'));
 
 
 
