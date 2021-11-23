@@ -159,6 +159,7 @@
         </div>
     </div>
     <script>
+        
         const Calender=document.querySelector('.datepicker');
 
         M.Datepicker.init(Calender,{});
@@ -173,6 +174,9 @@
   const midday=document.getElementById("middayCnt").value;
   const evening=document.getElementById("eveningCnt").value;
   const bedtime=document.getElementById("bedtimeCnt").value;
+  const localdata=JSON.parse(localStorage.getItem("data"))
+ const email=localdata.email
+ 
   const data={
       prescription,
       name,
@@ -182,7 +186,8 @@
       morning,
       midday,
       evening,
-      bedtime
+      bedtime,
+      email
 }
 const options={
     method:"POST",
