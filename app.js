@@ -1,6 +1,7 @@
 var express = require('express');
 const expressLayouts=require('express-ejs-layouts');
 var app = express();
+var uuid = require('uuid');
 var bodyParser=require("body-parser")
 var path=require("path")
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
@@ -204,6 +205,37 @@ app.get("/dashboardview",async(req,res)=>{
  }
 })
 
+app.get("/prescriptionview",async(req,res)=>{
+  console.log("Prescription Request query",req.query)
+  const response= await getPatientPrescriptions(req.query.email)
+  const results=response.Items
+  console.log("results",results)
+  res.render("prescription",{data:results})
+
+ })
+ 
+function getPatientPrescriptions(req, res){
+  return new Promise((resolve,reject)=>{
+
+  const db = new AWS.DynamoDB();
+   let scanningParam={
+     //KeyConditionExpression: 'patientEmail =: patientEmail',
+     //ExpressionAttributeNames: {"#PE": "PatientEmail"},
+     //ProjectionExpression : "#PE",
+     TableName:process.env["DYNAMODB_TABLE_PRESCRIPTION"], 
+   }
+    db.scan(scanningParam,function(err,data){
+     if(err){
+       console.log("err",err)
+       reject(err)
+     }
+     else{
+       //console.log("data",data)
+       resolve(data)
+     }
+   })
+  })
+}
 
 function getPatients(req,res) {
   console.log("getpatient function")
@@ -249,9 +281,41 @@ app.post("/pdf",async(req,res)=>{
       if (err) {
         console.log(err);
       }
-      console.log("DATA FROM S3",dataD)
+      console.log("DATA FROM S3",dataD,req.body.email)
+      sendEmail(req.body.email)
 
       //res.status(200).send({"message":"Success"})
+      const db = new AWS.DynamoDB();
+      const dbInput = {
+            TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+            Item: {
+              id: { S: uuid.v1() },
+              patientName: { S: req.body.name },
+              prescriptionName: {S: req.body.prescription},
+              medicine: {S: req.body.medicine},
+              patientEmail: { S: req.body.patientEmail},
+              startDate: { S: req.body.sdate },
+              endDate: { S: req.body.edate },
+              morningCount: { N: req.body.morning },
+              middayCount: { N: req.body.midday },
+              eveningCount: {N: req.body.evening},
+              bedtimeCount: {N: req.body.bedtime},
+              cloudfrontKey: { S: dataD.key },
+            },
+          };
+          db.putItem(dbInput, function (putErr, putRes) {
+            if (putErr) {
+              console.log("Failed to put item in dynamodb: ", putErr);
+              res.status(404).json({
+                err: "Failed to Upload!",
+              });
+            } else {
+              console.log("Successfully written to dynamodb", putRes);
+              res.status(200).json({
+                message: "Upload is successful!",
+              });
+            }
+          });
     });
   });
 })
@@ -282,7 +346,7 @@ function sendEmail(email,name){
   var params = {
     Destination: { /* required */
       CcAddresses: [
-        'medex@gmail.com',
+        'shruthisrinivasan97@gmail.com',
         /* more items */
       ],
       ToAddresses: [
@@ -325,6 +389,7 @@ function sendEmail(email,name){
 
 }
 
+app.use('/delete',require('./routes/prescription-delete'));
 
 
 
