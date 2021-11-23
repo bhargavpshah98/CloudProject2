@@ -52,8 +52,8 @@
                                 <label for="pEmail">Patient Email ID</label>
                                 <input
                                     type="text"
-                                    id="sName"
-                                    name="sName"
+                                    id="email"
+                                    name="email"
                                     class="form-control"
                                     value="<%= email %>"
                                 />
@@ -170,6 +170,7 @@
         </div>
     </div>
     <script>
+       
         
         const Calender=document.querySelector('.datepicker');
 
@@ -186,7 +187,9 @@
   const evening=document.getElementById("eveningCnt").value;
   const bedtime=document.getElementById("bedtimeCnt").value;
   const localdata=JSON.parse(localStorage.getItem("data"))
- const email=localdata.email
+  const email=document.getElementById("email").value;
+ 
+ 
  
   const data={
       prescription,
@@ -208,9 +211,25 @@ const options={
   },
     body:JSON.stringify(data)
   }
-            fetch("/pdf",options).then(req=>{
+            fetch("/pdf",options).then(res=>{
+                res.json().then(json=>{
+                    console.log("json",json)
+                    if(json.message=="Upload is successful!"){
+                        alert("Prescription successfully uploaded")
+                    }
+                    else{
+                        alert("Prescription uploaded failed")
+
+                    }
+
+                }).catch(error=>{
+                    console.log("Error",error)
+                    alert("Prescription uploaded failed")
+                })
+                
                 
             }).catch(err=>{
+                console.log("Error",err)
 
             })
         }      
