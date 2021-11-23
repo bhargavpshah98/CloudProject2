@@ -26,6 +26,12 @@
 
       })
   }
+
+  function callAddPrescriptionApi(emailId){
+    console.log("add pr email", emailId);
+    window.location.href=`/addprescription?email=${emailId}`
+ }
+
 </script>
 <body>
 <div class="row mt-5">
@@ -57,7 +63,7 @@
         <div class="container-fluid">
             <h4><center>Prescription Details</center></h4>
             <br/>
-            <a href="/addprescription"><button type="submit" class="btn btn-primary">Add Prescription</button></a>
+            <button type="button" class="btn btn-primary" onclick="callAddPrescriptionApi('<%= email %>')">Add Prescription</button>
             <br/><br/>
             <table class="table table-hover">
                 <thead>

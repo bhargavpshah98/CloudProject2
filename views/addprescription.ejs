@@ -37,7 +37,6 @@
                     <input type="hidden" name="user" value="user">
                     <table>
                     <tr>
-                        <td colspan="2">
                         <div class="input-field">
                             <label for="sName">Prescription Name</label>
                             <input
@@ -48,8 +47,20 @@
                                 value=""
                             />
                         </div>
-                        </td>
+                        
+                            <div class="input-field">
+                                <label for="pEmail">Patient Email ID</label>
+                                <input
+                                    type="text"
+                                    id="sName"
+                                    name="sName"
+                                    class="form-control"
+                                    value="<%= email %>"
+                                />
+                            </div>
+                           
                     </tr>
+                    <tr>
                         <td>
                             <div class="input-field">
                                 <label for="pName">Patient Name</label>
