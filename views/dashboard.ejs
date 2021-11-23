@@ -4,12 +4,14 @@
  console.log("token",localdata)
  
  window.onload=function(){
- 
  if(localdata["custom:userType"] == "Doctor"){
   document.getElementById('patient').style.display = "none";
+  document.getElementById('one').style.display = "block";
   } else {
     document.getElementById('patient').style.display = "block";
+    document.getElementById('one').style.display = "none";
   }
+ 
 }
 
  function callPrescriptionApi(emailId){
@@ -59,8 +61,13 @@
                       Medex allows to manage your medicines easily.
                     </p>
                     <a href="#!" class="btn btn-outline-light">View your prescription details</a>
+                    <a href="http://localhost:3000/schedule" class="btn btn-outline-light">View My Medicine Schedule</a>
+
                   </div>
-                </div>              
+                </div>   
+                
+        
+
   </div>
                     
   

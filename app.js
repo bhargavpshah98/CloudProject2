@@ -27,6 +27,8 @@ AWS.config.update({
   region: process.env["AWS_REGION"] 
 });
 
+var scheduleHandler = require("./routes/medSchedule");
+
 //app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(express.json())
@@ -44,10 +46,17 @@ const poolData = {
 
   
   // about page
+app.use("/medSchedule",scheduleHandler);
+
+module.exports = app;
+
 app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
 
+app.get('/dashboard',function(req,res){
+    res.render("dashboard")
+})
 
 app.get('/prescription',function(req,res){
   res.render("prescription")
@@ -64,12 +73,17 @@ app.get('/addprescription',function(req,res){
 
 
   app.get ("/welcome", function (req,res) {
-  console.log("process",  process.env["DYNAMODB_TABLE_user"])
-    res.render ( "welcome.ejs" ); 
-    } );
-  app.get ("/loggedin", function (req,res) {
-    res.render ( "loggedin.ejs" );  
-    } );
+    res.render ( "welcome.ejs" );	
+    } )
+
+  app.get("/medSchedule", function (req,res) {
+    console.log("process",  process.env["DYNAMODB_TABLE_FORM"]);		
+        })
+
+  app.get ("/schedule", function (req,res) {
+    res.render ( "schedule.ejs" );	
+    } )
+  
 
 
     //register

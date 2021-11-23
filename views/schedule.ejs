@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <style>
+    #Schedule th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #04AA6D;
+      color: white;
+    
+    }
+    
+    #Schedule {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    #Schedule td, #Schedule th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    
+    #Schedule tr:nth-child(even){background-color: #f2f2f2;}
+    
+    #Schedule tr:hover {background-color: #ddd;}
+</style>
+  </head>
+  <body>
+     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+         crossorigin="anonymous"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+         crossorigin="anonymous"></script>
+     <!-- End of bootstrap JS-->
+
+    <script>
+      $(document).ready(function () {
+        var data = JSON.parse(localStorage.getItem('data'));
+    console.log(data)
+    // Populate the user table on initial page load
+    populateTable(data.email);
+  });
+
+function populateTable(email) {
+// Empty content string
+    var tableContent = "";
+    $.get("/medSchedule/", { email: email }).done(function (data) {
+        // For each item in our JSON, add a table row and cells to the content string
+        $.each(data.message, function () {
+          tableContent += "<tr>";
+          tableContent += "<td>" + this.prescriptionName.S + "</td>";
+          tableContent += "<td>" + this.medicine.S + "</td>";
+          tableContent += "<td>" + this.morningCount.N + "</td>";
+          tableContent += "<td>" + this.middayCount.N + "</td>";  
+          tableContent += "<td>" + this.eveningCount.N + "</td>";
+          tableContent += "<td>" + this.bedtimeCount.N + "</td>";
+          tableContent += "</tr>";
+        });
+    
+        // Inject the whole content string into our existing HTML table
+        console.log(tableContent);
+        $("#Schedule tbody").html(tableContent);
+      });
+    }
+    </script>
+    <table class="table table-hover" id="Schedule">
+      <thead>
+          <tr>
+              <th id="userNameColumn"><span>Prescription Name</span></th>
+              <th><span>Medicine</span></th>
+              <th><span>Morning Count</span></th>
+              <th><span>Midday Count</span></th>
+              <th><span>Evening Count</span></th>
+              <th><span>Bedtime Count</span></th>
+          </tr>
+      </thead>
+      <tbody></tbody>
+  </table>
+  </body>
+  </html>
