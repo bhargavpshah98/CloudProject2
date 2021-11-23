@@ -1,6 +1,5 @@
 const AWS = require("aws-sdk");
 var uuid = require('uuid');
-const puppeteer = require('puppeteer')
 
 function insertFormToDb(req, res) {
     const db = new AWS.DynamoDB();

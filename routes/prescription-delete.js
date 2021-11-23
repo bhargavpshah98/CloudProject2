@@ -1,57 +1,46 @@
 const express = require('express');
 const router = express.Router();
 const AWS = require("aws-sdk");
-const keys = require("../config/keys");
 // const Files= require('./../models/files');
 
 router.post('/', (req, res) => {
-
-    var fileUrl = req.body.fileUrl;
-     
-    const email = req.body.email;
-    var fileName = fileUrl.split('/')[3];
-
-    let s3bucket = new AWS.S3({
-        accessKeyId: keys.AwsAccessKeyId,
-        secretAccessKey: keys.AwsSecretAccessKey,
-        region: keys.region,
-        s3BucketEndpoint: false,
-        endpoint: 's3.amazonaws.com',
-        port: 443
-    });
-    // console.log(fileName);
+    const s3=new AWS.S3();
+    console.log("request body", req.body.fileUrl);
+    
+    var fileName = req.body.fileUrl.split('/')[3];;
+    console.log("request body", fileName);
     var params1 = {
-        Bucket: keys.bucketName,
+        Bucket: "prescriptionmanager",
         Delete: {
             Objects: [
               {
-                Key: fileName 
+                Key: fileName
               },
             ],
           }
     };
 
-    s3bucket.deleteObjects(params1, function(err, data) {
+    s3.deleteObjects(params1, function(err, data) {
         
         if (err) {
             res.status(500).json({error: true, Message: err});
         }
         else{
             console.log('success bucket delete');
-            req.flash('success_msg','File Deleted!');
-            res.redirect('/dashboard');
+            //req.flash('success_msg','File Deleted!');
+            res.redirect('/prescriptionview');
 
             //delete from dynamo
-            const dynamoDbObj = require('./../models/conn');
-
+            //const dynamoDbObj = require('./../models/conn');
+            const db = new AWS.DynamoDB();
             var params = {
                 TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
                 Key: {
-                    "fileName": fileName
+                    "cloudfrontKey": fileName
                 }
             };
             
-            dynamoDbObj.delete(params, function (err, data) {
+            db.deleteItem(params, function (err, data) {
         
                 if (err) {
                     console.log(err);
@@ -63,6 +52,6 @@ router.post('/', (req, res) => {
     });
 
 
-});
+ });
 
 module.exports = router;

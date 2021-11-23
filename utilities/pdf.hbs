@@ -1,5 +1,18 @@
-<!DOCTYPE html>
+<style type="text/css">
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight:200;
+}
+table {
+    width: 100%;
+}
+table tr td {
+    border: 1px solid black;
+    padding: 8px;
+}
+</style>
 <html lang="en">
+<center>Prescription Details</center>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +20,7 @@
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-           
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>    
-                <div class="collapse navbar-collapse" id="navbarColor02">
-                    <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/dashboard">Welcome,</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/addprescription">Prescriptions<span class="sr-only">(current)</span></a>
-                    </li>
-                    </ul>
-                    <span class="navbar-text">
-                    <a href="/users/logout" >Logout</a>
-                    </span>
-                </div>
-        </nav>
-            
+    <div>            
             <div class="row mt-5">
             <div class="col-md-6 m-auto">
                 <div class="card card-body">
@@ -45,11 +38,12 @@
                                 id="sName"
                                 name="sName"
                                 class="form-control"
-                                value=""
+                                value={{prescription}}
                             />
                         </div>
                         </td>
                     </tr>
+                    <tr>
                         <td>
                             <div class="input-field">
                                 <label for="pName">Patient Name</label>
@@ -58,7 +52,7 @@
                                     id="pName"
                                     name="pName"
                                     class="form-control"
-                                    value=""
+                                    value={{name}}
                                 />
                             </div>
                         </td>
@@ -70,7 +64,7 @@
                                 id="tablet"
                                 name="tablet"
                                 class="form-control"
-                                value=""
+                                value={{medicine}}
                             />
                         </div>
                         </td>            
@@ -78,14 +72,14 @@
                     <tr>
                         <td><div class="input-field">
                             <input type="date" id="startDate" name="startDate" class="datepicker" 
-                            value="" />
+                            value={{sdate}} />
                             <label for="startDate">Start Date</label>
                             </div>
                         </td>
                         <td>
                             <div class="input-field">
                                 <input type="date" id="endDate" name="endDate" class="datepicker"
-                                value="" />
+                                value={{edate}} />
                                 <label for="endDate">End Date</label>
                             </div>
                         </td>
@@ -99,7 +93,7 @@
                                 id="morningCnt"
                                 name="morningCnt"
                                 class="form-control"
-                                value=""
+                                value={{morning}}
                             /> 
                         </td>
                         </div>
@@ -111,7 +105,7 @@
                                 id="middayCnt"
                                 name="middayCnt"
                                 class="form-control"
-                                value=""
+                                value={{midday}}
                             /> 
                             </div>
                         </td>
@@ -126,7 +120,7 @@
                                 id="eveningCnt"
                                 name="eveningCnt"
                                 class="form-control"
-                                value=""
+                                value={{evening}}
                             /> 
                             </div>
                         </td>
@@ -138,66 +132,17 @@
                                 id="bedtimeCnt"
                                 name="bedtimeCnt"
                                 class="form-control"
-                                value=""
+                                value={{bedtime}}
                             /> 
                             </div>
                         </td>
                     </tr>
                 </table>
-                
-                    <table>
-                        <tr>
-                            <td>
-                                <button type="button" onclick="callApi()">Generate PDF</button></td>
-                        </tr>
-                    </table>
-             
                 </form>
                 
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        const Calender=document.querySelector('.datepicker');
-
-        M.Datepicker.init(Calender,{});
-          
-        function callApi(){
-            const prescription =  document.getElementById("sName").value
-  const name=document.getElementById("pName").value
-  const medicine=document.getElementById("tablet").value
-  const sdate=document.getElementById("startDate").value;
-  const edate=document.getElementById("endDate").value;
-  const morning=document.getElementById("morningCnt").value;
-  const midday=document.getElementById("middayCnt").value;
-  const evening=document.getElementById("eveningCnt").value;
-  const bedtime=document.getElementById("bedtimeCnt").value;
-  const data={
-      prescription,
-      name,
-      medicine,
-      sdate,
-      edate,
-      morning,
-      midday,
-      evening,
-      bedtime
-}
-const options={
-    method:"POST",
-    headers: {
-    
-    'Content-Type': 'application/json'
-  },
-    body:JSON.stringify(data)
-  }
-            fetch("/pdf",options).then(req=>{
-                
-            }).catch(err=>{
-
-            })
-        }      
-    </script>
 </body>
 </html>

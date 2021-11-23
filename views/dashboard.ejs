@@ -1,19 +1,26 @@
-<script>
+<script type="text/javascript">
  const token= localStorage.getItem("token");
- const data=localStorage.getItem("data")
- console.log("token",JSON.parse(data))
-
+ const localdata=JSON.parse(localStorage.getItem("data"))
+ console.log("token",localdata)
  
-       
+ window.onload=function(){
  
+ if(localdata["custom:userType"] == "Doctor"){
+  document.getElementById('patient').style.display = "none";
+  } else {
+    document.getElementById('patient').style.display = "block";
+  }
+}
 
-   
- 
+ function callPrescriptionApi(emailId){
+    //console.log("email", emailId);
+    window.location.href=`/prescriptionview?email=${emailId}`
+ }
 
-     // window.onload = load;
 </script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <hr>
+<<<<<<< HEAD
 <div >
    
                         <table
@@ -32,8 +39,52 @@
                             <tbody>    
                          </tbody>
                         </table>
+=======
+
+<div >
+    <table>
+      <thead>
+      <div id="one" style="display: flex;">
+        <h6 style="width: 200px;text-align: center;font-weight: bold;">Name</h6>
+        <h6 style="width: 200px;text-align: center;font-weight: bold;">Gender</h6>
+        <h6 style="width: 200px;text-align: center;font-weight: bold">DOB</h6>
+        <h6 style="width: 200px;text-align: center;font-weight: bold;">Email</h6>
+      </div>
+        
+      </thead>
+          
+      <tbody> 
+              <% data.forEach(function (data) { %>
+                <% if(data.userType.S=="Patient") { %>
+                     
+                  <tr style="display: flex;" >
+                      <td style="width: 200px;text-align: center;"><%= data.Name.S %></td>
+                      <td style="width: 200px;text-align: center;"><%= data.gender.S %></td>
+                      <td style="width: 200px;text-align: center;"> DOB</td>
+                      <td style="width: 200px;text-align: center;"><%= data.email.S %> </td>
+                      
+                      <td><button class="btn btn-primary" onclick="callPrescriptionApi('<%= data.email.S %>')"
+                        type="button">View</button></td>
+                      
+                  </tr>
+                  <% }})%>
+      </tbody>              
+    </table>         
+                  <div id="patient"
+                  class="bg-image card shadow-1-strong"
+                  style="background-image: url('https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg');">
+                  <div class="card-body text-white">
+                    <h5 class="card-title">Medex</h5>
+                    <p class="card-text">
+                      Medex allows to manage your medicines easily.
+                    </p>
+                    <a href="#!" class="btn btn-outline-light">View your prescription details</a>
+                  </div>
+                </div>              
+  </div>
+>>>>>>> 47d26de8434b7bfa7ca71ddfd97f1bd1bf2c1015
                     
-   </div>
+  
 
 
  

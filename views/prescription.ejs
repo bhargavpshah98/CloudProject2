@@ -6,6 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+<script>
+       
+  function callDeleteApi(fileUrl){
+      const data={
+        fileUrl
+      }
+    const options={
+        method:"POST",
+        headers: {
+        
+        'Content-Type': 'application/json'
+      },
+        body:JSON.stringify(data)
+      }
+      fetch("/delete",options).then(req=>{
+          
+      }).catch(err=>{
+
+      })
+  }
+</script>
 <body>
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
@@ -46,18 +67,19 @@
                     <th scope="col">Delete</th>
                     </tr>
                 </thead>
-                
+                <% var cf = 'http://d3i9r2ifyy8coc.cloudfront.net/'%>
                 <tbody>    
-                  
-                    <form action="/delete" method="POST">
+                  <% data.forEach(function (data) { %>
+                   
                         <tr class="table-secondary">
-                            <th scope="row"></th>
-                            <td><a href=''><i class="medium fas fa-file-download"></i></a></td>
-                            <td><button type='submit' class='btn btn-danger' name='fileurl'>Delete</button></td>
-                            <input type='hidden' id='email' name='email' value=''>
-                            <input type='hidden' id='fileUrl' name='fileUrl' value=''>
+                            <td><%= data.prescriptionName.S %></td>
+                            <td><a href='<%=cf + data.cloudfrontKey.S %>'><i class="medium fas fa-file-download"></i></a></td>
+                            <td><button type='button' class='btn btn-danger' name='fileurl' onclick="callDeleteApi('<%=cf + data.cloudfrontKey.S %>')">Delete</button></td>
+                            <input type='hidden' id='email' name='email' value='<%= data.patientEmail.S %>'>
+                            <input type='hidden' id='fileName' name='fileName' value='<%= data.cloudfrontKey.S %>'>
                         </tr>
-                    </form>
+               
+                    <% }) %>
                 </tbody>
                 </table> 
         </div>  

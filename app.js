@@ -1,6 +1,7 @@
 var express = require('express');
 const expressLayouts=require('express-ejs-layouts');
 var app = express();
+var uuid = require('uuid');
 var bodyParser=require("body-parser")
 var path=require("path")
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
@@ -13,6 +14,11 @@ const insertUtility=require("./utilities/doctor")
 let users=require("./routes/users");
 const { use } = require('./routes/users');
 const decodeJwt=require("jwt-decode")
+const formtopdf = require('./utilities/formtopdf')
+const fs=require("fs")
+var PDFDocument = require('pdfkit');
+const { Console } = require('console');
+
 
 require("dotenv").config();
 AWS.config.update({
@@ -57,8 +63,12 @@ app.get('/prescription',function(req,res){
 })
 
 app.get('/addprescription',function(req,res){
-  res.render("addprescription")
+  console.log(formtopdf)
+  res.render("addprescription", {
+    utils: formtopdf
+  })
 })
+
 
 
   app.get ("/welcome", function (req,res) {
@@ -170,11 +180,12 @@ var userData = {
 var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
 cognitoUser.authenticateUser(authentication_details, {
   onSuccess: function (result) {
-    console.log("user",result.getIdToken().getJwtToken())
+   
     var token = result.getIdToken().getJwtToken();
 var decoded = decodeJwt(token);
-console.log("Decoded",decoded)
+
 res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
+//res.redirect("/dashboard")
   },
   onFailure: function(err) {
       console.log("error in onfailure",err);
@@ -182,6 +193,9 @@ res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded
         res.status(404).send({message:"User does not exist"})
       }
       else{
+        if(err=="UserNotConfirmedException: User is not confirmed."){
+          res.status(200).json({message:"User not confirmed"})
+        }
       res.status(200).json({message:"Incorrect Password"})
       }
       //res.sendStatus(500).send({"message":"Internal error"})
@@ -190,40 +204,56 @@ res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded
 });
 });
 
-app.get("/dashboard",async(req,res)=>{
+app.get("/dashboardview",async(req,res)=>{
+  console.log("Request query",req.query)
+ if(req.query.userType=="Doctor"){
+   console.log("doctoe")
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
-
-
   res.render("dashboard",{data:results})
-  })
-app.get("/getPatient",async(req,res)=>{
-  
-  const db = new AWS.DynamoDB();
- let params={
-   TableName:process.env["DYNAMODB_TABLE_USER"],
-  
+
  }
- await db.scan(params,function(err,data){
-   if(err){
-     console.log("err",err)
-     res.status(500).status({message:"Failure"})
-   }
-   else{
-     //console.log("data",data)
-     res.status(200).send({message:"Success", users:data})
-   }
- })
+ else{
+  res.render("dashboard",{data:[]})
+ }
 })
 
+app.get("/prescriptionview",async(req,res)=>{
+  console.log("Prescription Request query",req.query)
+  const response= await getPatientPrescriptions(req.query.email)
+  const results=response.Items
+  console.log("results",results)
+  res.render("prescription",{data:results})
 
-
-function getPatients(req,res) {
-  console.log("getpatienst function")
+ })
+ 
+function getPatientPrescriptions(req, res){
   return new Promise((resolve,reject)=>{
 
- 
+  const db = new AWS.DynamoDB();
+   let scanningParam={
+     //KeyConditionExpression: 'patientEmail =: patientEmail',
+     //ExpressionAttributeNames: {"#PE": "PatientEmail"},
+     //ProjectionExpression : "#PE",
+     TableName:process.env["DYNAMODB_TABLE_PRESCRIPTION"], 
+   }
+    db.scan(scanningParam,function(err,data){
+     if(err){
+       console.log("err",err)
+       reject(err)
+     }
+     else{
+       //console.log("data",data)
+       resolve(data)
+     }
+   })
+  })
+}
+
+function getPatients(req,res) {
+  console.log("getpatient function")
+  return new Promise((resolve,reject)=>{
 
   const db = new AWS.DynamoDB();
  let scanningParam={
@@ -242,13 +272,70 @@ function getPatients(req,res) {
  })
 })
 }
+app.post("/pdf",async(req,res)=>{
+  const s3=new AWS.S3();
+  console.log("req,para",req.body)
+ const response= await formtopdf.createpdf(req.body);
+ console.log("Res",response)
+ //PDFDocument.pipe(fs.createWriteStream(response));
+//PDFDocument.end();
+ 
+  fs.readFile(response, function (err, data) {
+    if (err) {
+      console.log(err);
+    }
+    s3.upload({
+      Bucket: "prescriptionmanager",
+      Key: response,
+      Body: data,
+      ContentType:'application/pdf',
+      ACL:'public-read'
+      
+    }, function(err, dataD) {
+      if (err) {
+        console.log(err);
+      }
+      console.log("DATA FROM S3",dataD)
+      //res.status(200).send({"message":"Success"})
+      const db = new AWS.DynamoDB();
+      const dbInput = {
+            TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+            Item: {
+              Id: { S: uuid.v1() },
+              patientName: { S: req.body.name },
+              prescriptionName: {S: req.body.prescription},
+              medicine: {S: req.body.medicine},
+              //patientEmail: { S: req.body.patientEmail},
+              startDate: { S: req.body.sdate },
+              endDate: { S: req.body.edate },
+              morningCount: { N: req.body.morning },
+              middayCount: { N: req.body.midday },
+              eveningCount: {N: req.body.evening},
+              bedtimeCount: {N: req.body.bedtime},
+              cloudfrontKey: { S: dataD.key },
+            },
+          };
+          db.putItem(dbInput, function (putErr, putRes) {
+            if (putErr) {
+              console.log("Failed to put item in dynamodb: ", putErr);
+              res.status(404).json({
+                err: "Failed to Upload!",
+              });
+            } else {
+              console.log("Successfully written to dynamodb", putRes);
+              res.status(200).json({
+                message: "Upload is successful!",
+              });
+            }
+          });
+    });
+  });
+})
+
+
+
+app.use('/delete',require('./routes/prescription-delete'));
 
 
 
 
-
-
-  
-       
-
-  
