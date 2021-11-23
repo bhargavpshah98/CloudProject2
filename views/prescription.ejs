@@ -8,10 +8,10 @@
 </head>
 <script>
        
-  function callDeleteApi(cloudfrontKey){
-    const data={
-      cloudfrontKey
-    }
+  function callDeleteApi(fileUrl){
+      const data={
+        fileUrl
+      }
     const options={
         method:"POST",
         headers: {
@@ -74,7 +74,7 @@
                         <tr class="table-secondary">
                             <td><%= data.prescriptionName.S %></td>
                             <td><a href='<%=cf + data.cloudfrontKey.S %>'><i class="medium fas fa-file-download"></i></a></td>
-                            <td><button type='button' class='btn btn-danger' name='fileurl' onclick="callDeleteApi('<%= data.cloudfrontKey.S %>')">Delete</button></td>
+                            <td><button type='button' class='btn btn-danger' name='fileurl' onclick="callDeleteApi('<%=cf + data.cloudfrontKey.S %>')">Delete</button></td>
                             <input type='hidden' id='email' name='email' value='<%= data.patientEmail.S %>'>
                             <input type='hidden' id='fileName' name='fileName' value='<%= data.cloudfrontKey.S %>'>
                         </tr>

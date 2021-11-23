@@ -285,11 +285,11 @@ app.post("/pdf",async(req,res)=>{
       const dbInput = {
             TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
             Item: {
-              id: { S: uuid.v1() },
+              Id: { S: uuid.v1() },
               patientName: { S: req.body.name },
               prescriptionName: {S: req.body.prescription},
               medicine: {S: req.body.medicine},
-              patientEmail: { S: req.body.patientEmail},
+              //patientEmail: { S: req.body.patientEmail},
               startDate: { S: req.body.sdate },
               endDate: { S: req.body.edate },
               morningCount: { N: req.body.morning },
