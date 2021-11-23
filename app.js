@@ -230,6 +230,7 @@ app.get("/prescriptionview",async(req,res)=>{
  })
  
 function getPatientPrescriptions(req){
+  console.log("patient email", req );
   return new Promise((resolve,reject)=>{
 
   const db = new AWS.DynamoDB();
