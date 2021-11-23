@@ -79,12 +79,10 @@ app.get('/addprescription',function(req,res){
     console.log("process",  process.env["DYNAMODB_TABLE_FORM"]);		
         })
 
-  app.get ("/loggedin", function (req,res) {
-    res.render ( "loggedin.ejs" );	
+  app.get ("/schedule", function (req,res) {
+    res.render ( "schedule.ejs" );	
     } )
-    app.get ("/sample", function (req,res) {
-      res.render ( "sample.ejs" );	
-      } )
+  
 
 
     //register

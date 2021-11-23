@@ -4,12 +4,14 @@
  console.log("token",localdata)
  
  window.onload=function(){
- 
  if(localdata["custom:userType"] == "Doctor"){
   document.getElementById('patient').style.display = "none";
+  document.getElementById('one').style.display = "block";
   } else {
     document.getElementById('patient').style.display = "block";
+    document.getElementById('one').style.display = "none";
   }
+ 
 }
 
  function callPrescriptionApi(emailId){
@@ -20,26 +22,6 @@
 </script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <hr>
-<<<<<<< HEAD
-<div >
-   
-                        <table
-                         
-                        >
-                         <thead>
-                         <div style="display: flex;">
-                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Name</h6>
-                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Gender</h6>
-                           <h6 style="width: 200px;text-align: center;font-weight: bold">DOB</h6>
-                           <h6 style="width: 200px;text-align: center;font-weight: bold;">Email</h6>
-                         </div>
-                         </tr>
-                           
-                         </thead>
-                            <tbody>    
-                         </tbody>
-                        </table>
-=======
 
 <div >
     <table>
@@ -79,10 +61,14 @@
                       Medex allows to manage your medicines easily.
                     </p>
                     <a href="#!" class="btn btn-outline-light">View your prescription details</a>
+                    <a href="http://localhost:3000/schedule" class="btn btn-outline-light">View My Medicine Schedule</a>
+
                   </div>
-                </div>              
+                </div>   
+                
+        
+
   </div>
->>>>>>> 47d26de8434b7bfa7ca71ddfd97f1bd1bf2c1015
                     
   
 
