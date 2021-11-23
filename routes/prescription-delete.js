@@ -5,9 +5,9 @@ const AWS = require("aws-sdk");
 
 router.post('/', (req, res) => {
     const s3=new AWS.S3();
-    console.log("request body", req.body.fileUrl);
+    console.log("request body", req.body.fileName);
     
-    var fileName = req.body.fileUrl.split('/')[3];;
+    var fileName = req.body.fileName;
     console.log("request body", fileName);
     var params1 = {
         Bucket: "prescriptionmanager",
