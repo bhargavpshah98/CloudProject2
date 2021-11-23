@@ -5,15 +5,16 @@ const AWS = require("aws-sdk");
 
 router.post('/', (req, res) => {
     const s3=new AWS.S3();
-    console.log("request body", req.body.cloudfrontKey);
+    console.log("request body", req.body.fileUrl);
     
-    var fileName = req.body.cloudfrontKey;
+    var fileName = req.body.fileUrl.split('/')[3];;
+    console.log("request body", fileName);
     var params1 = {
         Bucket: "prescriptionmanager",
         Delete: {
             Objects: [
               {
-                Key: fileName 
+                Key: fileName
               },
             ],
           }
@@ -35,7 +36,7 @@ router.post('/', (req, res) => {
             var params = {
                 TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
                 Key: {
-                    "fileName": fileName
+                    "cloudfrontKey": fileName
                 }
             };
             
