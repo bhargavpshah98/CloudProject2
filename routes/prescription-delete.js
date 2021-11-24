@@ -28,28 +28,60 @@ router.post('/', (req, res) => {
         else{
             console.log('success bucket delete');
             //req.flash('success_msg','File Deleted!');
-            res.redirect('/prescriptionview');
-
-            //delete from dynamo
-            //const dynamoDbObj = require('./../models/conn');
+           
+            let id='12'
             const db = new AWS.DynamoDB();
-            var params = {
-                TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
-                Key: {
-                    "cloudfrontKey": fileName
+            let scanningParam={
+                //KeyConditionExpression: 'patientEmail =: patientEmail',
+                //ExpressionAttributeNames: {"#PE": "patientEmail"},
+                ExpressionAttributeValues: {":u": {S: fileName},},
+                FilterExpression: "cloudfrontKey = :u",
+                //ProjectionExpression : "#PE",
+                TableName:process.env["DYNAMODB_TABLE_PRESCRIPTION"], 
+              }
+               db.scan(scanningParam,function(err,data){
+                if(err){
+                  console.log("err",err)
+                  //reject(err)
                 }
-            };
+                else{
+                 
+                  id=data.Items[0].Id
+                  let email=data.Items[0].patientEmail
+                  console.log("data---->",data.Items[0].Id,typeof(id))
+                  var params = {
+                    TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+                    Key: {
+                        Id: {
+                            S: id.S// My partition key is a number.
+                          }
+                    }
+                };
+                
+                db.deleteItem(params, function (err, data) {
             
-            db.deleteItem(params, function (err, data) {
-        
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Prescription deleted');
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send({"message":"Error deleting file from db"})
+                    } else {
+                        console.log('Prescription deleted');
+                       res.status(200).send({"message":"Success"})
+                        //res.redirect(`/prescriptionview?email=${email.S}`);
+                    }
+                });
+                  //resolve(data)
                 }
-            });
-        }      
-    });
+              })
+            }
+        })
+            
+    
+
+         
+           
+            
+             
+    
 
 
  });

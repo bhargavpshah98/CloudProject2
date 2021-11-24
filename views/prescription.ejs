@@ -30,7 +30,16 @@ const localdata=JSON.parse(localStorage.getItem("data"))
       },
         body:JSON.stringify(data)
       }
-      fetch("/delete",options).then(req=>{
+      fetch("/delete",options).then(res=>{
+        console.log("Response",res)
+        res.json().then(json=>{
+          console.log("json",json)
+          if(json.message=="Success"){
+            alert("Prescription deleted")
+          }
+        }).catch(err=>{
+          console.log("eoor",err)
+        })
           
       }).catch(err=>{
 
