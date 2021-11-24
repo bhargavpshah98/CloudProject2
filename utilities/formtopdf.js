@@ -28,7 +28,7 @@ const createpdf = async function(data) {
             args: ["--no-sandbox", "--disabled-setupid-sandbox"],
         }
         );
-        //const page = await browser.newPage();
+        const page = await browser.newPage();
         console.log(1);
         const content = await compile('pdf', data);
         console.log(2);
