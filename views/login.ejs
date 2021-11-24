@@ -78,7 +78,7 @@
       
       localStorage.setItem("token",json.token)
       localStorage.setItem("data",JSON.stringify(json.data))
-      window.location.href=`http://localhost:3000/dashboardview?userType=${userType}&userName=${json.data.name}`
+      window.location.href=`/dashboardview?userType=${userType}&userName=${json.data.name}`
       }
       else{
         console.log("else",json.message)
