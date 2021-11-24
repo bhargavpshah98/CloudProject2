@@ -27,7 +27,7 @@ const createpdf = async function(data) {
         //const browser = await puppeteer.launch();
         const browser = await puppeteer.launch({
             headless: false,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            args: ['--no-sandbox', ],
             });
         const page = await browser.newPage();
         console.log(1);
