@@ -77,7 +77,7 @@ app.get('/addprescription',function(req,res){
     } )
 
   app.get("/medSchedule", function (req,res) {
-    console.log("process",  process.env["DYNAMODB_TABLE_FORM"]);		
+    console.log("process",  process.env["DYNAMODB_TABLE_PRESCRIPTION"]);		
         })
 
   app.get ("/schedule", function (req,res) {
@@ -88,7 +88,7 @@ app.get('/addprescription',function(req,res){
 
     //register
   app.post("/register",function(req,res){
-      const { name, email, password, confirm,userType} = req.body;
+      const { name, email, password, confirm,userType,dob,address} = req.body;
          console.log("name",name,email,confirm,password,userType,typeof(userType))
       var attributeList = [];
        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
@@ -130,7 +130,9 @@ app.get('/addprescription',function(req,res){
                Name: { S: req.body.name },
                email: { S: req.body.email },
                userType: { S: req.body.userType },
-               gender: {S: req.body.gender}
+               gender: {S: req.body.gender},
+               dob: {S: req.body.dob},
+               address: {S: req.body.address}
              },
            };
            db.putItem(dbInput, function (putErr, putRes) {
@@ -212,11 +214,11 @@ app.get("/dashboardview",async(req,res)=>{
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
-  res.render("dashboard",{data:results})
+  res.render("dashboard",{data:results,userName:req.query.userName})
 
  }
  else{
-  res.render("dashboard",{data:[]})
+  res.render("dashboard",{data:[],userName:req.query.userName})
  }
 })
 
