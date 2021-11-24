@@ -50,10 +50,10 @@ var morning = schedule.schedule('9 * 9 * * *', function(){
                         for(let j=0;j<data1.Items.length;j++){
                 
                             let temp1=data1.Items[j];
-                            let subject = 'Morning Reminder of '+medicine+'';
-                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' morning dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            let subject = 'Morning Reminder of '+temp1.medicine.S+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+temp1.patientName.S+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+temp1.medicine.S+' morning dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
                             if(temp1.morningCount.N == 1){
-                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                                sendEmail(temp1.patientEmail.S, content, subject);
                             }
                         }
                     }
@@ -108,10 +108,10 @@ var midday = schedule.schedule('9 * 13 * * *', function(){
                         for(let j=0;j<data1.Items.length;j++){
                 
                             let temp1=data1.Items[j];
-                            let subject = 'Midday Reminder of '+medicine+'';
-                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' midday dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            let subject = 'Midday Reminder of '+temp1.medicine.S+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+temp1.patientName.S+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+temp1.medicine.S+' midday dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
                             if(temp1.middayCount.N == 1){
-                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                                sendEmail(temp1.patientEmail.S, content, subject);
                             }
                         }
                     }
@@ -166,10 +166,10 @@ var evening = schedule.schedule('9 * 17 * * *', function(){
                         for(let j=0;j<data1.Items.length;j++){
                 
                             let temp1=data1.Items[j];
-                            let subject = 'Evening Reminder of '+medicine+'';
-                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' evening dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            let subject = 'Evening Reminder of '+temp1.medicine.S+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+temp1.patientName.S+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+temp1.medicine.S+' evening dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
                             if(temp1.eveningCount.N == 1){
-                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                                sendEmail(temp1.patientEmail.S,content, subject);
                             }
                         }
                     }
@@ -225,10 +225,10 @@ var night = schedule.schedule('9 * 21 * * *', function(){
                         for(let j=0;j<data1.Items.length;j++){
                 
                             let temp1=data1.Items[j];
-                            let subject = 'Night Reminder of '+medicine+'';
-                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' night dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            let subject = 'Night Reminder of '+temp1.medicine.S+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+temp1.patientName.S+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+temp1.medicine.S+' night dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
                             if(temp1.bedtimeCount.N == 1){
-                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                                sendEmail(temp1.patientEmail.S, content, subject);
                             }
                         }
                     }
@@ -238,7 +238,7 @@ var night = schedule.schedule('9 * 21 * * *', function(){
     });
 });
 
-function sendEmail(email,name, medicine, content, subject){
+function sendEmail(email,content, subject){
 
     var params = {
       Destination: { /* required */
