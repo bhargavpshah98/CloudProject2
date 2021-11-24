@@ -76,7 +76,7 @@ app.get('/addprescription',function(req,res){
     } )
 
   app.get("/medSchedule", function (req,res) {
-    console.log("process",  process.env["DYNAMODB_TABLE_FORM"]);		
+    console.log("process",  process.env["DYNAMODB_TABLE_PRESCRIPTION"]);		
         })
 
   app.get ("/schedule", function (req,res) {

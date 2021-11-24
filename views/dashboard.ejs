@@ -55,6 +55,31 @@
                   <div id="patient"
                   class="bg-image card shadow-1-strong"
                   style="background-image: url('https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg');">
+
+                  <script src="https://d1jb05chhnmtu5.cloudfront.net/lex-web-ui-loader.min.js"></script>
+                  <script>
+                    if(localdata["custom:userType"] == "Patient"){
+
+                    var loaderOpts = {
+                      baseUrl: 'https://d1jb05chhnmtu5.cloudfront.net/',
+                      shouldLoadMinDeps: true
+                    };
+                    var loader = new ChatBotUiLoader.IframeLoader(loaderOpts);
+                    var chatbotUiConfig = {
+                            /* Example of setting session attributes on parent page
+                            lex: {
+                              sessionAttributes: {
+                                userAgent: navigator.userAgent,
+                                QNAClientFilter: ''
+                              }
+                            }
+                            */
+                          };
+                    loader.load(chatbotUiConfig)
+                      .catch(function (error) { console.error(error); });
+                        }
+                  </script>
+
                   <div class="card-body text-white">
                     <h5 class="card-title">Medex</h5>
                     <p class="card-text">
