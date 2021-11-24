@@ -33,12 +33,12 @@ var morning = schedule.schedule('* * * * * *', function(){
                     FilterExpression: "#sn = :i and :yr between #start_yr and #end_yr",
                     ExpressionAttributeNames:{
                         "#sn": "patientEmail",
-                        "#start_yr": "sdate",
-                        "#end_yr": "edate",
+                        "#start_yr": "startDate",
+                        "#end_yr": "endDate",
                     },
                     ExpressionAttributeValues : {
-                        ':i'  : {S:temp.patientEmail},
-                        ":yr": moment().format("YYYY-MM-DD")
+                        ':i'  : {S:temp.email.S},
+                        ":yr": {S:moment().format("YYYY-MM-DD")}
                     }
                 };
 
