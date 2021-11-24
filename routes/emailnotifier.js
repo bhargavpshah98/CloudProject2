@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 const moment = require('moment'); 
 var schedule = require('node-cron');
 
-var morning = schedule.schedule('9 * 9 * * *', function(){
+var morning = schedule.schedule('0 9 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
@@ -63,7 +63,7 @@ var morning = schedule.schedule('9 * 9 * * *', function(){
     });
 });
 
-var midday = schedule.schedule('9 * 13 * * *', function(){
+var midday = schedule.schedule('0 13 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
@@ -121,7 +121,7 @@ var midday = schedule.schedule('9 * 13 * * *', function(){
     });
 });
 
-var evening = schedule.schedule('9 * 17 * * *', function(){
+var evening = schedule.schedule('0 17 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
@@ -179,7 +179,7 @@ var evening = schedule.schedule('9 * 17 * * *', function(){
     });
 });
 
-var night = schedule.schedule('9 * 21 * * *', function(){
+var night = schedule.schedule('0 21 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
@@ -273,7 +273,7 @@ function sendEmail(email,content, subject){
       ],
     };
     // Create the promise and SES service object
-   var sendPromise = new AWS.SES({"accessKeyId":  process.env["ACCESS_KEY_ID"], "secretAccessKey":  process.env["SECRET_ACCESS_KEY"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
+   var sendPromise = new AWS.SES({"accessKeyId":  process.env["accessKeyId"], "secretAccessKey":  process.env["accessSecretKeyId"], "region": "us-west-1"}).sendEmail(params).promise();
     // Handle promise's fulfilled/rejected states
    sendPromise.then(
      function(data) {
