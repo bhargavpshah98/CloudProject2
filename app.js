@@ -311,7 +311,7 @@ app.post("/pdf",async(req,res)=>{
               patientName: { S: req.body.name },
               prescriptionName: {S: req.body.prescription},
               medicine: {S: req.body.medicine},
-              patientEmail: { S: req.body.patientEmail},
+              patientEmail: { S: req.body.email},
               startDate: { S: req.body.sdate },
               endDate: { S: req.body.edate },
               morningCount: { N: req.body.morning },
