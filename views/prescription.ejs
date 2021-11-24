@@ -7,7 +7,17 @@
     <title>Document</title>
 </head>
 <script>
-       
+
+const localdata=JSON.parse(localStorage.getItem("data"))
+
+  window.onload=function(){
+    if(localdata["custom:userType"] != "Doctor"){
+      document.getElementById('addprescription').style.display = "none";
+    } 
+    else {
+      document.getElementById('addprescription').style.display = "block";
+    }
+  }
   function callDeleteApi(fileName){
       const data={
         fileName
@@ -26,6 +36,12 @@
 
       })
   }
+
+  function callAddPrescriptionApi(emailId){
+    console.log("add pr email", emailId);
+    window.location.href=`/addprescription?email=${emailId}`
+ }
+
 </script>
 <body>
 <div class="row mt-5">
@@ -57,7 +73,9 @@
         <div class="container-fluid">
             <h4><center>Prescription Details</center></h4>
             <br/>
-            <a href="/addprescription"><button type="submit" class="btn btn-primary">Add Prescription</button></a>
+            <div id="addprescription" >
+              <button type="button" class="btn btn-primary" onclick="callAddPrescriptionApi('<%= email %>')">Add Prescription</button>
+            </div>
             <br/><br/>
             <table class="table table-hover">
                 <thead>
