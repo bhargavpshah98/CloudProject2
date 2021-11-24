@@ -18,7 +18,7 @@ const formtopdf = require('./utilities/formtopdf')
 const fs=require("fs")
 var PDFDocument = require('pdfkit');
 const { Console } = require('console');
-
+let email=require("./routes/emailnotifier");
 
 require("dotenv").config();
 AWS.config.update({
