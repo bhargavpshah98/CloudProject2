@@ -88,7 +88,7 @@ app.get('/addprescription',function(req,res){
 
     //register
   app.post("/register",function(req,res){
-      const { name, email, password, confirm,userType} = req.body;
+      const { name, email, password, confirm,userType,dob,address} = req.body;
          console.log("name",name,email,confirm,password,userType,typeof(userType))
       var attributeList = [];
        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
@@ -130,7 +130,9 @@ app.get('/addprescription',function(req,res){
                Name: { S: req.body.name },
                email: { S: req.body.email },
                userType: { S: req.body.userType },
-               gender: {S: req.body.gender}
+               gender: {S: req.body.gender},
+               dob: {S: req.body.dob},
+               address: {S: req.body.address}
              },
            };
            db.putItem(dbInput, function (putErr, putRes) {
