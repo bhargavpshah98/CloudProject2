@@ -51,6 +51,11 @@ const localdata=JSON.parse(localStorage.getItem("data"))
     window.location.href=`/addprescription?email=${emailId}`
  }
 
+ function callDashboardApi(){
+   console.log("localdata in call dashboard",localdata["custom:userType"])
+ // window.location.href=`/dashboardview?userType=${localdata["custom:userType"]}&userName=${localdata.name}`
+}
+
 </script>
 <body>
 <div class="row mt-5">
@@ -67,12 +72,9 @@ const localdata=JSON.parse(localStorage.getItem("data"))
                   <a class="nav-link" href="/dashboard">Welcome,</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/prescription">Prescriptions<span class="sr-only">(current)</span></a>
+                  <button style="background-color: aliceblue;" onclick='callDashboardApi()'>Dashboard<span class="sr-only">(current)</span></button>
                 </li>
               </ul>
-              <span class="navbar-text">
-                <a href="/users/logout" >Logout</a>
-              </span>
             </div>
           </nav>
         <div class="card card-body">
