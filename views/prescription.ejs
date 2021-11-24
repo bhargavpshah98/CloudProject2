@@ -51,7 +51,7 @@ const localdata=JSON.parse(localStorage.getItem("data"))
     window.location.href=`/addprescription?email=${emailId}`
  }
  function callDashboard(){
-   console.log("Calldashboard")
+  
    window.location.href=`/dashboardview?userType=${localdata["custom:userType"]}&userName=${localdata.name}`
  }
 

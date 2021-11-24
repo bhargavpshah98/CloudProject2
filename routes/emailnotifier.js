@@ -1,115 +1,288 @@
-// const express=require('express');
-// const router=express.Router();
-// const AWS = require('aws-sdk');
-// const moment = require('moment'); 
-// var schedule = require('node-cron');
+const express=require('express');
+const router=express.Router();
+const AWS = require('aws-sdk');
+const moment = require('moment'); 
+var schedule = require('node-cron');
 
-// var morning = schedule.schedule('* * * * * *', function(){
-//     console.log("cron triggered");
-//     const db = new AWS.DynamoDB();
-//     //fetch users
-//      var paramsdb = {
-//         TableName: process.env["DYNAMODB_TABLE_USER"],
+var morning = schedule.schedule('9 * 9 * * *', function(){
+    console.log("cron triggered");
+    const db = new AWS.DynamoDB();
+    //fetch users
+     var paramsdb = {
+        TableName: process.env["DYNAMODB_TABLE_USER"],
         
-//         ExpressionAttributeValues : {
-//             ":i"  : {S: "Patient"}
-//         },
+        ExpressionAttributeValues : {
+            ":i"  : {S: "Patient"}
+        },
         
-//         FilterExpression: "userType = :i",
-//     };
+        FilterExpression: "userType = :i",
+    };
 
-//     db.scan(paramsdb, function (err, data) {
-//         console.log("DB DATA", data.Items );
-//         if (err){ throw err}
-//         else{
+    db.scan(paramsdb, function (err, data) {
+        console.log("DB DATA", data.Items );
+        if (err){ throw err}
+        else{
             
-//             for(let i=0;i<data.Items.length;i++){
+            for(let i=0;i<data.Items.length;i++){
 
-//                 let temp=data.Items[i];
-//                 //let phone=temp.phone;
+                let temp=data.Items[i];
+                //let phone=temp.phone;
 
-//                 var params = {
-//                     TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
-//                     FilterExpression: "#sn = :i and :yr between #start_yr and #end_yr",
-//                     ExpressionAttributeNames:{
-//                         "#sn": "patientEmail",
-//                         "#start_yr": "startDate",
-//                         "#end_yr": "endDate",
-//                     },
-//                     ExpressionAttributeValues : {
-//                         ':i'  : {S:temp.email.S},
-//                         ":yr": {S:moment().format("YYYY-MM-DD")}
-//                     }
-//                 };
+                var params = {
+                    TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+                    FilterExpression: "#sn = :i and :yr between #start_yr and #end_yr",
+                    ExpressionAttributeNames:{
+                        "#sn": "patientEmail",
+                        "#start_yr": "startDate",
+                        "#end_yr": "endDate",
+                    },
+                    ExpressionAttributeValues : {
+                        ':i'  : {S:temp.email.S},
+                        ":yr": {S:moment().format("YYYY-MM-DD")}
+                    }
+                };
 
-//                 db.scan(params, function (err, data1) {
-                    
-//                     if (err){ throw err}
-//                     else{
+                db.scan(params, function (err, data1) {
+                    console.log("data1 morning count", data1);
+                    if (err){ throw err}
+                    else{
 
-//                         for(let j=0;j<data1.Items.length;j++){
+                        for(let j=0;j<data1.Items.length;j++){
                 
-//                             let temp1=data1.Items[j];
-                            
-//                             if(temp1.morningCount == '1'){
-                                
-//                                 sendEmail(temp1.patientEmail,temp1.patientName, temp1.medicine);
-                          
-//                             }
-//                         }
-//                     }
-//                 })
-//             }
-//         }
-//     });
-// });
+                            let temp1=data1.Items[j];
+                            let subject = 'Morning Reminder of '+medicine+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' morning dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            if(temp1.morningCount.N == 1){
+                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    });
+});
 
-// function sendEmail(email,name, medicine){
+var midday = schedule.schedule('9 * 13 * * *', function(){
+    console.log("cron triggered");
+    const db = new AWS.DynamoDB();
+    //fetch users
+     var paramsdb = {
+        TableName: process.env["DYNAMODB_TABLE_USER"],
+        
+        ExpressionAttributeValues : {
+            ":i"  : {S: "Patient"}
+        },
+        
+        FilterExpression: "userType = :i",
+    };
 
-//     var params = {
-//       Destination: { /* required */
-//         CcAddresses: [
-//           'shruthisrinivasan97@gmail.com',
-//           /* more items */
-//         ],
-//         ToAddresses: [
-//          email,
-//           /* more items */
-//         ]
-//       },
-//       Message: { /* required */
-//         Body: { /* required */
-//           Html: {
-//            Charset: "UTF-8",
-//            Data: '<div><center><img src="https://www.crushpixel.com/stock-photo/assorted-pharmaceutical-medicine-pills-tablets-1959484.html" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' morning dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
-//           },
-//           Text: {
-//            Charset: "UTF-8",
-//            Data: ``
-//           }
-//          },
-//          Subject: {
-//           Charset: 'UTF-8',
-//           Data: 'Morning Reminder of '+medicine+'', // Subject line
-//          }
-//         },
-//       Source: 'shruthisrinivasan97@gmail.com', /* required */
-//       ReplyToAddresses: [
-//          'shruthisrinivasan97@gmail.com',
-//         /* more items */
-//       ],
-//     };
-//     // Create the promise and SES service object
-//    var sendPromise = new AWS.SES({"accessKeyId":  process.env["ACCESS_KEY_ID"], "secretAccessKey":  process.env["SECRET_ACCESS_KEY"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
-//     // Handle promise's fulfilled/rejected states
-//    sendPromise.then(
-//      function(data) {
-//        console.log("data-->",data.MessageId);
-//      }).catch(
-//        function(err) {
-//        console.error("errorr-->",err, err.stack);
-//      });
+    db.scan(paramsdb, function (err, data) {
+        console.log("DB DATA", data.Items );
+        if (err){ throw err}
+        else{
+            
+            for(let i=0;i<data.Items.length;i++){
+
+                let temp=data.Items[i];
+                //let phone=temp.phone;
+
+                var params = {
+                    TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+                    FilterExpression: "#sn = :i and :yr between #start_yr and #end_yr",
+                    ExpressionAttributeNames:{
+                        "#sn": "patientEmail",
+                        "#start_yr": "startDate",
+                        "#end_yr": "endDate",
+                    },
+                    ExpressionAttributeValues : {
+                        ':i'  : {S:temp.email.S},
+                        ":yr": {S:moment().format("YYYY-MM-DD")}
+                    }
+                };
+
+                db.scan(params, function (err, data1) {
+                    if (err){ throw err}
+                    else{
+
+                        for(let j=0;j<data1.Items.length;j++){
+                
+                            let temp1=data1.Items[j];
+                            let subject = 'Midday Reminder of '+medicine+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' midday dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            if(temp1.middayCount.N == 1){
+                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    });
+});
+
+var evening = schedule.schedule('9 * 17 * * *', function(){
+    console.log("cron triggered");
+    const db = new AWS.DynamoDB();
+    //fetch users
+     var paramsdb = {
+        TableName: process.env["DYNAMODB_TABLE_USER"],
+        
+        ExpressionAttributeValues : {
+            ":i"  : {S: "Patient"}
+        },
+        
+        FilterExpression: "userType = :i",
+    };
+
+    db.scan(paramsdb, function (err, data) {
+        console.log("DB DATA", data.Items );
+        if (err){ throw err}
+        else{
+            
+            for(let i=0;i<data.Items.length;i++){
+
+                let temp=data.Items[i];
+                //let phone=temp.phone;
+
+                var params = {
+                    TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+                    FilterExpression: "#sn = :i and :yr between #start_yr and #end_yr",
+                    ExpressionAttributeNames:{
+                        "#sn": "patientEmail",
+                        "#start_yr": "startDate",
+                        "#end_yr": "endDate",
+                    },
+                    ExpressionAttributeValues : {
+                        ':i'  : {S:temp.email.S},
+                        ":yr": {S:moment().format("YYYY-MM-DD")}
+                    }
+                };
+
+                db.scan(params, function (err, data1) {
+                    if (err){ throw err}
+                    else{
+
+                        for(let j=0;j<data1.Items.length;j++){
+                
+                            let temp1=data1.Items[j];
+                            let subject = 'Evening Reminder of '+medicine+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' evening dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            if(temp1.eveningCount.N == 1){
+                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    });
+});
+
+var night = schedule.schedule('9 * 21 * * *', function(){
+    console.log("cron triggered");
+    const db = new AWS.DynamoDB();
+    //fetch users
+     var paramsdb = {
+        TableName: process.env["DYNAMODB_TABLE_USER"],
+        
+        ExpressionAttributeValues : {
+            ":i"  : {S: "Patient"}
+        },
+        
+        FilterExpression: "userType = :i",
+    };
+
+    db.scan(paramsdb, function (err, data) {
+        console.log("DB DATA", data.Items );
+        if (err){ throw err}
+        else{
+            
+            for(let i=0;i<data.Items.length;i++){
+
+                let temp=data.Items[i];
+                //let phone=temp.phone;
+
+                var params = {
+                    TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
+                    FilterExpression: "#sn = :i and :yr between #start_yr and #end_yr",
+                    ExpressionAttributeNames:{
+                        "#sn": "patientEmail",
+                        "#start_yr": "startDate",
+                        "#end_yr": "endDate",
+                    },
+                    ExpressionAttributeValues : {
+                        ':i'  : {S:temp.email.S},
+                        ":yr": {S:moment().format("YYYY-MM-DD")}
+                    }
+                };
+
+                db.scan(params, function (err, data1) {
+                    console.log("data1 morning count", data1);
+                    if (err){ throw err}
+                    else{
+
+                        for(let j=0;j<data1.Items.length;j++){
+                
+                            let temp1=data1.Items[j];
+                            let subject = 'Night Reminder of '+medicine+'';
+                            let content = '<div><center><img src="https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;This mail is to remind you regarding your medicine '+medicine+' night dose. This medicine is recommended by doctor.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+                            if(temp1.bedtimeCount.N == 1){
+                                sendEmail(temp1.patientEmail.S,temp1.patientName.S, temp1.medicine.S, content, subject);
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    });
+});
+
+function sendEmail(email,name, medicine, content, subject){
+
+    var params = {
+      Destination: { /* required */
+        CcAddresses: [
+          'medexforu@gmail.com',
+          /* more items */
+        ],
+        ToAddresses: [
+         email,
+          /* more items */
+        ]
+      },
+      Message: { /* required */
+        Body: { /* required */
+          Html: {
+           Charset: "UTF-8",
+           Data: content
+          },
+          Text: {
+           Charset: "UTF-8",
+           Data: ``
+          }
+         },
+         Subject: {
+          Charset: 'UTF-8',
+          Data: subject, // Subject line
+         }
+        },
+      Source: 'medexforu@gmail.com', /* required */
+      ReplyToAddresses: [
+         'medexforu@gmail.com',
+      ],
+    };
+    // Create the promise and SES service object
+   var sendPromise = new AWS.SES({"accessKeyId":  process.env["ACCESS_KEY_ID"], "secretAccessKey":  process.env["SECRET_ACCESS_KEY"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
+    // Handle promise's fulfilled/rejected states
+   sendPromise.then(
+     function(data) {
+       console.log("data-->",data.MessageId);
+     }).catch(
+       function(err) {
+       console.error("errorr-->",err, err.stack);
+     });
   
-//   }
+  }
 
-//   module.exports=router;
+  module.exports=router;
