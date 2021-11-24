@@ -24,7 +24,8 @@ const createpdf = async function(data) {
     console.log("data pdf")
     try {
         const browser = await puppeteer.launch({
-            executablePath:'/usr/bin/chromium-browser'
+            //executablePath:'/usr/bin/chromium-browser',
+            args: ["--no-sandbox", "--disabled-setupid-sandbox"],
         }
         );
         const page = await browser.newPage();
