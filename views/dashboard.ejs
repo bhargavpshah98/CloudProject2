@@ -28,8 +28,13 @@ function callPatientPrescriptionApi(){
 </script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <hr>
-<div style="justify-content: flex-end;align-items: flex-end;display: flex;">
-<button style="width: 20%;" class="btn btn-primary btn-block" onclick="logout()">Logout</button>
+<div style="display: flex;justify-content: space-between;">
+  <div style="display: flex;">
+  <h6>Welcome <%= userName%></h6>
+  </div>
+  <div style="display: flex;justify-content: flex-end;">
+<button style="width: 100%;" class="btn btn-primary btn-block" onclick="logout()">Logout</button>
+  </div>
 </div>
 
 <div >
@@ -79,7 +84,7 @@ function callPatientPrescriptionApi(){
 
                 </div>
                 </div>
-                
+
                 
         
 

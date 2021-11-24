@@ -32,7 +32,7 @@ function getSchedule(req, res, next) {
     },
     FilterExpression: "patientEmail = :u",
     ProjectionExpression: "#PN, #MN, #MT, #MD, #ET, #BT",
-    TableName: process.env["DYNAMODB_TABLE_FORM"]
+    TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"]
   };
 
   db.scan(scanInput, function (err, data) {

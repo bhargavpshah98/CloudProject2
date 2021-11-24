@@ -212,11 +212,11 @@ app.get("/dashboardview",async(req,res)=>{
   const response= await getPatients()
   const results=response.Items
   console.log("results",results)
-  res.render("dashboard",{data:results})
+  res.render("dashboard",{data:results,userName:req.query.userName})
 
  }
  else{
-  res.render("dashboard",{data:[]})
+  res.render("dashboard",{data:[],userName:req.query.userName})
  }
 })
 
