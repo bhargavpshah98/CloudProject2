@@ -13,6 +13,9 @@
   }
  
 }
+function callPatientPrescriptionApi(){
+  window.location.href=`/prescriptionview?email=${localdata.email}`
+}
 
  function callPrescriptionApi(emailId){
     //console.log("email", emailId);
@@ -65,7 +68,7 @@
                   </div>
                 </div>  
                 <div style="display: flex;justify-content: center;">
-                  <button type="button" style="margin-right: 3px;"  onclick="callPrescriptionApi('<%= data.email.S %>')" class="btn btn-outline-light">View your prescription details</button>
+                  <button type="button" style="margin-right: 3px;"  onclick="callPatientPrescriptionApi()" class="btn btn-outline-light">View your prescription details</button>
                   <a href="http://localhost:3000/schedule" class="btn btn-outline-light">View My Medicine Schedule</a>
 
                 </div>
