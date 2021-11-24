@@ -23,12 +23,12 @@ hbs.registerHelper('dateFormat', function(value, format) {
 const createpdf = async function(data) {
     console.log("data pdf")
     try {
-        const browser = await puppeteer.launch({ headless: false, executablePath: '/path/to/Chrome' });
+        //const browser = await puppeteer.launch({ headless: false, executablePath: '/path/to/Chrome' });
         //const browser = await puppeteer.launch();
-        // const browser = await puppeteer.launch({
-        //     headless: true,
-        //     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        //     });
+        const browser = await puppeteer.launch({
+            headless: false,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            });
         const page = await browser.newPage();
         console.log(1);
         const content = await compile('pdf', data);
