@@ -39,15 +39,15 @@ to them.
  
 
 ### System Configuration
-Prerequisite : NodeJS,Jenkins
-Clone the code from git the repository
-Run npm install to install the necessary packages
-Create the .env file and configure the AWS security keys
-Run the application using node app.js
+ * Prerequisite : NodeJS,Jenkins
+ * Clone the code from git the repository
+ * Run npm install to install the necessary packages
+ * Create the .env file and configure the AWS security keys
+ * Run the application using node app.js
  
-Git Repository: https://github.com/Shruthi23/CloudProject2
-Website URL:http://fileexplorerposts.xyz:3000
-Demo Link:
+ * Git Repository: https://github.com/Shruthi23/CloudProject2
+ * Website URL:http://fileexplorerposts.xyz:3000
+ * Demo Link:
 Test Account Credentials :  Doctor -   shruthisrinivasan97@gmail.com. Password - Qwerty@123,
 				       aishwaryaravi19@gmail.com.     Password - Qwerty@123,
                             Patient -  hasinireddy765@gmail.com.      Password - Qwerty@123
