@@ -4,7 +4,7 @@
 ### Professor : Sanjay Garje
 ### ISA : Devangi Doshi
 ### Group Name : ACES
-### Team Members : Aishwarya Ravi(),Bhargav Shah(),Dharahasini Gangalapudi(),Shruthi Srinivasan(https://www.linkedin.com/in/shruthis23/)
+### Team Members : Aishwarya Ravi(https://www.linkedin.com/in/aishwaryaravi96/),Bhargav Shah(),Dharahasini Gangalapudi(),Shruthi Srinivasan(https://www.linkedin.com/in/shruthis23/)
 
 
 ### Project Introduction
@@ -131,7 +131,7 @@ Now logging in with the registered Doctor’s mail, the registered patients will
 *  Aishwarya Ravi:
    * Worked on the end to end flow of the prescription management module for both doctors and patients which includes displaying patient dashboard, prescription screen to display all prescriptions applicable for the patient(For both doctor's and patient’s portal), Add prescription screen for the doctor to add a prescription for the patient.
    * Developed the frontend and backend functionalities for viewing/downloading prescriptions from the Cloudfront, deleting prescriptions from S3 and DynamoDB, Uploading prescription metadata to the Prescription table in DynamoDB and navigating back to dashboard from the Prescription UI.
-   * Developed the Email Notification module to notify/remind patients to take medicines as per their dosage timings. Made use of node-cron to schedule cron jobs to trigger email notifications.
+   * Developed the Email Notification module using SES to notify/remind patients to take medicines as per their dosage timings. Made use of node-cron to schedule cron jobs to trigger email notifications.
    * Configured AWS Lambda for a DynamoDB trigger that logs the updates made to a table and S3 trigger has also been added  which gets triggered whenever an event occurs (an object gets pushed to the bucket). 
    * Configured SNS: In case of failure of lambda invocation, an SNS event is triggered and email notification is sent to the Medex admin. 
    * Configured Jenkins with the project git repo for CI/CD.
