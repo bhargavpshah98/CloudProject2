@@ -7,7 +7,7 @@
 ### Team Members : Aishwarya Ravi,Bhargav Shah,Dharahasini Gangalapudi,Shruthi Srinivasan
 
 
-### Problem Statement
+### Project Introduction
 
 Compliance Medication has been a major issue in the medical field. While doctors diagnose their patients, it's a bit difficult to keep the records of the prescription and keep
 track of the medication provided to them. And even patients sometimes forget to
@@ -27,26 +27,30 @@ to them.
   * Application Load Balancer: Classic load balancer is configured to direct the requests across multiple EC2 instances in a round robin manner.
   * S3: S3 is used to store the prescriptions of the user uploaded by the doctor.The web user interface  of lex chatbot  is also served from S3.
   * Route 53:  It is a highly available DNS.It is used to route end users by translating a cost effective way to route end users to Internet applications by translating domain names into the numeric IP addresses.
+  * Lambda & SNS: AWS Lambda is used for an Amazon DynamoDB trigger that logs the updates made to a table and S3 trigger has also been added  which gets triggered whenever an event occurs (an object gets pushed to the bucket) and in case of failure of lambda invocation, an SNS event is triggered and email notification is sent to the Medex admin. Topic and Subscription have been configured for the same. 
   * CloudWatch: CloudWatch is used to monitor EC2,Dynamo the CPU reaches maximum or minimum threshold  through  AWS Simple Notification Service.
   * Lambda & SNS: AWS Lambda is used for an Amazon DynamoDB trigger that logs the updates made to a table and S3 trigger has also been added  which gets triggered whenever an event occurs (an object gets pushed to the bucket) and in case of failure of lambda invocation, an SNS event is triggered and email notification is sent to the Medex admin. Topic and Subscription have been configured for the same. 
   * Amazon Cognito: It is a managed service for the users to login and register into the application by creating user pools.
   * DynamoDB: Dynamo is used as our data store to store the users and the prescription information.
   * Cloud Formation: AWS Lex makes use of the template provided by Cloud Formation.The configuration of the  Lex ChatBot  is then deployed to the S3 bucket.
   * AWS SES: This service is used to trigger email notifications to the patients when a new prescription is added by the doctor.SES is also used to send the prescription reminders for the day.
+  
+
+ 
 
 ### System Configuration
-Prerequisite : NodeJS, Jenkins(CI/CD)
+Prerequisite : NodeJS,Jenkins
 Clone the code from git the repository
 Run npm install to install the necessary packages
 Create the .env file and configure the AWS security keys
 Run the application using node app.js
  
-Git Repo: https://github.com/Shruthi23/CloudProject2
+Git Repository: https://github.com/Shruthi23/CloudProject2
 Website URL:http://fileexplorerposts.xyz:3000
 Demo Link:
-Test Account Credentials :  Doctor -   shruthisrinivasan97@gmail.com / Qwerty@123,
-						aishwaryaravi19@gmail.com/ Qwerty@123,
-                                               Patient -   hasinireddy765@gmail.com /  Qwerty@123
+Test Account Credentials :  Doctor -   shruthisrinivasan97@gmail.com. Password - Qwerty@123,
+				       aishwaryaravi19@gmail.com.     Password - Qwerty@123,
+                            Patient -  hasinireddy765@gmail.com.      Password - Qwerty@123
 
 Architecture Diagram
 
@@ -139,7 +143,7 @@ Now logging in with the registered Doctor’s mail, the registered patients will
   * Worked on the documentation and the presentation part.
   * Created Readme for Github Repo.
   * Deployed application on EC2.
-  * 
+  
 * Dharahasini Gangalapudi
   * Configured amazon lex and deployed a chat bot named Medex in our website.
   * Worked on the schedule management part of displaying the respective medicine schedule for the patients.
@@ -150,7 +154,7 @@ Now logging in with the registered Doctor’s mail, the registered patients will
 
 
 
-*Shruthi Srinivasan
+* Shruthi Srinivasan
    * Configured Cognito user pool 
    *  Developed the front end and backend functionalities for the user registration and sign in using Cognito user pool.
    * Developed the front end and backend functionalities  to design the dashboard page    (Doctor portal).
