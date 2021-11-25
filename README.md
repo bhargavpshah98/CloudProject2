@@ -99,18 +99,6 @@ Now logging in with the registered Doctor’s mail, the registered patients will
 
 
 
-8. 
-
-
-
-
-
-Favorite List
-
-
-
-
-Application monitoring through Kibana
 
 
 
@@ -123,7 +111,6 @@ Application monitoring through Kibana
 
 
 
-CI/CD using Jenkins
 
 
 
@@ -133,51 +120,45 @@ CI/CD using Jenkins
 
 
 
-Individual contribution:
-Bhavya Tetali :
-Wrote Backend  functions for signup, sign in, sign out, and to verify access token and configured Cognito user pool.
-Added Frontend changes for Signup,sign in and sign out
-Configured the Cloud Formation Stack and Lex for the Movie Buff chatbot UI. Also, integrated the chatbot with the web application.
-Wrote lambda functions for suggesting a movie by genre and provide details about a film for the chatbot 
-Configured Jenkins with the project git repo for CI/CD.
-Created presentation document.
-Aishwarya Ravi:
-Worked on the end to end flow of the prescription management module for both doctors and patients which includes displaying patient dashboard, prescription screen to display all prescriptions applicable for the patient(For both doctors and patient’s portal), Add prescription screen for the doctor to add a prescription to the patient.
-Developed the frontend and backend functionalities for viewing/downloading prescriptions from the Cloudfront, deleting prescriptions from S3 and DynamoDB, Uploading prescription metadata to the Prescription table in DynamoDB and navigating back to dashboard from the Prescription UI.
-Configured AWS Lambda for a DynamoDB trigger that logs the updates made to a table and S3 trigger has also been added  which gets triggered whenever an event occurs (an object gets pushed to the bucket). 
-Configured SNS: In case of failure of lambda invocation, an SNS event is triggered and email notification is sent to the Medex admin. Topic and Subscription have been configured for the same. 
-Configured Jenkins with the project git repo for CI/CD.
-Deployed application on EC2
 
-Bhargav Shah : 
-Worked on the generate pdf module which is on the doctor’s portal.
-Developed the function using puppeteer library which generates the pdf using the handlebars library of node js.
-Uploaded the generated pdf to S3 bucket which keeps the track of the newly generated files of the patient by the doctor. 
-Worked on the documentation and the presentation part.
-Created Readme for Github Repo.
-Deployed application on EC2.
-Dharahasini Gangalapudi
-1.Configured amazon lex and deployed a chat bot named Medex in our website.
-2.worked on the schedule management part of displaying the respective medicine schedule for the patients.
-3. Configured DynamoDb
-4.
-5.
-6 Worked on EC2 deployment and resolved deployment issues.
-7 Configured Route 53.
-8 Worked on the documentation and system architecture.
+
+### Individual contribution:
+
+*  Aishwarya Ravi:
+   * Worked on the end to end flow of the prescription management module for both doctors and patients which includes displaying patient dashboard, prescription screen to display all prescriptions applicable for the patient(For both doctors and patient’s portal), Add prescription screen for the doctor to add a prescription to the patient.
+   * Developed the frontend and backend functionalities for viewing/downloading prescriptions from the Cloudfront, deleting prescriptions from S3 and DynamoDB, Uploading prescription metadata to the Prescription table in DynamoDB and navigating back to dashboard from the Prescription UI.
+   * Configured AWS Lambda for a DynamoDB trigger that logs the updates made to a table and S3 trigger has also been added  which gets triggered whenever an event occurs (an object gets pushed to the bucket). 
+   * Configured SNS: In case of failure of lambda invocation, an SNS event is triggered and email notification is sent to the Medex admin. Topic and   Subscription have been configured for the same. 
+   * Configured Jenkins with the project git repo for CI/CD.
+   * Deployed application on EC2
+
+* Bhargav Shah : 
+  * Worked on the generate pdf module which is on the doctor’s portal.
+  * Developed the function using puppeteer library which generates the pdf using the handlebars library of node js.
+  * Uploaded the generated pdf to S3 bucket which keeps the track of the newly generated files of the patient by the doctor. 
+  * Worked on the documentation and the presentation part.
+  * Created Readme for Github Repo.
+  * Deployed application on EC2.
+  * 
+* Dharahasini Gangalapudi
+  * Configured amazon lex and deployed a chat bot named Medex in our website.
+  * Worked on the schedule management part of displaying the respective medicine schedule for the patients.
+  * Configured DynamoDb
+  *  Worked on EC2 deployment and resolved deployment issues.
+  * Configured Route 53.
+  * Worked on the documentation and system architecture.
 
 
 
-Shruthi Srinivasan
-
-  1.Configured Cognito user pool 
-  2.  Developed the front end and backend functionalities for the user registration and sign in using Cognito user pool.
-  3. Developed the front end and backend functionalities  to design the dashboard page    (Doctor portal).
-  4. Developed the backend functionality to upload the files to S3 using aws sdk.
-  5.Integrated with AWS SES to notify the patients when the doctor uploads a new    prescription.
-  6.Worked on EC2 deployment and resolved deployment issues related to puppeteer library in Linux.
-  7.Configured Route 53.
-  8.Worked on the documentation and system architecture.
+*Shruthi Srinivasan
+   * Configured Cognito user pool 
+   *  Developed the front end and backend functionalities for the user registration and sign in using Cognito user pool.
+   * Developed the front end and backend functionalities  to design the dashboard page    (Doctor portal).
+   * Developed the backend functionality to upload the files to S3 using aws sdk.
+   * Integrated with AWS SES to notify the patients when the doctor uploads a new    prescription.
+   * Worked on EC2 deployment and resolved deployment issues related to puppeteer library in Linux.
+   * Configured Route 53.
+   * Worked on the documentation and system architecture.
 
 
 
