@@ -3,7 +3,7 @@
     <div class="card card-body">
       <h1 class="text-center mb-3"><i class="fas fa-user"></i>  Login</h1>
   
-      <form >
+      <form action="/login/signin" method="POST">
         <div class="form-group">
          
           <input
@@ -29,8 +29,8 @@
        
         
         <p><button
-          onclick="callApi()"
-          type="button"
+          
+          type="submit"
           style=" background-color: #8064A2;margin-top: 10%;" class="btn btn-primary btn-block">Submit</button></p>
       </form>
       <p class="text-center mb-3">
@@ -78,7 +78,24 @@
       
       localStorage.setItem("token",json.token)
       localStorage.setItem("data",JSON.stringify(json.data))
-      window.location.href=`/dashboardview?userType=${userType}&userName=${json.data.name}`
+      //window.location.href=`/dashboard?userType=${userType}&userName=${json.data.name}`
+      var options={
+        method:'GET',
+        redirect: 'follow',
+        headers: {
+          'token':localStorage.getItem("token"),
+          'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+
+      }
+      fetch("/dashboard",options).then(req=>{
+        console.log("req")
+      }).catch(err=>{
+        console.log("Err",err)
+      })
+      //window.location.href='dashboard/view'
+      
       }
       else{
         console.log("else",json.message)

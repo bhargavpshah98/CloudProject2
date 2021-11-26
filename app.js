@@ -29,7 +29,7 @@ AWS.config.update({
 
 var scheduleHandler = require("./routes/medSchedule");
 
-//app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
 app.use(express.json())
 app.use(expressLayouts);
@@ -85,25 +85,6 @@ app.get('/addprescription',function(req,res){
 
 
 
-
-//login
-
-
-app.get("/dashboardview",async(req,res)=>{
-  console.log("Request query",req.query)
- if(req.query.userType=="Doctor"){
-   console.log("doctoe")
-  const response= await getPatients()
-  const results=response.Items
-  console.log("results",results)
-  res.render("dashboard",{data:results,userName:req.query.userName})
-
- }
- else{
-  res.render("dashboard",{data:[],userName:req.query.userName})
- }
-})
-
 app.get("/prescriptionview",async(req,res)=>{
   console.log("Prescription Request query",req.query)
   const response= await getPatientPrescriptions(req.query.email)
@@ -139,27 +120,9 @@ function getPatientPrescriptions(req){
   })
 }
 
-function getPatients(req,res) {
-  console.log("getpatient function")
-  return new Promise((resolve,reject)=>{
 
-  const db = new AWS.DynamoDB();
- let scanningParam={
-   TableName:process.env["DYNAMODB_TABLE_USER"],
-   
- }
-  db.scan(scanningParam,function(err,data){
-   if(err){
-     console.log("err",err)
-     reject(err)
-   }
-   else{
-     //console.log("data",data)
-     resolve(data)
-   }
- })
-})
-}
+
+  
 app.post("/pdf",async(req,res)=>{
   const s3=new AWS.S3();
   console.log("req,para",req.body)
@@ -272,10 +235,21 @@ function sendEmail(email,name){
    });
 
 }
+app.post("sign",function(Req,res){
+  console.log("sign")
+})
+app.post("/log",function(req,res){
+  res.redirect("/view")
+})
+app.get("/view",function(req,res){
 
+  console.log("view-->")
+  res.render("register")
+})
 app.use('/delete',require('./routes/prescription-delete'));
 app.use('/register',require('./routes/registration'))
 app.use('/login',require("./routes/login"))
+app.use('/dashboard',require("./routes/dashboard"))
 module.exports = app;
 
 
