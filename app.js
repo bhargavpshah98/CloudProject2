@@ -48,7 +48,7 @@ const poolData = {
   // about page
 app.use("/medSchedule",scheduleHandler);
 
-module.exports = app;
+
 
 //app.use("/",users);
   app.listen(3000);
@@ -276,6 +276,7 @@ function sendEmail(email,name){
 app.use('/delete',require('./routes/prescription-delete'));
 app.use('/register',require('./routes/registration'))
 app.use('/login',require("./routes/login"))
+module.exports = app;
 
 
 
