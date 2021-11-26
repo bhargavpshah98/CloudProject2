@@ -34,7 +34,9 @@
   },
     body:JSON.stringify(data)
   }
-  fetch("/register",options).then(res=>{
+
+  fetch("/register/signup",options).then(res=>{
+    
     res.json().then(json=>{
       if(json.message=="Success"){
         window.location.href=`/`

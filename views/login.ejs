@@ -65,7 +65,7 @@
   },
     body:JSON.stringify(data)
   }
-  fetch("/login",options).then(res=>{
+  fetch("login/signin",options).then(res=>{
     res.json().then(json=>{
       console.log("json",json)
       if(json.message=="Success"){

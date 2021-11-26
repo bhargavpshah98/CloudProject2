@@ -50,13 +50,11 @@ app.use("/medSchedule",scheduleHandler);
 
 module.exports = app;
 
-app.use("/",users);
+//app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
 
-app.get('/dashboard',function(req,res){
-    res.render("dashboard")
-})
+
 
 app.get('/prescription',function(req,res){
   res.render("prescription")
@@ -84,110 +82,12 @@ app.get('/addprescription',function(req,res){
   
 
 
-    //register
-  app.post("/register",function(req,res){
-      const { name, email, password, confirm,userType,dob,address} = req.body;
-         console.log("name",name,email,confirm,password,userType,typeof(userType))
-      var attributeList = [];
-       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
-       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:"female"}));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"custom:userType",Value:userType}))
-  pool.signUp(email,password,attributeList,null,function(err,result){
-    if (err) {
-      console.log("error",err);
-      if(err=="UsernameExistsException: An account with the given email already exists."){
-        res.status(403).send({message:"User exists already"})
-      }
-      else{
-      res.status(500).send({message:"Internal error"})
-      }
-      //return;
-  }
-  else{
-  console.log("Result",result)
-  cognitoUser = result.user;
-  console.log('user name is ' + cognitoUser.getUsername());
-  
-  res.status(200).send({message:"Success"})
-  verifyEmail(email)
-  insertUserToDb(req,res);
-  
-  }
-  
-  
-  //insertUtility.insertDocToDb("req","res")
 
-
-  function insertUserToDb(req,res) {
-
-      const db = new AWS.DynamoDB();
-      const dbInput = {
-          TableName: process.env["DYNAMODB_TABLE_USER"],
-             Item: {
-               Name: { S: req.body.name },
-               email: { S: req.body.email },
-               userType: { S: req.body.userType },
-               gender: {S: req.body.gender},
-               dob: {S: req.body.dob},
-               address: {S: req.body.address}
-             },
-           };
-           db.putItem(dbInput, function (putErr, putRes) {
-             if (putErr) {
-               console.log("Failed to put item in dynamodb: ", putErr);
-               res.status(404).json({
-                 err: "Failed to Upload!",
-               });
-             } else {
-               console.log("Successfully written to dynamodb", putRes);
-             }
-           });
-          }
- });
-});
 
 
 
 //login
-app.post("/login",async(req,res)=>{
-  console.log("login",req.body)
- const authentication_details=new AmazonCognitoIdentity.AuthenticationDetails(
-   {
-    Username: req.body.email,
-    Password: req.body.password
-   }
- )
-var userData = {
-  Username : req.body.email,
-  Pool : pool
-};
-var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
-cognitoUser.authenticateUser(authentication_details, {
-  onSuccess: function (result) {
-   
-    var token = result.getIdToken().getJwtToken();
-var decoded = decodeJwt(token);
 
-res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
-//res.redirect("/dashboard")
-  },
-  onFailure: function(err) {
-      console.log("error in onfailure",err);
-      if(err=="NotAuthorizedException: Incorrect username or password."){
-        res.status(404).send({message:"User does not exist"})
-      }
-      else{
-        if(err=="UserNotConfirmedException: User is not confirmed."){
-          res.status(200).json({message:"User not confirmed"})
-        }
-      res.status(200).json({message:"Incorrect Password"})
-      }
-      //res.sendStatus(500).send({"message":"Internal error"})
-  },
-
-});
-});
 
 app.get("/dashboardview",async(req,res)=>{
   console.log("Request query",req.query)
@@ -322,25 +222,7 @@ app.post("/pdf",async(req,res)=>{
   });
 })
 
-function verifyEmail(mail){
-  console.log("verufyemail function entered")
-  var ses=new AWS.SES()
-  var params = {
-    EmailAddress: mail
- };
-  
- ses.verifyEmailAddress(params, function(err, data) {
-    if(err) {
-      console.log("Err",err)
-        //res.send(err);
-    }
-    else {
-      console.log("data--->",data)
-       
-    }
-  
- });
-}
+
 function sendEmail(email,name){
 
 
@@ -392,6 +274,9 @@ function sendEmail(email,name){
 }
 
 app.use('/delete',require('./routes/prescription-delete'));
+app.use('/register',require('./routes/registration'))
+app.use('/login',require("./routes/login"))
+
 
 
 
