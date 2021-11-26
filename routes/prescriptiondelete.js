@@ -6,6 +6,7 @@ const AWS = require("aws-sdk");
 router.post('/', (req, res) => {
     const s3=new AWS.S3();
     console.log("request body", req.body.fileName);
+  
     
     var fileName = req.body.fileName;
     console.log("request body", fileName);
