@@ -27,7 +27,7 @@ AWS.config.update({
   region: process.env["AWS_REGION"] 
 });
 
-var scheduleHandler = require("./routes/medSchedule");
+var scheduleHandler = require("./routes/medschedule");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
@@ -56,9 +56,7 @@ app.use("/medSchedule",scheduleHandler);
 
 
 
-app.get('/prescription',function(req,res){
-  res.render("prescription")
-})
+
 
 app.get('/addprescription',function(req,res){
   console.log(formtopdf)
@@ -68,124 +66,10 @@ app.get('/addprescription',function(req,res){
   })
 })
 
-
-
-  
-
-  app.get("/medSchedule", function (req,res) {
-    console.log("process",  process.env["DYNAMODB_TABLE_PRESCRIPTION"]);		
-        })
-
   app.get ("/schedule", function (req,res) {
     res.render ( "schedule.ejs" );	
     } )
-  
-
-
-
-
-
-app.get("/prescriptionview",async(req,res)=>{
-  console.log("Prescription Request query",req.query)
-  const response= await getPatientPrescriptions(req.query.email)
-  const results=response.Items
-  console.log("prescription view",results)
-  res.render("prescription",{data:results, email: req.query.email})
-
- })
  
-function getPatientPrescriptions(req){
-  console.log("patient email", req );
-  return new Promise((resolve,reject)=>{
-
-  const db = new AWS.DynamoDB();
-   let scanningParam={
-     //KeyConditionExpression: 'patientEmail =: patientEmail',
-     //ExpressionAttributeNames: {"#PE": "patientEmail"},
-     ExpressionAttributeValues: {":u": {S: req},},
-     FilterExpression: "patientEmail = :u",
-     //ProjectionExpression : "#PE",
-     TableName:process.env["DYNAMODB_TABLE_PRESCRIPTION"], 
-   }
-    db.scan(scanningParam,function(err,data){
-     if(err){
-       console.log("err",err)
-       reject(err)
-     }
-     else{
-       //console.log("data",data)
-       resolve(data)
-     }
-   })
-  })
-}
-
-
-
-  
-app.post("/pdf",async(req,res)=>{
-  const s3=new AWS.S3();
-  console.log("req,para",req.body)
- const response= await formtopdf.createpdf(req.body);
- console.log("Res",response)
- //PDFDocument.pipe(fs.createWriteStream(response));
-//PDFDocument.end();
- 
-  fs.readFile(response, function (err, data) {
-    if (err) {
-      console.log(err);
-    }
-    s3.upload({
-      Bucket: "prescriptionmanager",
-      Key: response,
-      Body: data,
-      ContentType:'application/pdf',
-      ACL:'public-read'
-      
-    }, function(err, dataD) {
-      if (err) {
-        console.log(err);
-      }
-      console.log("DATA FROM S3",dataD,req.body.email)
-      sendEmail(req.body.email,req.body.name)
-
-      //res.status(200).send({"message":"Success"})
-      const db = new AWS.DynamoDB();
-      const dbInput = {
-            TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
-            Item: {
-              Id: { S: uuid.v1() },
-              patientName: { S: req.body.name },
-              prescriptionName: {S: req.body.prescription},
-              medicine: {S: req.body.medicine},
-              patientEmail: { S: req.body.email},
-              startDate: { S: req.body.sdate },
-              endDate: { S: req.body.edate },
-              morningCount: { N: req.body.morning },
-              middayCount: { N: req.body.midday },
-              eveningCount: {N: req.body.evening},
-              bedtimeCount: {N: req.body.bedtime},
-              cloudfrontKey: { S: dataD.key },
-            },
-          };
-          db.putItem(dbInput, function (putErr, putRes) {
-            if (putErr) {
-              console.log("Failed to put item in dynamodb: ", putErr);
-              res.status(404).json({
-                err: "Failed to Upload!",
-              });
-            } else {
-              console.log("Successfully written to dynamodb", putRes);
-              res.status(200).json({
-                message: "Upload is successful!",
-              });
-            }
-          });
-    });
-  });
-})
-
-
 function sendEmail(email,name){
 
 
@@ -235,18 +119,10 @@ function sendEmail(email,name){
    });
 
 }
-app.post("sign",function(Req,res){
-  console.log("sign")
-})
-app.post("/log",function(req,res){
-  res.redirect("/view")
-})
-app.get("/view",function(req,res){
 
-  console.log("view-->")
-  res.render("register")
-})
-app.use('/delete',require('./routes/prescription-delete'));
+app.use('/prescriptiondelete',require('./routes/prescriptiondelete'));
+app.use('/prescriptionview',require('./routes/prescriptionview'));
+app.use('/prescriptionupload',require('./routes/prescriptionupload'));
 app.use('/register',require('./routes/registration'))
 app.use('/login',require("./routes/login"))
 app.use('/dashboard',require("./routes/dashboard"))

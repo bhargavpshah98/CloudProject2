@@ -6,6 +6,7 @@ const AWS = require("aws-sdk");
 router.post('/', (req, res) => {
     const s3=new AWS.S3();
     console.log("request body", req.body.fileName);
+  
     
     var fileName = req.body.fileName;
     console.log("request body", fileName);
@@ -26,7 +27,10 @@ router.post('/', (req, res) => {
             res.status(500).json({error: true, Message: err});
         }
         else{
+          
             console.log('success bucket delete');
+            console.log ("email", email.S);
+            res.redirect(`/prescriptionview?email=${email.S}`);
             //req.flash('success_msg','File Deleted!');
            
             let id='12'
@@ -74,16 +78,6 @@ router.post('/', (req, res) => {
               })
             }
         })
-            
-    
-
-         
-           
-            
-             
-    
-
-
- });
+    });
 
 module.exports = router;
