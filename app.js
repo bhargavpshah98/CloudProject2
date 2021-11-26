@@ -72,9 +72,7 @@ app.get('/addprescription',function(req,res){
 
 
 
-  app.get ("/welcome", function (req,res) {
-    res.render ( "welcome.ejs" );	
-    } )
+  
 
   app.get("/medSchedule", function (req,res) {
     console.log("process",  process.env["DYNAMODB_TABLE_PRESCRIPTION"]);		
@@ -150,23 +148,7 @@ app.get('/addprescription',function(req,res){
 });
 
 
-//verify
-app.post('/verifyuser',function(req,res){
-  console.log("res into verify",req.body)
-  const otp=req.body.otp
- const userData={
-   Username:req.body.email,
-   Pool:pool
- }
- const cognitoUser=new AmazonCognitoIdentity.CognitoUser(userData);
- cognitoUser.confirmRegistration(otp,true,function(error,results){
-   if(error){
-     console.log("error",error)
-   }
-   console.log("results from verify",results)
- })
 
-})
 //login
 app.post("/login",async(req,res)=>{
   console.log("login",req.body)
