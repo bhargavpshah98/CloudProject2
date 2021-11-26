@@ -120,6 +120,7 @@ function sendEmail(email,name){
 
 }
 
+
 app.use('/prescriptiondelete',require('./routes/prescriptiondelete'));
 app.use('/prescriptionview',require('./routes/prescriptionview'));
 app.use('/prescriptionupload',require('./routes/prescriptionupload'));

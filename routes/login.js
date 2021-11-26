@@ -38,15 +38,15 @@ const poolData = {
          
           var token = result.getIdToken().getJwtToken();
       var decoded = decodeJwt(token);
-      res.set('Content-Type','application/json')
-      res.append('authorization',token)
+      //res.set('token',token)
+   //console.log( res.get('token'))
       //console.log("token",token)
       //res.header('token', token)
       //res.token('token',token)
 
       
-      //res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
-      res.redirect(`/dashboard/:${token}`)
+      res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
+      //res.redirect(`/dashboard/:${token}`)
       //console.log("login success")
      //return res.redirect('/dash')
       //res.redirect("/dashboard")

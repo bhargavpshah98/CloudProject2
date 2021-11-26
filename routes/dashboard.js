@@ -12,17 +12,18 @@ const ejs = require('ejs');
 
 
 
-router.get("/:token",async(req,res)=>{
+router.get("/",async(req,res)=>{
     console.log("Request query",req.params);
-    const token=req.params.token
-    var decoded = decodeJwt(token);
-    console.log("Decoded",decoded)
-    const userName=decoded.name
-    if(decoded['custom:userType']=="Doctor"){
+    const userType=req.query.userType;
+    const userName=req.query.userName
+    
+  
+    if(userType=="Doctor"){
       const response= await getPatients()
     const results=response.Items
      console.log("items printed")
    res.render('dashboard',{data:results,userName:userName})
+   
     
   
    }
@@ -30,13 +31,15 @@ router.get("/:token",async(req,res)=>{
     res.render("dashboard",{data:[],userName:userName})
    }
   })
-  function getPatients(req,res) {
+  function getPatients(email,name) {
     console.log("getpatient function")
     return new Promise((resolve,reject)=>{
   
     const db = new AWS.DynamoDB();
    let scanningParam={
      TableName:process.env["DYNAMODB_TABLE_USER"],
+   
+  //FilterExpression: "doctorName = :i",
      
    }
     db.scan(scanningParam,function(err,data){
@@ -45,7 +48,7 @@ router.get("/:token",async(req,res)=>{
        reject(err)
      }
      else{
-       //console.log("data",data)
+       console.log("data",data)
        resolve(data)
      }
    })
