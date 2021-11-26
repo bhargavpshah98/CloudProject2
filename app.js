@@ -27,7 +27,7 @@ AWS.config.update({
   region: process.env["AWS_REGION"] 
 });
 
-var scheduleHandler = require("./routes/medSchedule");
+var scheduleHandler = require("./routes/medschedule");
 
 //app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
@@ -70,22 +70,18 @@ app.get('/addprescription',function(req,res){
   })
 })
 
-
-
   app.get ("/welcome", function (req,res) {
     res.render ( "welcome.ejs" );	
     } )
 
-  app.get("/medSchedule", function (req,res) {
-    console.log("process",  process.env["DYNAMODB_TABLE_PRESCRIPTION"]);		
-        })
+  // app.get("/medSchedule", function (req,res) {
+  //   console.log("process",  process.env["DYNAMODB_TABLE_PRESCRIPTION"]);		
+  //       })
 
   app.get ("/schedule", function (req,res) {
     res.render ( "schedule.ejs" );	
     } )
   
-
-
     //register
   app.post("/register",function(req,res){
       const { name, email, password, confirm,userType,dob,address} = req.body;
@@ -114,8 +110,7 @@ app.get('/addprescription',function(req,res){
   res.status(200).send({message:"Success"})
   verifyEmail(email)
   insertUserToDb(req,res);
-  
-  }
+}
   
   
   //insertUtility.insertDocToDb("req","res")
@@ -222,41 +217,6 @@ app.get("/dashboardview",async(req,res)=>{
  }
 })
 
-app.get("/prescriptionview",async(req,res)=>{
-  console.log("Prescription Request query",req.query)
-  const response= await getPatientPrescriptions(req.query.email)
-  const results=response.Items
-  console.log("prescription view",results)
-  res.render("prescription",{data:results, email: req.query.email})
-
- })
- 
-function getPatientPrescriptions(req){
-  console.log("patient email", req );
-  return new Promise((resolve,reject)=>{
-
-  const db = new AWS.DynamoDB();
-   let scanningParam={
-     //KeyConditionExpression: 'patientEmail =: patientEmail',
-     //ExpressionAttributeNames: {"#PE": "patientEmail"},
-     ExpressionAttributeValues: {":u": {S: req},},
-     FilterExpression: "patientEmail = :u",
-     //ProjectionExpression : "#PE",
-     TableName:process.env["DYNAMODB_TABLE_PRESCRIPTION"], 
-   }
-    db.scan(scanningParam,function(err,data){
-     if(err){
-       console.log("err",err)
-       reject(err)
-     }
-     else{
-       //console.log("data",data)
-       resolve(data)
-     }
-   })
-  })
-}
-
 function getPatients(req,res) {
   console.log("getpatient function")
   return new Promise((resolve,reject)=>{
@@ -278,67 +238,7 @@ function getPatients(req,res) {
  })
 })
 }
-app.post("/pdf",async(req,res)=>{
-  const s3=new AWS.S3();
-  console.log("req,para",req.body)
- const response= await formtopdf.createpdf(req.body);
- console.log("Res",response)
- //PDFDocument.pipe(fs.createWriteStream(response));
-//PDFDocument.end();
- 
-  fs.readFile(response, function (err, data) {
-    if (err) {
-      console.log(err);
-    }
-    s3.upload({
-      Bucket: "prescriptionmanager",
-      Key: response,
-      Body: data,
-      ContentType:'application/pdf',
-      ACL:'public-read'
-      
-    }, function(err, dataD) {
-      if (err) {
-        console.log(err);
-      }
-      console.log("DATA FROM S3",dataD,req.body.email)
-      sendEmail(req.body.email,req.body.name)
 
-      //res.status(200).send({"message":"Success"})
-      const db = new AWS.DynamoDB();
-      const dbInput = {
-            TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"],
-            Item: {
-              Id: { S: uuid.v1() },
-              patientName: { S: req.body.name },
-              prescriptionName: {S: req.body.prescription},
-              medicine: {S: req.body.medicine},
-              patientEmail: { S: req.body.email},
-              startDate: { S: req.body.sdate },
-              endDate: { S: req.body.edate },
-              morningCount: { N: req.body.morning },
-              middayCount: { N: req.body.midday },
-              eveningCount: {N: req.body.evening},
-              bedtimeCount: {N: req.body.bedtime},
-              cloudfrontKey: { S: dataD.key },
-            },
-          };
-          db.putItem(dbInput, function (putErr, putRes) {
-            if (putErr) {
-              console.log("Failed to put item in dynamodb: ", putErr);
-              res.status(404).json({
-                err: "Failed to Upload!",
-              });
-            } else {
-              console.log("Successfully written to dynamodb", putRes);
-              res.status(200).json({
-                message: "Upload is successful!",
-              });
-            }
-          });
-    });
-  });
-})
 
 function verifyEmail(mail){
   console.log("verufyemail function entered")
@@ -359,57 +259,11 @@ function verifyEmail(mail){
   
  });
 }
-function sendEmail(email,name){
 
 
-
-  var params = {
-    Destination: { /* required */
-      CcAddresses: [
-        'medexforu@gmail.com',
-        /* more items */
-      ],
-      ToAddresses: [
-       email,
-        /* more items */
-      ]
-    },
-    Message: { /* required */
-      Body: { /* required */
-        Html: {
-         Charset: "UTF-8",
-         Data: '<div><center><img src="https://www.crushpixel.com/stock-photo/assorted-pharmaceutical-medicine-pills-tablets-1959484.html" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;A new prescription has been added to you by your doctor.Login to the portal to view the details.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
-        },
-        Text: {
-         Charset: "UTF-8",
-         Data: `Dear ${name}, A new prescription has been added to you.Login to your application to view`
-        }
-       },
-       Subject: {
-        Charset: 'UTF-8',
-        Data: 'Prescription Added.'
-       }
-      },
-    Source: 'medexforu@gmail.com', /* required */
-    ReplyToAddresses: [
-       'medexforu@gmail.com',
-      /* more items */
-    ],
-  };
-  // Create the promise and SES service object
- var sendPromise = new AWS.SES({"accessKeyId":  process.env["accessKeyId"], "secretAccessKey":  process.env["accessSecretKeyId"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
-  // Handle promise's fulfilled/rejected states
- sendPromise.then(
-   function(data) {
-     console.log("data-->",data.MessageId);
-   }).catch(
-     function(err) {
-     console.error("errorr-->",err, err.stack);
-   });
-
-}
-
-app.use('/delete',require('./routes/prescription-delete'));
+app.use('/prescriptiondelete',require('./routes/prescriptiondelete'));
+app.use('/prescriptionview',require('./routes/prescriptionview'));
+app.use('/prescriptionupload',require('./routes/prescriptionupload'));
 
 
 
