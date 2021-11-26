@@ -48,15 +48,13 @@ const poolData = {
   // about page
 app.use("/medSchedule",scheduleHandler);
 
-module.exports = app;
 
-app.use("/",users);
+
+//app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
 
-app.get('/dashboard',function(req,res){
-    res.render("dashboard")
-})
+
 
 app.get('/prescription',function(req,res){
   res.render("prescription")
@@ -70,9 +68,15 @@ app.get('/addprescription',function(req,res){
   })
 })
 
+<<<<<<< HEAD
   app.get ("/welcome", function (req,res) {
     res.render ( "welcome.ejs" );	
     } )
+=======
+
+
+  
+>>>>>>> dd09251d281c2e04d50f46e2b073d2222891be46
 
   // app.get("/medSchedule", function (req,res) {
   //   console.log("process",  process.env["DYNAMODB_TABLE_PRESCRIPTION"]);		
@@ -82,6 +86,7 @@ app.get('/addprescription',function(req,res){
     res.render ( "schedule.ejs" );	
     } )
   
+<<<<<<< HEAD
     //register
   app.post("/register",function(req,res){
       const { name, email, password, confirm,userType,dob,address} = req.body;
@@ -114,93 +119,16 @@ app.get('/addprescription',function(req,res){
   
   
   //insertUtility.insertDocToDb("req","res")
+=======
 
 
-  function insertUserToDb(req,res) {
-
-      const db = new AWS.DynamoDB();
-      const dbInput = {
-          TableName: process.env["DYNAMODB_TABLE_USER"],
-             Item: {
-               Name: { S: req.body.name },
-               email: { S: req.body.email },
-               userType: { S: req.body.userType },
-               gender: {S: req.body.gender},
-               dob: {S: req.body.dob},
-               address: {S: req.body.address}
-             },
-           };
-           db.putItem(dbInput, function (putErr, putRes) {
-             if (putErr) {
-               console.log("Failed to put item in dynamodb: ", putErr);
-               res.status(404).json({
-                 err: "Failed to Upload!",
-               });
-             } else {
-               console.log("Successfully written to dynamodb", putRes);
-             }
-           });
-          }
- });
-});
+>>>>>>> dd09251d281c2e04d50f46e2b073d2222891be46
 
 
-//verify
-app.post('/verifyuser',function(req,res){
-  console.log("res into verify",req.body)
-  const otp=req.body.otp
- const userData={
-   Username:req.body.email,
-   Pool:pool
- }
- const cognitoUser=new AmazonCognitoIdentity.CognitoUser(userData);
- cognitoUser.confirmRegistration(otp,true,function(error,results){
-   if(error){
-     console.log("error",error)
-   }
-   console.log("results from verify",results)
- })
 
-})
+
 //login
-app.post("/login",async(req,res)=>{
-  console.log("login",req.body)
- const authentication_details=new AmazonCognitoIdentity.AuthenticationDetails(
-   {
-    Username: req.body.email,
-    Password: req.body.password
-   }
- )
-var userData = {
-  Username : req.body.email,
-  Pool : pool
-};
-var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
-cognitoUser.authenticateUser(authentication_details, {
-  onSuccess: function (result) {
-   
-    var token = result.getIdToken().getJwtToken();
-var decoded = decodeJwt(token);
 
-res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
-//res.redirect("/dashboard")
-  },
-  onFailure: function(err) {
-      console.log("error in onfailure",err);
-      if(err=="NotAuthorizedException: Incorrect username or password."){
-        res.status(404).send({message:"User does not exist"})
-      }
-      else{
-        if(err=="UserNotConfirmedException: User is not confirmed."){
-          res.status(200).json({message:"User not confirmed"})
-        }
-      res.status(200).json({message:"Incorrect Password"})
-      }
-      //res.sendStatus(500).send({"message":"Internal error"})
-  },
-
-});
-});
 
 app.get("/dashboardview",async(req,res)=>{
   console.log("Request query",req.query)
@@ -240,6 +168,7 @@ function getPatients(req,res) {
 }
 
 
+<<<<<<< HEAD
 function verifyEmail(mail){
   console.log("verufyemail function entered")
   var ses=new AWS.SES()
@@ -264,6 +193,64 @@ function verifyEmail(mail){
 app.use('/prescriptiondelete',require('./routes/prescriptiondelete'));
 app.use('/prescriptionview',require('./routes/prescriptionview'));
 app.use('/prescriptionupload',require('./routes/prescriptionupload'));
+=======
+
+function sendEmail(email,name){
+
+
+
+  var params = {
+    Destination: { /* required */
+      CcAddresses: [
+        'medexforu@gmail.com',
+        /* more items */
+      ],
+      ToAddresses: [
+       email,
+        /* more items */
+      ]
+    },
+    Message: { /* required */
+      Body: { /* required */
+        Html: {
+         Charset: "UTF-8",
+         Data: '<div><center><img src="https://www.crushpixel.com/stock-photo/assorted-pharmaceutical-medicine-pills-tablets-1959484.html" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;A new prescription has been added to you by your doctor.Login to the portal to view the details.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
+        },
+        Text: {
+         Charset: "UTF-8",
+         Data: `Dear ${name}, A new prescription has been added to you.Login to your application to view`
+        }
+       },
+       Subject: {
+        Charset: 'UTF-8',
+        Data: 'Prescription Added.'
+       }
+      },
+    Source: 'medexforu@gmail.com', /* required */
+    ReplyToAddresses: [
+       'medexforu@gmail.com',
+      /* more items */
+    ],
+  };
+  // Create the promise and SES service object
+ var sendPromise = new AWS.SES({"accessKeyId":  process.env["accessKeyId"], "secretAccessKey":  process.env["accessSecretKeyId"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
+  // Handle promise's fulfilled/rejected states
+ sendPromise.then(
+   function(data) {
+     console.log("data-->",data.MessageId);
+   }).catch(
+     function(err) {
+     console.error("errorr-->",err, err.stack);
+   });
+
+}
+
+app.use('/delete',require('./routes/prescription-delete'));
+app.use('/register',require('./routes/registration'))
+app.use('/login',require("./routes/login"))
+module.exports = app;
+
+>>>>>>> dd09251d281c2e04d50f46e2b073d2222891be46
 
 
 

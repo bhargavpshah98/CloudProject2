@@ -4,7 +4,7 @@
 ### Professor : Sanjay Garje
 ### ISA : Devangi Doshi
 ### Group Name : ACES
-### Team Members : Aishwarya Ravi,Bhargav Shah,Dharahasini Gangalapudi,Shruthi Srinivasan
+### Team Members : Aishwarya Ravi(https://www.linkedin.com/in/aishwaryaravi96/),Bhargav Shah(),Dharahasini Gangalapudi(),Shruthi Srinivasan(https://www.linkedin.com/in/shruthis23/)
 
 
 ### Project Introduction
@@ -39,99 +39,88 @@ to them.
  
 
 ### System Configuration
-Prerequisite : NodeJS,Jenkins
-Clone the code from git the repository
-Run npm install to install the necessary packages
-Create the .env file and configure the AWS security keys
-Run the application using node app.js
+ * Prerequisite : NodeJS,Jenkins
+ * Clone the code from git the repository
+ * Run npm install to install the necessary packages
+ * Create the .env file and configure the AWS security keys
+ * Run the application using node app.js
  
-Git Repository: https://github.com/Shruthi23/CloudProject2
-Website URL:http://fileexplorerposts.xyz:3000
-Demo Link:
+ * Git Repository: https://github.com/Shruthi23/CloudProject2
+ * Website URL:http://fileexplorerposts.xyz:3000
+ * Demo Link:
 Test Account Credentials :  Doctor -   shruthisrinivasan97@gmail.com. Password - Qwerty@123,
 				       aishwaryaravi19@gmail.com.     Password - Qwerty@123,
                             Patient -  hasinireddy765@gmail.com.      Password - Qwerty@123
 
 Architecture Diagram
 
-
+<img width="960" alt="Medex-Architecture" src="https://user-images.githubusercontent.com/54323888/143401867-238bb187-1c95-4e5d-9954-02928cb13e35.PNG">
 
 Sample Demo Screenshots
 Doctor’s Side
 
 Home page of Medex
-
+![ss1](https://user-images.githubusercontent.com/54323888/143402819-ae04f820-d895-4bc6-8f1e-50470c7aa72c.png)
 
 Registration page of Medex
-
-
-
-
+![ss2](https://user-images.githubusercontent.com/54323888/143401963-ea6511a1-1961-4ae9-a02b-b595be0f8734.png)
 
 Error being displayed on unverified email
-
-
-
-
+![ss3](https://user-images.githubusercontent.com/54323888/143402059-7798c2b6-43f8-44f9-a346-8891da47f7ff.png)
 
 The verification mail from aws for SES services
-
-
-
+![ss4](https://user-images.githubusercontent.com/54323888/143402075-ad79e6c9-00f3-4c94-b3a2-bf5126d02d15.png)
 
 Confirmation mail
-
-
-
-
+![ss5](https://user-images.githubusercontent.com/54323888/143402257-967f808d-4f2f-4547-94a5-10b1fb94780e.png)
 
 Verification mail from Amazon Cognito
-	
-
-
+![ss6](https://user-images.githubusercontent.com/54323888/143402284-2ae38e39-06a7-4d02-95a4-a123d4901a55.png)	
 
 Verification confirmation
-
-
-
+![ss7](https://user-images.githubusercontent.com/54323888/143402285-f11fbaab-c5cf-449b-9157-942e6b01e6fe.png)
 
 Now logging in with the registered Doctor’s mail, the registered patients will be displayed.
-
-
+![ss8](https://user-images.githubusercontent.com/54323888/143402286-c0e4b54d-0d7e-468f-84ec-a02d3ee46e57.png)
 
 7. Doctors can now add prescriptions using “Add Prescription” Button
 
+![ss9](https://user-images.githubusercontent.com/54323888/143402277-8db5d6a3-8881-42a6-bfe1-cf53da2b6c93.png)
 
+![ss10](https://user-images.githubusercontent.com/54323888/143402281-25007278-0463-45ac-9f9f-3fb28a20961c.png)
 
+![ss11](https://user-images.githubusercontent.com/54323888/143402283-7423d1a2-35fd-40b4-a3e3-44fa358dde71.png)
 
+![ss12](https://user-images.githubusercontent.com/54323888/143402328-65f7c514-43df-4cb4-a38f-c64ea1a41744.png)
 
+![ss13](https://user-images.githubusercontent.com/54323888/143402326-9cadb741-9887-450a-801a-d452356f3073.png)
 
+![ss14](https://user-images.githubusercontent.com/54323888/143402385-ec6d3695-ca3a-4157-a75b-1092a3e43277.png)
 
+![ss15](https://user-images.githubusercontent.com/54323888/143402388-187d6a43-5cd1-4ac7-99a3-46ccc2281135.png)
 
+![ss16](https://user-images.githubusercontent.com/54323888/143402389-ed3b94aa-4a05-4bec-afa5-fe3c23ecd09d.png)
 
+![ss17](https://user-images.githubusercontent.com/54323888/143402392-c9dd6103-d442-4ccd-ba74-a20f034ca7d4.png)
 
+![ss18](https://user-images.githubusercontent.com/54323888/143402359-89eb5a5b-efc6-4c92-ac8d-dcb77395c391.png)
 
+![ss19](https://user-images.githubusercontent.com/54323888/143402361-d52a2fb0-f74d-495c-a10b-9d3b9e9443cd.png)
 
+![ss20](https://user-images.githubusercontent.com/54323888/143402364-834d63be-bbbb-49c1-97ca-810014891ebf.png)
 
+![ss21](https://user-images.githubusercontent.com/54323888/143402368-69cf4d1e-1fe8-4636-8118-bd184a9fa98e.png)
 
+![ss22](https://user-images.githubusercontent.com/54323888/143402376-b115ec4f-bd89-4223-b5dd-8f6bea0817ed.png)
 
-
-
-
-
-
-
-
-
-
-
+![ss23](https://user-images.githubusercontent.com/54323888/143402380-0c47af70-56c5-4b42-8dab-b8282a7122cd.png)
 
 ### Individual contribution:
 
 *  Aishwarya Ravi:
    * Worked on the end to end flow of the prescription management module for both doctors and patients which includes displaying patient dashboard, prescription screen to display all prescriptions applicable for the patient(For both doctor's and patient’s portal), Add prescription screen for the doctor to add a prescription for the patient.
    * Developed the frontend and backend functionalities for viewing/downloading prescriptions from the Cloudfront, deleting prescriptions from S3 and DynamoDB, Uploading prescription metadata to the Prescription table in DynamoDB and navigating back to dashboard from the Prescription UI.
-   * Developed the Email Notification module to notify/remind patients to take medicines as per their dosage timings. Made use of node-cron to schedule cron jobs to trigger email notifications.
+   * Developed the Email Notification module using SES to notify/remind patients to take medicines as per their dosage timings. Made use of node-cron to schedule cron jobs to trigger email notifications.
    * Configured AWS Lambda for a DynamoDB trigger that logs the updates made to a table and S3 trigger has also been added  which gets triggered whenever an event occurs (an object gets pushed to the bucket). 
    * Configured SNS: In case of failure of lambda invocation, an SNS event is triggered and email notification is sent to the Medex admin. 
    * Configured Jenkins with the project git repo for CI/CD.
