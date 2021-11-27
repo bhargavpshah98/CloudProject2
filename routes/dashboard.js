@@ -25,7 +25,7 @@ router.get("/",async(req,res)=>{
     
   
     if(userType=="Doctor"){
-      const response= await getPatients()
+      const response= await getPatients(decode.email)
     const results=response.Items
      console.log("items printed")
    res.render('dashboard',{data:results,userName:userName,token:token,userDetails:decode})
@@ -45,13 +45,13 @@ router.get("/",async(req,res)=>{
     const db = new AWS.DynamoDB();
    let scanningParam={
      TableName:process.env["DYNAMODB_TABLE_USER"],
-  //    ExpressionAttributeValues : {
-  //     ":i"  : {S: }
-  // },
+     ExpressionAttributeValues : {
+      ":i"  : {S:email }
+  },
   
-  //FilterExpression: "userType = :i",
+  FilterExpression: "doctorEmail = :i",
    
-  //FilterExpression: "doctorName = :i",
+  
      
    }
     db.scan(scanningParam,function(err,data){

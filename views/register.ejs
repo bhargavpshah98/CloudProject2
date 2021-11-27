@@ -11,6 +11,9 @@
   const dob=document.getElementById("birthday").value;
   const gender=document.getElementById("selectGender").value
   const address=document.getElementById("address").value
+  const docEmail=document.getElementById("doctorName").value;
+  const docName=document.getElementById("doctorNameHolder").value;
+ 
 
  
   if(name && name.length>0 && email && email.length>0 && password && password.length>0 && password==confirm && address && address.length>0 && gender && gender.length>0 && dob.length>0){
@@ -24,7 +27,9 @@
     userType:user,
     gender:gender,
     dob:dob,
-    address:address
+    address:address,
+    docEmail:docEmail,
+    docName:docName
     }
   const options={
     method:"POST",
@@ -147,22 +152,22 @@
         
           <script>
            var doc= <%- JSON.stringify(data) %>
-            console.log("data",doc)
+            
             
             function doctorSelected(){
               const val=document.getElementById("doctorName").value
-              console.log("val",val)
+              
            var doctorname="";
            doc.forEach(ele=>{
             
              if(ele.email.S==val){
-               console.log("name",ele)
+               
               
                doctorname=ele.Name.S;
                //break;
              }
            })
-           console.log("doctorname",doctorname)
+           
            document.getElementById("doctorNameHolder").value=doctorname
             }
           </script>

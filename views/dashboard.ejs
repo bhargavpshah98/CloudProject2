@@ -31,14 +31,14 @@
   <script>
   var token=<%- JSON.stringify(token) %>;
   var localdata=<%- JSON.stringify(userDetails) %>
-  console.log("token-->",token,localdata)
+  
   localStorage.setItem("token",token);
-  console.log("cokkiiee->",document.cookie)
+  
   localStorage.setItem("localdata",localdata);
   window.onload=async()=>{
     var localdata=<%- JSON.stringify(userDetails) %>;
   if(localdata["custom:userType"] == "Doctor"){
-    console.log("change the ui")
+    
   document.getElementById('patient').style.display = "none";
   document.getElementById('one').style.display = "flex";
   } else {
@@ -47,7 +47,7 @@
   }
 }
   function callPatientPrescriptionApi(){
-  console.log("localData",localdata)
+  
   window.location.href=`/prescriptionview?email=${localdata.email}`
 }
 function logout(){
@@ -75,7 +75,11 @@ function logout(){
       </thead>
           
       <tbody> 
+        <script>
+          
+        </script>
               <% data.forEach(function (data) { %>
+                
                 <% if(data.userType.S=="Patient") { %>
                      
                   <tr style="display: flex;" >

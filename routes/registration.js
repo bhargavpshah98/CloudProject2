@@ -71,7 +71,9 @@ function insertUserToDb(req,res) {
              userType: { S: req.body.userType },
              gender: {S: req.body.gender},
              dob: {S: req.body.dob},
-             address: {S: req.body.address}
+             address: {S: req.body.address},
+             doctorName:{S:req.body.docName},
+             doctorEmail:{S:req.body.docEmail}
            },
          };
          db.putItem(dbInput, function (putErr, putRes) {
