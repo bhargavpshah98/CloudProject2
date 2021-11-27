@@ -127,17 +127,54 @@
                 document.getElementById('addDoctor').style.display = "block";
     
             }
-          }
+            }
+       
+          
 
           </script>
           <div id="addDoctor" style="display: none; margin-top: 2%;">
             <select
+            id="doctorName"
             style="border-top: transparent;border-left: transparent;border-right: transparent;"
+            onchange="doctorSelected()"
             class="form-control">
             <% data.forEach(function (data) { %>
-              <option><%= data.Name.S %></option>
+              <option><%= data.email.S %></option>
               <% }) %>
+            
           </select>
+        
+        
+          <script>
+           var doc= <%- JSON.stringify(data) %>
+            console.log("data",doc)
+            
+            function doctorSelected(){
+              const val=document.getElementById("doctorName").value
+              console.log("val",val)
+           var doctorname="";
+           doc.forEach(ele=>{
+            
+             if(ele.email.S==val){
+               console.log("name",ele)
+              
+               doctorname=ele.Name.S;
+               //break;
+             }
+           })
+           console.log("doctorname",doctorname)
+           document.getElementById("doctorNameHolder").value=doctorname
+            }
+          </script>
+          <input
+              type="text"
+              id="doctorNameHolder"
+              class="form-control"
+              value="<%= data[0].Name.S %>"
+             
+             
+             
+            />
 
 
           </div>

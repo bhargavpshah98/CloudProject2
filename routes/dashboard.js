@@ -13,23 +13,30 @@ const ejs = require('ejs');
 
 
 router.get("/",async(req,res)=>{
-    console.log("Request query",req.params);
-    const userType=req.query.userType;
-    const userName=req.query.userName
+ 
+  const token=req.headers.cookie.substring(5,req.headers.cookie.length)
+  //console.log("req.header",token)
+    
+  var decode=decodeJwt(token);
+   console.log("Request query",decode);
+    const userType=decode['custom:userType']
+    const userName=decode.name
+  
     
   
     if(userType=="Doctor"){
       const response= await getPatients()
     const results=response.Items
      console.log("items printed")
-   res.render('dashboard',{data:results,userName:userName})
+   res.render('dashboard',{data:results,userName:userName,token:token,userDetails:decode})
    
     
   
    }
    else{
-    res.render("dashboard",{data:[],userName:userName})
+    res.render("dashboard",{data:[],userName:userName,token:token,userDetails:decode})
    }
+  //res.render("dashboard",{data:[],userName:"Shruthi"})
   })
   function getPatients(email,name) {
     console.log("getpatient function")
@@ -38,6 +45,11 @@ router.get("/",async(req,res)=>{
     const db = new AWS.DynamoDB();
    let scanningParam={
      TableName:process.env["DYNAMODB_TABLE_USER"],
+  //    ExpressionAttributeValues : {
+  //     ":i"  : {S: }
+  // },
+  
+  //FilterExpression: "userType = :i",
    
   //FilterExpression: "doctorName = :i",
      

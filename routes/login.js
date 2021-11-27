@@ -42,11 +42,12 @@ const poolData = {
    //console.log( res.get('token'))
       //console.log("token",token)
       //res.header('token', token)
-      //res.token('token',token)
+      //res.set('token',token)
+      res.cookie('auth',token)
 
       
-      res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
-      //res.redirect(`/dashboard/:${token}`)
+      //res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
+      res.redirect(`/dashboard`)
       //console.log("login success")
      //return res.redirect('/dash')
       //res.redirect("/dashboard")

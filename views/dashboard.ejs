@@ -1,10 +1,44 @@
 <script type="text/javascript">
- const token= localStorage.getItem("token");
- const localdata=JSON.parse(localStorage.getItem("data"))
- console.log("token",localdata)
+//  const token= localStorage.getItem("token");
+//  const localdata=JSON.parse(localStorage.getItem("data"))
+//  console.log("token",localdata)
  
- window.onload=function(){
- if(localdata["custom:userType"] == "Doctor"){
+//  window.onload=async()=>{
+//    let localdata=await localStorage.getItem("")
+//  if(localdata["custom:userType"] == "Doctor"){
+//   document.getElementById('patient').style.display = "none";
+//   document.getElementById('one').style.display = "flex";
+//   } else {
+//     document.getElementById('patient').style.display = "block";
+//     document.getElementById('one').style.display = "none";
+//   }
+// }
+
+
+ function callPrescriptionApi(emailId){
+    //console.log("email", emailId);
+    window.location.href=`/prescriptionview?email=${emailId}`
+ }
+ 
+
+</script>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<hr>
+<div style="display: flex;justify-content: space-between;background-color: aliceblue">
+  <div style="display: flex;">
+  <h6><b>Welcome <%= userName%></b></h6>
+  </div>
+  <script>
+  var token=<%- JSON.stringify(token) %>;
+  var localdata=<%- JSON.stringify(userDetails) %>
+  console.log("token-->",token,localdata)
+  localStorage.setItem("token",token);
+  console.log("cokkiiee->",document.cookie)
+  localStorage.setItem("localdata",localdata);
+  window.onload=async()=>{
+    var localdata=<%- JSON.stringify(userDetails) %>;
+  if(localdata["custom:userType"] == "Doctor"){
+    console.log("change the ui")
   document.getElementById('patient').style.display = "none";
   document.getElementById('one').style.display = "flex";
   } else {
@@ -12,26 +46,17 @@
     document.getElementById('one').style.display = "none";
   }
 }
-function callPatientPrescriptionApi(){
+  function callPatientPrescriptionApi(){
+  console.log("localData",localdata)
   window.location.href=`/prescriptionview?email=${localdata.email}`
 }
-
- function callPrescriptionApi(emailId){
-    //console.log("email", emailId);
-    window.location.href=`/prescriptionview?email=${emailId}`
- }
- function logout(){
+function logout(){
    localStorage.clear();
-   location.href="/"
+   location.href="/login"
  }
 
-</script>
-<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-<hr>
-<div style="display: flex;justify-content: space-between;">
-  <div style="display: flex;">
-  <h6><b>Welcome <%= userName%></b></h6>
-  </div>
+
+  </script>
   <div style="display: flex;justify-content: flex-end;">
 <button style="width: 100%;" class="btn btn-primary btn-block" onclick="logout()">Logout</button>
   </div>
