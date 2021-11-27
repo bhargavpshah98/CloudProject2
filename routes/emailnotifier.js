@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 const moment = require('moment'); 
 var schedule = require('node-cron');
 
-var morning = schedule.schedule('0 23 * * *', function(){
+var morning = schedule.schedule('05 12 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users

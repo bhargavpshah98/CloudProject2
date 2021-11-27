@@ -1,7 +1,6 @@
 var express = require('express');
 const expressLayouts=require('express-ejs-layouts');
 var app = express();
-var uuid = require('uuid');
 var bodyParser=require("body-parser")
 var path=require("path")
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
@@ -14,11 +13,10 @@ const insertUtility=require("./utilities/doctor")
 let users=require("./routes/users");
 const { use } = require('./routes/users');
 const decodeJwt=require("jwt-decode")
-const formtopdf = require('./utilities/formtopdf')
-const fs=require("fs")
 var PDFDocument = require('pdfkit');
 const { Console } = require('console');
 let email=require("./routes/emailnotifier");
+const formtopdf=require("./utilities/formtopdf")
 
 require("dotenv").config();
 AWS.config.update({
@@ -48,13 +46,15 @@ const poolData = {
   // about page
 app.use("/medSchedule",scheduleHandler);
 
+module.exports = app;
 
-
-//app.use("/",users);
+app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
 
-
+app.get('/dashboard',function(req,res){
+    res.render("dashboard")
+})
 
 
 
@@ -128,8 +128,4 @@ app.use('/register',require('./routes/registration'))
 app.use('/login',require("./routes/login"))
 app.use('/dashboard',require("./routes/dashboard"))
 module.exports = app;
-
-
-
-
 
