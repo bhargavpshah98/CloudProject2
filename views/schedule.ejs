@@ -3,9 +3,19 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-    body {
+body{
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+}
+  .title{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
+  padding-left:16px;
+  text-shadow: -1px 1px 0 #000,
+                          1px 1px 0 #000,
+                         1px -1px 0 #000,
+                        -1px -1px 0 #000;
 }
 
 .topnav {
@@ -36,7 +46,7 @@
       padding-top: 12px;
       padding-bottom: 12px;
       text-align: left;
-      background-color: #04AA6D;
+      background-color: rgb(39,169,157);
       color: white;
     
     }
@@ -59,12 +69,11 @@
   </head>
   <body>
 
-    <div class="topnav">
+    <div class="topnav" onclick="callDashboard()">
       <a class="active" href="#Home">Home</a>
-    </div>
-    
-    <div style="padding-left:16px">
-      <h2>Medicine Schedule of the day</h2>
+  </div>
+    <div class="title">
+      <h3>Medicine Schedule of the day</h3>
     </div>
 
      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -78,6 +87,9 @@
      <!-- End of bootstrap JS-->
 
     <script>
+      function callDashboard(){
+        window.location.href=`/dashboardview?userType=${localdata["custom:userType"]}&userName=${localdata.name}`
+      }
       $(document).ready(function () {
         var data = JSON.parse(localStorage.getItem('data'));
     console.log(data)
@@ -98,6 +110,7 @@ function populateTable(email) {
           tableContent += "<td>" + this.middayCount.N + "</td>";  
           tableContent += "<td>" + this.eveningCount.N + "</td>";
           tableContent += "<td>" + this.bedtimeCount.N + "</td>";
+          
           tableContent += "</tr>";
         });
     
@@ -116,6 +129,7 @@ function populateTable(email) {
               <th><span>Midday Count</span></th>
               <th><span>Evening Count</span></th>
               <th><span>Bedtime Count</span></th>
+              </span></th>
           </tr>
       </thead>
       <tbody></tbody>
