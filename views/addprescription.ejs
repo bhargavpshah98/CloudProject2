@@ -152,12 +152,12 @@
     <script>
        
         
-        const Calender=document.querySelector('.datepicker');
+const Calender=document.querySelector('.datepicker');
 
-        M.Datepicker.init(Calender,{});
+M.Datepicker.init(Calender,{});
           
-        function callApi(){
-            const prescription =  document.getElementById("sName").value
+function callApi(){
+  const prescription =  document.getElementById("sName").value
   const name=document.getElementById("pName").value
   const medicine=document.getElementById("tablet").value
   const sdate=document.getElementById("startDate").value;
@@ -168,8 +168,6 @@
   const bedtime=document.getElementById("bedtimeCnt").value;
   const localdata=JSON.parse(localStorage.getItem("data"))
   const email=document.getElementById("email").value;
- 
- 
  
   const data={
       prescription,
@@ -191,28 +189,26 @@ const options={
   },
     body:JSON.stringify(data)
   }
-            fetch("/pdf",options).then(res=>{
-                res.json().then(json=>{
-                    console.log("json",json)
-                    if(json.message=="Upload is successful!"){
-                        alert("Prescription successfully uploaded")
-                    }
-                    else{
-                        alert("Prescription uploaded failed")
-
-                    }
-
-                }).catch(error=>{
-                    console.log("Error",error)
-                    alert("Prescription uploaded failed")
-                })
+    fetch("/prescriptionupload",options).then(res=>{
+        res.json().then(json=>{
+            console.log("json",json)
+            if(json.message=="Upload is successful!"){
+                alert("Prescription successfully uploaded")
                 
-                
-            }).catch(err=>{
-                console.log("Error",err)
+            }
+            else{
+                alert("Prescription uploaded failed")
 
-            })
-        }      
+            }
+
+        }).catch(error=>{
+            console.log("Error",error)
+            alert("Prescription uploaded failed")
+        })
+    }).catch(err=>{
+        console.log("Error",err)
+    })
+}   
     </script>
 </body>
 </html>

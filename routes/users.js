@@ -4,200 +4,185 @@ const router=express.Router();
 const AWS = require("aws-sdk");
 var uuid = require('uuid');
 require('dotenv').config();
+const decodeJwt=require("jwt-decode")
+const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 
-// const bcrypt=require('bcryptjs');
-// const passport=require('passport');
-// const AWS = require('aws-sdk');
-// const keys=require('./../config/keys');
-// const User = require('./../models/user');
+const poolData = {    
+    UserPoolId : "us-west-1_x1klxacrm", // Your user pool id here    
+    ClientId : "5nbvps4hlmh0a66mb4k771ns6f" // Your client id here
+    }; 
+    const pool_region = 'us-east-1';
+    const pool=new AmazonCognitoIdentity.CognitoUserPool(poolData)
 
 //Login Page
 
 router.get('/',(req,res)=>res.render('login'));
 
 
-//Register Page
- router.get('/register',(req,res)=>res.render('register'));
- router.get('/reg',(req,res)=>res.send("heelo"));
- router.get('/verifycode',function(req,res){;
-    console.log("verify render",req.params)
-   // const name=req.params
-   //res.render("verify",{name:"abc"})
-   res.render("verify")
-  //res.render("login")
- })
+//render registartion page
+//  router.get('/register', async(req,res)=>
+//  {
+//      console.log("register send")
+//     //const doctors= await getDoctors()
+//     res.render('register')
+   
+//     //res.render('register',{data:doctors})
+// });
 
-//  router.post('/register', (req,res)=>{
-//      console.log("register", process.env["DYNAMODB_TABLE_DOCTOR"])
-//     const { name, email, password, confirm,phone} = req.body;
-//     console.log("name",name,email,confirm,password,phone)
+    // post registration data
+    // router.post("/register",function(req,res){
+    //     console.log()
+    //     const { name, email, password, confirm,userType,dob,address} = req.body;
+    //        console.log("name",name,email,confirm,password,userType,typeof(userType))
+    //     var attributeList = [];
+    //      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
+    //      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:"female"}));
+    //       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
+    //       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"custom:userType",Value:userType}))
+    // pool.signUp(email,password,attributeList,null,function(err,result){
+    //   if (err) {
+    //     console.log("error",err);
+    //     if(err=="UsernameExistsException: An account with the given email already exists."){
+    //       res.status(403).send({message:"User exists already"})
+    //     }
+    //     else{
+    //     res.status(500).send({message:"Internal error"})
+    //     }
+    //     //return;
+    // }
+    // else{
+    // console.log("Result",result)
+    // cognitoUser = result.user;
+    // console.log('user name is ' + cognitoUser.getUsername());
+    
+    // res.status(200).send({message:"Success"})
+    // verifyEmail(email)
+    // insertUserToDb(req,res);
+    
+    // }
+//post login
+
+router.post("/login",async(req,res)=>{
+    console.log("login",req.body)
+   const authentication_details=new AmazonCognitoIdentity.AuthenticationDetails(
+     {
+      Username: req.body.email,
+      Password: req.body.password
+     }
+   )
+  var userData = {
+    Username : req.body.email,
+    Pool : pool
+  };
+  var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
+  cognitoUser.authenticateUser(authentication_details, {
+    onSuccess: function (result) {
+     
+      var token = result.getIdToken().getJwtToken();
+  var decoded = decodeJwt(token);
   
-//     if(name && email && password&& confirm&& phone){
-//         console.log("condition satisfied", process.env["DYNAMODB_TABLE_DOCTOR"])
+  res.send({message:"Success",token:result.getIdToken().getJwtToken(),data:decoded})
+  //res.redirect("/dashboard")
+    },
+    onFailure: function(err) {
+        console.log("error in onfailure",err);
+        if(err=="NotAuthorizedException: Incorrect username or password."){
+          res.status(404).send({message:"User does not exist"})
+        }
+        else{
+          if(err=="UserNotConfirmedException: User is not confirmed."){
+            res.status(200).json({message:"User not confirmed"})
+          }
+        res.status(200).json({message:"Incorrect Password"})
+        }
+        //res.sendStatus(500).send({"message":"Internal error"})
+    },
+  
+  });
+  });
+
+    //insert users into the db
+    
+  // function insertUserToDb(req,res) {
+  
+  //       const db = new AWS.DynamoDB();
+  //       const dbInput = {
+  //           TableName: process.env["DYNAMODB_TABLE_USER"],
+  //              Item: {
+  //                Name: { S: req.body.name },
+  //                email: { S: req.body.email },
+  //                userType: { S: req.body.userType },
+  //                gender: {S: req.body.gender},
+  //                dob: {S: req.body.dob},
+  //                address: {S: req.body.address}
+  //              },
+  //            };
+  //            db.putItem(dbInput, function (putErr, putRes) {
+  //              if (putErr) {
+  //                console.log("Failed to put item in dynamodb: ", putErr);
+  //                res.status(404).json({
+  //                  err: "Failed to Upload!",
+  //                });
+  //              } else {
+  //                console.log("Successfully written to dynamodb", putRes);
+  //              }
+  //            });
+  //           }
+  //  });
+  // });
+
+  // send email on registration to verify
+  function verifyEmail(mail){
+    console.log("verufyemail function entered")
+    var ses=new AWS.SES()
+    var params = {
+      EmailAddress: mail
+   };
+    
+   ses.verifyEmailAddress(params, function(err, data) {
+      if(err) {
+        console.log("Err",err)
+          //res.send(err);
+      }
+      else {
+        console.log("data--->",data)
+         
+      }
+    
+   });
+  }
+
+
+
+//fetch doctors
+//  function getDoctors(){
+//      return new Promise((resolve,reject)=>{
 //     const db = new AWS.DynamoDB();
-//     const dbInput = {
-//           TableName: process.env["DYNAMODB_TABLE_DOCTOR"],
-//           Item: {
-//             id: { S: uuid.v1() },
-//             docName: { S: req.body.name },
-//             docEmail: { S: req.body.email },
-//             docSpec: { S: req.body.docSpec },
-//             current_doctor: { BOOL: true },
-//           },
-//         };
-//         db.putItem(dbInput, function (putErr, putRes) {
-//           if (putErr) {
-//             console.log("Failed to put item in dynamodb: ", putErr);
-//             res.status(404).json({
-//               err: "Failed to Upload!",
-//             });
-//           } else {
-//             console.log("Successfully written to dynamodb", putRes);
-//             res.status(200).json({
-//               message: "Upload is successful!",
-//             });
-//           }
-//         });
-//     }
-//   });
-  
+   
+//      var paramsdb = {
+//         TableName: process.env["DYNAMODB_TABLE_USER"],
+        
+//         ExpressionAttributeValues : {
+//             ":i"  : {S: "Doctor"}
+//         },
+        
+//         FilterExpression: "userType = :i",
+//     };
+//     db.scan(paramsdb, function (err, data) {
+//         if(err){
+//             console.log("err")
+//         }
+//         else{
+//         //console.log("DB DATA", data.Items );
+//         resolve(data.Items)
+//         }
+//     })
+// })
+
+// }
 
  
 
-// //Register Handle
-// router.post('/register', (req,res)=>{
-//     //const { name, email, password, password2,phone} = req.body;
-//     console.log("req",req)
-//     res.send({"success":true})
-    // let errors = [];
 
-    // //check required fields
-    // if(!name || !email || !password ||!password2 || !phone){
-    //     errors.push({ msg:'Please fill in all fields!' });
-    // }
-
-    // //check password match
-    // if(password != password2){
-    //     errors.push({msg: 'Passwords do not match!'});
-    // }
-
-    // //check pass length
-    // if(password.length < 6){
-    //     errors.push({ msg: 'Password should be at least 6 characters'});
-    // }
-
-    // if(phone.length < 6){
-    //     errors.push({ msg: 'Mobile number should be at least 10 digits'});
-    // }
-
-    // if(errors.length > 0){
-    //     res.render('register',{
-    //         errors,
-    //         name,
-    //         email,
-    //         password,
-    //         password2,
-    //         phone
-    //     });
-    // }
-    // else{
-        
-    //     const dynamoDbObj = require('./../models/connect');
-
-    //     let user = () => {
-    //         var params = {
-    //             TableName: 'user',
-    //             Key: {
-    //                 'email': email
-    //             }
-    //         };
-
-    //         dynamoDbObj.get(params, function (err, data) {
-    //             if (err){ throw err}
-    //             else{
-    //                 if( Object.keys(data).length > 0){
-    //                 errors.push({ msg:'Email is already registered' });
-    //                     res.render('register',{
-    //                         errors,
-    //                         name,
-    //                         email,
-    //                         password,
-    //                         password2,
-    //                         phone
-    //                 });
-    //                 }
-    //             else{
-
-    //                 //update in dynamodb
-    //                 var input = {
-    //                     'email': email, 'name': name,
-    //                     'level': 'U', 'password': password , 'phone': phone
-    //                 };
-    //                 var params = {
-    //                     TableName: "user",
-    //                     Item:  input
-    //                 };
-        
-    //                 dynamoDbObj.put(params, function (err, data) {
-        
-    //                     if (err) {
-    //                         console.log(err);
-    //                     } else {
-    //                         req.flash('success_msg','You are now registered!!');
-    //                         res.redirect('/users/login');
-    //                     }
-    //                 });
-    //             }
-    //             }
-    //         })
-    //     } 
-
-    //     user();        
-    // }
-//});
-
-//Login Handle
-// router.post('/login', (req,res, next) => {
-//     passport.authenticate('local',{
-//         successRedirect: '/dashboard',
-//         failureRedirect: '/users/login',
-//         failureFlash: true
-//     })(req, res, next);
-// });
-
-//logout handle
-// router.get('/logout',(req,res,next) => {
-//     req.logout();
-//     req.flash('success_msg','You are Logged out');
-//     res.redirect('/users/login');
-// });
-
-//google oauth
-// router.get('/auth/google',
-//     passport.authenticate('google', {
-//     scope:['profile','email']
-// }));
-
-// router.get('/auth/google/callback',passport.authenticate('google'),(req,res,next) => {
-//     res.redirect('/dashboard');
-// });
-
-// //facebook oauth
-// router.get('/auth/facebook', 
-//     passport.authenticate('facebook'));
-
-// router.get('/auth/facebook/callback',passport.authenticate('facebook'), (req,res,next) => {
-//     res.redirect('/dashboard');
-// });
-
-// router.get('/auth/amazon',
-//   passport.authenticate('amazon'));
-
-// router.get('/auth/amazon/callback', 
-//   passport.authenticate('amazon', { failureRedirect: '/users/login' }),
-//   function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect('/dashboard');
-//   });
 
 module.exports=router;

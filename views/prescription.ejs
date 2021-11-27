@@ -18,6 +18,7 @@ const localdata=JSON.parse(localStorage.getItem("data"))
       document.getElementById('addprescription').style.display = "block";
     }
   }
+
   function callDeleteApi(fileName){
       const data={
         fileName
@@ -30,7 +31,7 @@ const localdata=JSON.parse(localStorage.getItem("data"))
       },
         body:JSON.stringify(data)
       }
-      fetch("/delete",options).then(res=>{
+      fetch("/prescriptiondelete",options).then(res=>{
         console.log("Response",res)
         res.json().then(json=>{
           console.log("json",json)
@@ -46,19 +47,15 @@ const localdata=JSON.parse(localStorage.getItem("data"))
       })
   }
 
-  function callAddPrescriptionApi(emailId){
+function callAddPrescriptionApi(emailId){
     console.log("add pr email", emailId);
     window.location.href=`/addprescription?email=${emailId}`
  }
+ 
  function callDashboard(){
   
-   window.location.href=`/dashboardview?userType=${localdata["custom:userType"]}&userName=${localdata.name}`
+   //window.location.href=`/dashboardview?userType=${localdata["custom:userType"]}&userName=${localdata.name}`
  }
-
- function callDashboardApi(){
-   console.log("localdata in call dashboard",localdata["custom:userType"])
- // window.location.href=`/dashboardview?userType=${localdata["custom:userType"]}&userName=${localdata.name}`
-}
 
 </script>
 <body>
