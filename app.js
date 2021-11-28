@@ -48,7 +48,7 @@ app.use("/medSchedule",scheduleHandler);
 
 module.exports = app;
 
-app.use("/",users);
+//app.use("/",users);
   app.listen(3000);
   console.log('Server is listening on port 3000');
 
