@@ -29,8 +29,8 @@ router.post('/', (req, res) => {
         else{
           
             console.log('success bucket delete');
-            console.log ("email", email.S);
-            res.redirect(`/prescriptionview?email=${email.S}`);
+            //console.log ("email", email.S);
+            //res.redirect(`/prescriptionview?email=${email.S}`);
             //req.flash('success_msg','File Deleted!');
            
             let id='12'

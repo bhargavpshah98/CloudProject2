@@ -37,6 +37,7 @@ const localdata=JSON.parse(localStorage.getItem("data"))
           console.log("json",json)
           if(json.message=="Success"){
             alert("Prescription deleted")
+           location.reload()
           }
         }).catch(err=>{
           console.log("eoor",err)

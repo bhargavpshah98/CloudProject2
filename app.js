@@ -64,9 +64,7 @@ app.get('/addprescription',function(req,res){
   })
 })
 
-  app.get ("/schedule", function (req,res) {
-    res.render ( "schedule.ejs" );	
-    } )
+ 
  
 function sendEmail(email,name){
 
@@ -125,5 +123,6 @@ app.use('/prescriptionupload',require('./routes/prescriptionupload'));
 app.use('/register',require('./routes/registration'))
 app.use('/login',require("./routes/login"))
 app.use('/dashboard',require("./routes/dashboard"))
+app.use("/schedule",require("./routes/medSchedule"))
 module.exports = app;
 

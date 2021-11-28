@@ -58,10 +58,10 @@ router.post("/",async(req,res)=>{
               } else {
                 console.log("Successfully written to dynamodb", putRes);
 
-                res.redirect(`/prescriptionview?email=${req.body.email}`);
-                // res.status(200).json({
-                //   message: "Upload is successful!",
-                // });
+                //res.redirect(`/prescriptionview?email=${req.body.email}`);
+                res.status(200).json({
+                  message: "Upload is successful!",
+                });
               }
             });
       });

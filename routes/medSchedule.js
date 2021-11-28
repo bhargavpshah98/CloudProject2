@@ -13,9 +13,9 @@ AWS.config.update({
 
 const db = new AWS.DynamoDB();
 
-function getSchedule(req, res, next) {
+function getSchedule(email) {
 
-  console.log(req.query)
+  return new Promise((resolve,reject)=>{
   var scanInput = {
     ExpressionAttributeNames: {
       "#BT": "bedtimeCount",
@@ -27,7 +27,7 @@ function getSchedule(req, res, next) {
     },
     ExpressionAttributeValues: {
       ":u": {
-        S: req.query.email,
+        S: email,
       },
     },
     FilterExpression: "patientEmail = :u",
@@ -38,23 +38,27 @@ function getSchedule(req, res, next) {
   db.scan(scanInput, function (err, data) {
     if (err) {
       console.log("Failed to list:", err);
-      res.status(404).json({
-        err: "Error loading dashboard!",
-      });
+      reject(err)
+      
     } else {
       console.log("Succesful in scanning and retrieving medicine of the user");
+      resolve(data.Items)
 
-      res.status(200).json({
-        message: data.Items,
-      });
+      
 
     }
   });
+});
 }
 
 
 
-router.get("/", getSchedule);
+router.get("/", async(req,res)=>{
+  const response=await getSchedule('hasinireddy765@gmail.com');
+  console.log("res-->",response);
+  res.render("schedule")
+});
+
 
 
 
