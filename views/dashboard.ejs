@@ -23,10 +23,20 @@
 
 </script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-<hr>
+
+<div style="height:80px;align-items: center; background-color: black;overflow: hidden;display: flex;flex-direction: row;">
+<h1 style="color: white;text-align: center;flex: 1;">Medex</h1>
+<h6 style="color: white;position: absolute;right: 15%;"><b>Welcome <%= userName%></b></h6>
+<div style="display:flex;flex-direction: row;padding-right: 10px;">
+  <i style="align-self: center;color: white;" class="fa fa-sign-out" aria-hidden="true"></i>
+<button
+onclick="logout()"
+style="color: white;height: 50px;outline: none;background-color: transparent;border: transparent;font-size: 16px;" >Logout</button>
+</div> 
+</div>
 <div style="display: flex;justify-content: space-between;background-color: aliceblue">
   <div style="display: flex;">
-  <h6><b>Welcome <%= userName%></b></h6>
+ 
   </div>
   <script>
   var token=<%- JSON.stringify(token) %>;
@@ -57,9 +67,7 @@ function logout(){
 
 
   </script>
-  <div style="display: flex;justify-content: flex-end;">
-<button style="width: 100%;" class="btn btn-primary btn-block" onclick="logout()">Logout</button>
-  </div>
+ 
 </div>
 
 <div >
