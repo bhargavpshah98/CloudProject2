@@ -25,7 +25,7 @@ AWS.config.update({
   region: process.env["AWS_REGION"] 
 });
 
-var scheduleHandler = require("./routes/medschedule");
+var scheduleHandler = require("./routes/medSchedule");
 
 app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
