@@ -23,13 +23,18 @@ function getSchedule(email) {
       "#ET": "eveningCount",
       "#MD": "middayCount",
       "#PN": "prescriptionName",
-      "#MN": "medicine"
+      "#MN": "medicine",
+      "#SD": "startDate",
+      "#ED": "endDate"
     },
     ExpressionAttributeValues: {
       ":u": {
         S: email,
       },
+     ":yr": {S:moment().format("YYYY-MM-DD")}
+      
     },
+    KeyExpressionAttributes: ":yr between #SD and #ED" ,
     FilterExpression: "patientEmail = :u",
     ProjectionExpression: "#PN, #MN, #MT, #MD, #ET, #BT",
     TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"]
