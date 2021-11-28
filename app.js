@@ -115,6 +115,9 @@ function sendEmail(email,name){
    });
 
 }
+app.get("/schedule",function(req,res){
+  res.render("schedule")
+})
 
 
 app.use('/prescriptiondelete',require('./routes/prescriptiondelete'));
@@ -123,6 +126,6 @@ app.use('/prescriptionupload',require('./routes/prescriptionupload'));
 app.use('/register',require('./routes/registration'))
 app.use('/login',require("./routes/login"))
 app.use('/dashboard',require("./routes/dashboard"))
-app.use("/schedule",require("./routes/medSchedule"))
+//app.use("/schedule",require("./routes/medSchedule"))
 module.exports = app;
 

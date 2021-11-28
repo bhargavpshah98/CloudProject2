@@ -91,8 +91,8 @@ body{
         window.location.href=`/dashboardview?userType=${localdata["custom:userType"]}&userName=${localdata.name}`
       }
       $(document).ready(function () {
-        var data = JSON.parse(localStorage.getItem('data'));
-    console.log(data)
+        var data = JSON.parse(localStorage.getItem('localdata'));
+    console.log("DATA-->",data)
     // Populate the user table on initial page load
     populateTable(data.email);
   });
@@ -100,7 +100,10 @@ body{
 function populateTable(email) {
 // Empty content string
     var tableContent = "";
-    $.get("/medSchedule/", { email: email }).done(function (data) {
+    var sDate=new Date()
+    
+    var eDate=new Date()
+    $.get("/medSchedule/", { email: email,sDate,eDate }).done(function (data) {
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data.message, function () {
           tableContent += "<tr>";
@@ -119,11 +122,53 @@ function populateTable(email) {
         $("#Schedule tbody").html(tableContent);
       });
     }
+function callFilter(){
+  var tableContent=''
+  var sDate=document.getElementById("startDate").value;
+  var eDate=document.getElementById("endDate").value;
+  var data = JSON.parse(localStorage.getItem('localdata'));
+  let email=data.email
+  console.log("sdate-->")
+  $.get("/medSchedule/", { email: email,sDate,eDate }).done(function (data) {
+        // For each item in our JSON, add a table row and cells to the content string
+        
+        $.each(data.message, function () {
+          console.log("data in row",data)
+          tableContent += "<tr>";
+          tableContent += "<td>" + this.prescriptionName.S + "</td>";
+          tableContent += "<td>" + this.medicine.S + "</td>";
+          tableContent += "<td>" + this.morningCount.N + "</td>";
+          tableContent += "<td>" + this.middayCount.N + "</td>";  
+          tableContent += "<td>" + this.eveningCount.N + "</td>";
+          tableContent += "<td>" + this.bedtimeCount.N + "</td>";
+          
+          tableContent += "</tr>";
+        });
+    
+        // Inject the whole content string into our existing HTML table
+        console.log(tableContent);
+        $("#Schedule tbody").html(tableContent);
+      });
+
+}
+
     </script>
-  <input 
-  style="width:30%"
-  placeholder="Select date"
-  type="date" id="birthday" name="birthday">
+    <div style="display: flex;flex-direction: row;">
+ <div class="input-field">
+  <input style="width: 100%;" type="date" id="startDate" name="startDate" class="datepicker" 
+  value="" />
+  <label for="startDate">Start Date</label>
+  </div>
+  <div class="input-field">
+    <input style="width: 100%;margin-left: 5%;" type="date" id="endDate" name="endDate" class="datepicker" 
+    value="" />
+    <label for="endDate">End Date</label>
+    </div>
+    <button
+    onclick="callFilter()"
+    style="margin-left: 3%;height: 30px;align-self: center;justify-self: center;">Search</button>
+    </div>
+
     <table class="table table-hover" id="Schedule">
       <thead>
           <tr>

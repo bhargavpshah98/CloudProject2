@@ -34,7 +34,7 @@
   
   localStorage.setItem("token",token);
   
-  localStorage.setItem("localdata",localdata);
+  localStorage.setItem("localdata",JSON.stringify(localdata));
   window.onload=async()=>{
     var localdata=<%- JSON.stringify(userDetails) %>;
   if(localdata["custom:userType"] == "Doctor"){
@@ -130,7 +130,12 @@ function logout(){
   </div>  
   <div style="display: flex;justify-content: center;">
     <button type="button" style="margin-right: 3px;"  onclick="callPatientPrescriptionApi()" class="btn btn-outline-light">View your prescription details</button>
-    <a href="/schedule" class="btn btn-outline-light">View My Medicine Schedule</a>
+   
+    <a id="medicine"
+    href="/schedule"
+   
+    class="btn btn-outline-light">View My Medicine Schedule</a>
+  
 
   </div>
   </div>
