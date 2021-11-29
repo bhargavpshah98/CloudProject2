@@ -11,9 +11,6 @@
   const dob=document.getElementById("birthday").value;
   const gender=document.getElementById("selectGender").value
   const address=document.getElementById("address").value
-  const docEmail=document.getElementById("doctorName").value;
-  const docName=document.getElementById("doctorNameHolder").value;
- 
 
  
   if(name && name.length>0 && email && email.length>0 && password && password.length>0 && password==confirm && address && address.length>0 && gender && gender.length>0 && dob.length>0){
@@ -27,9 +24,7 @@
     userType:user,
     gender:gender,
     dob:dob,
-    address:address,
-    docEmail:docEmail,
-    docName:docName
+    address:address
     }
   const options={
     method:"POST",
@@ -39,12 +34,10 @@
   },
     body:JSON.stringify(data)
   }
-
-  fetch("/register/signup",options).then(res=>{
-    
+  fetch("/register",options).then(res=>{
     res.json().then(json=>{
       if(json.message=="Success"){
-        window.location.href=`/login`
+        window.location.href=`/`
 
       }
       else{
@@ -67,11 +60,6 @@
       alert("Please enter all the fields")
     }
   }
-  
-
-
-  
-  
   }
 </script>
 <div class="row mt-5">
@@ -90,7 +78,6 @@
               name="email"
               class="form-control"
               placeholder="Enter Name"
-             
               value="<%= typeof name != 'undefined' ? name : '' %>"
             />
           </div>
@@ -116,83 +103,17 @@
               value="<%= typeof phone != 'undefined' ? phone : '' %>"
             />
           </div> -->
-          <select 
-          onchange="getUser()"
-         
-          style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="selectUser">
+          <select style="border-top: transparent;border-left: transparent;border-right: transparent;" class="form-control" id="selectUser">
             <!-- <option>Select user type</option> -->
             <option>Doctor</option>
             <option>Patient</option>
             
           </select>
-          <script>
-            function getUser(){
-              const userType=document.getElementById("selectUser").value
-              if(userType=="Patient"){
-                document.getElementById('addDoctor').style.display = "block";
-    
-            }
-            }
-       
-          
-
-          </script>
-          <div id="addDoctor" style="display: none; margin-top: 2%;">
-            <select
-            id="doctorName"
-            style="border-top: transparent;border-left: transparent;border-right: transparent;"
-            onchange="doctorSelected()"
-            class="form-control">
-            <% data.forEach(function (data) { %>
-              <option><%= data.email.S %></option>
-              <% }) %>
-            
-          </select>
-        
-        
-          <script>
-           var doc= <%- JSON.stringify(data) %>
-            
-            
-            function doctorSelected(){
-              const val=document.getElementById("doctorName").value
-              
-           var doctorname="";
-           doc.forEach(ele=>{
-            
-             if(ele.email.S==val){
-               
-              
-               doctorname=ele.Name.S;
-               //break;
-             }
-           })
-           
-           document.getElementById("doctorNameHolder").value=doctorname
-            }
-          </script>
-          <input
-              type="text"
-              id="doctorNameHolder"
-              class="form-control"
-              value="<%= data[0].Name.S %>"
-             
-             
-             
-            />
-
-
-          </div>
           <select style="border-top: transparent;border-left: transparent;border-right: transparent;margin-top: 20px;" class="form-control" id="selectGender">
             <!-- <option>Select user type</option> -->
             <option>Female</option>
             <option>Male</option>
             <option>Others</option>
-            
-          </select>
-        
-              
-            
             
           </select>
           <div style="margin-top: 15px;">

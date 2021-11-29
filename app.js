@@ -65,56 +65,7 @@ app.get('/addprescription',function(req,res){
 })
 
  
- 
-function sendEmail(email,name){
 
-
-
-  var params = {
-    Destination: { /* required */
-      CcAddresses: [
-        'medexforu@gmail.com',
-        /* more items */
-      ],
-      ToAddresses: [
-       email,
-        /* more items */
-      ]
-    },
-    Message: { /* required */
-      Body: { /* required */
-        Html: {
-         Charset: "UTF-8",
-         Data: '<div><center><img src="https://www.crushpixel.com/stock-photo/assorted-pharmaceutical-medicine-pills-tablets-1959484.html" alt="My Medication"  width="70" height="70"/></center><h3>Hello, '+name+'</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;A new prescription has been added to you by your doctor.Login to the portal to view the details.</p><p>Regards,<br/><b>My Medication Team</b></p></div>'
-        },
-        Text: {
-         Charset: "UTF-8",
-         Data: `Dear ${name}, A new prescription has been added to you.Login to your application to view`
-        }
-       },
-       Subject: {
-        Charset: 'UTF-8',
-        Data: 'Prescription Added.'
-       }
-      },
-    Source: 'medexforu@gmail.com', /* required */
-    ReplyToAddresses: [
-       'medexforu@gmail.com',
-      /* more items */
-    ],
-  };
-  // Create the promise and SES service object
- var sendPromise = new AWS.SES({"accessKeyId":  process.env["accessKeyId"], "secretAccessKey":  process.env["accessSecretKeyId"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
-  // Handle promise's fulfilled/rejected states
- sendPromise.then(
-   function(data) {
-     console.log("data-->",data.MessageId);
-   }).catch(
-     function(err) {
-     console.error("errorr-->",err, err.stack);
-   });
-
-}
 app.get("/schedule",function(req,res){
   res.render("schedule")
 })
