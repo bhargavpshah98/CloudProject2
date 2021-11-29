@@ -85,6 +85,11 @@ style="color: white;height: 50px;outline: none;background-color: transparent;bor
 //     })
 //  }
 
+function populateDoctorDropDown(email, name){
+  document.getElementById("doctorName").value = email
+  document.getElementById("doctorNameHolder").value = name
+}
+
 function callApi(){
   const email =  localdata.email
   const doctorName = document.getElementById("doctorNameHolder").value
@@ -109,7 +114,7 @@ function callApi(){
             console.log("json",json)
             if(json.message=="Update is successful!"){
                 alert("Update is successful"); 
-                window.reload();     
+                //window.reload();     
             }
             else{
                 alert("Update failed");
@@ -122,6 +127,11 @@ function callApi(){
         console.log("Error",err)
     })
   }
+
+  function reloadDashboard(){
+    window.reload();
+  }
+
 
   </script>
  
@@ -203,7 +213,7 @@ function callApi(){
     class="btn btn-outline-light">View My Medicine Schedule</a>
   
     <!-- Button trigger modal -->
-<button type="button"  class="btn btn-outline-light" data-toggle="modal" data-target="#exampleModalCenter" onclick="">
+<button type="button"  class="btn btn-outline-light" data-toggle="modal" data-target="#exampleModalCenter" onclick="populateDoctorDropDown('<%= user[0].doctorEmail.S %>', '<%= user[0].doctorName.S %>')">
   Update My Doctor
 </button>
 
@@ -213,7 +223,7 @@ function callApi(){
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Update My Doctor</h5>
-        <button type="button" style="margin-right: 3px;" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" style="margin-right: 3px;" class="close" data-dismiss="modal" aria-label="Close" onclick="reloadDashboard()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -222,7 +232,7 @@ function callApi(){
           <select
           id="doctorName"
           style="border-top: transparent;border-left: transparent;border-right: transparent;"
-          onchange="doctorSelected()"
+          onchange="doctorSelected()" 
           class="form-control" >
           <% doctors.forEach(function(doctors){ %>
             <option><%= doctors.email.S %></option>
