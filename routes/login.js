@@ -55,13 +55,20 @@ const poolData = {
         onFailure: function(err) {
             console.log("error in onfailure",err);
             if(err=="NotAuthorizedException: Incorrect username or password."){
-              res.status(404).send({message:"User does not exist"})
+              //res.status(404).send({message:"User does not exist"})
+              res.render("displayerror",{data:"Incorrect username or password"})
             }
             else{
               if(err=="UserNotConfirmedException: User is not confirmed."){
-                res.status(200).json({message:"User not confirmed"})
+                //res.status(200).json({message:"User not confirmed"})
+                res.render("displayerror",{data:"User is not confirmed"})
               }
-            res.status(200).json({message:"Incorrect Password"})
+              else{
+                res.render("displayerror",{data:"Incorrect username or password"})
+
+              }
+           // res.status(200).json({message:"Incorrect Password"})
+          
             }
             //res.sendStatus(500).send({"message":"Internal error"})
         },
