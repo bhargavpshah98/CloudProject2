@@ -217,35 +217,35 @@ function callApi(){
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <script>
-        var doc= <%- JSON.stringify(doctors) %>
-        
-        function doctorSelected(){
-          const val=document.getElementById("doctorName").value
-          
-          var doctorname="";
-          doc.forEach(ele=>{
-          
-            if(ele.email.S==val){
-              doctorname=ele.Name.S;
-              //break;
-            }
-          })
-          document.getElementById("doctorNameHolder").value=doctorname
-        }
-      </script>
       
       <div class="modal-body">
           <select
           id="doctorName"
           style="border-top: transparent;border-left: transparent;border-right: transparent;"
-          onclick="doctorSelected()"
+          onchange="doctorSelected()"
           class="form-control" >
           <% doctors.forEach(function(doctors){ %>
             <option><%= doctors.email.S %></option>
             <% }) %>     
         </select>
-     
+        <script>
+          var doc= <%- JSON.stringify(doctors) %>
+          
+          function doctorSelected(){
+            const val=document.getElementById("doctorName").value
+            
+            var doctorname="";
+            doc.forEach(ele=>{
+            
+              if(ele.email.S==val){
+                doctorname=ele.Name.S;
+                //break;
+              }
+            })
+            document.getElementById("doctorNameHolder").value=doctorname
+          }
+        </script>
+        
        
         <input
             type="text"
