@@ -21,16 +21,18 @@ router.get("/",async(req,res)=>{
     const userName=decode.name
     
     const doctors= await getDoctors()
+    const user = await getUser(decode.email)
+    console.log("items printed", user)
     
     if(userType=="Doctor"){
       const response= await getPatients(decode.email)
       
     const results=response.Items
-     console.log("items printed")
-     res.render('dashboard',{data:results,userName:userName,token:token,userDetails:decode, doctors:doctors})
+     
+     res.render('dashboard',{data:results,userName:userName,token:token,userDetails:decode, doctors:doctors, user: user})
    }
    else{
-    res.render("dashboard",{data:[],userName:userName,token:token,userDetails:decode, doctors:doctors})
+    res.render("dashboard",{data:[],userName:userName,token:token,userDetails:decode, doctors:doctors, user: user})
    }
   //res.render("dashboard",{data:[],userName:"Shruthi"})
   })
@@ -40,6 +42,7 @@ router.get("/",async(req,res)=>{
     updateUserToDb(req,res);
     res.status(200).send({message:"Update is successful!"})
     })
+  
 
   //get doctors
 function getDoctors(){
@@ -126,3 +129,30 @@ function getDoctors(){
         res.render('dashboard')
     })
     module.exports=router
+
+
+    function getUser(email){
+
+      return new Promise((resolve,reject)=>{
+     const db = new AWS.DynamoDB();
+    
+      var paramsdb = {
+         TableName: process.env["DYNAMODB_TABLE_USER"],
+         
+         ExpressionAttributeValues : {
+             ":i"  : {S: email}
+         },
+         
+         FilterExpression: "email = :i",
+     };
+     db.scan(paramsdb, function (err, data) {
+         if(err){
+             console.log("err")
+         }
+         else{
+         console.log("DB DATA", data.Items );
+         resolve(data.Items)
+         }
+     })
+    })
+    }
