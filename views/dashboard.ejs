@@ -240,7 +240,7 @@ function callApi(){
           id="doctorName"
           style="border-top: transparent;border-left: transparent;border-right: transparent;"
           onclick="doctorSelected()"
-          class="form-control" value ="<%= user[0].doctorEmail.S %>" >
+          class="form-control" >
           <% doctors.forEach(function(doctors){ %>
             <option><%= doctors.email.S %></option>
             <% }) %>     
