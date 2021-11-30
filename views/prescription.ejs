@@ -7,9 +7,7 @@
     <title>Document</title>
 </head>
 <script>
-
 const localdata=JSON.parse(localStorage.getItem("localdata"))
-
   window.onload=function(){
     //location.reload()
    
@@ -20,7 +18,6 @@ const localdata=JSON.parse(localStorage.getItem("localdata"))
       document.getElementById('addprescription').style.display = "block";
     }
   }
-
   function callDeleteApi(fileName){
       const data={
         fileName
@@ -46,10 +43,8 @@ const localdata=JSON.parse(localStorage.getItem("localdata"))
         })
           
       }).catch(err=>{
-
       })
   }
-
 function callAddPrescriptionApi(emailId){
     console.log("add pr email", emailId);
     window.location.href=`/addprescription?email=${emailId}`
@@ -63,7 +58,6 @@ function callAddPrescriptionApi(emailId){
    localStorage.clear();
    location.href="/login"
  }
-
 </script>
 <body>
   <div style="height:80px;align-items: center; background-color: black;overflow: hidden;display: flex;flex-direction: row;">
@@ -79,7 +73,6 @@ function callAddPrescriptionApi(emailId){
 <div class="row mt-5">
     <div class="col-md-12 m-auto">
         <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-
             
         
            
@@ -130,4 +123,3 @@ function callAddPrescriptionApi(emailId){
 </div>
 </body>
 </html>
-
