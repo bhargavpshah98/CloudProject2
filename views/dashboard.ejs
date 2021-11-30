@@ -213,9 +213,11 @@ function callApi(){
     class="btn btn-outline-light">View My Medicine Schedule</a>
   
     <!-- Button trigger modal -->
+<% if (user[0].doctorEmail){ %>
 <button type="button"  class="btn btn-outline-light" data-toggle="modal" data-target="#exampleModalCenter" onclick="populateDoctorDropDown('<%= user[0].doctorEmail.S %>', '<%= user[0].doctorName.S %>')">
   Update My Doctor
 </button>
+<% } %>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
