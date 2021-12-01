@@ -4,20 +4,26 @@ const AWS = require("aws-sdk");
 const formtopdf = require('../utilities/formtopdf')
 const fs=require("fs")
 var uuid = require('uuid');
+const path = require("path");
+const Mustache = require('mustache');
+const pdf = require('html-pdf');
 
 router.post("/",async(req,res)=>{
+  req.body["currdate"] = (new Date()).toLocaleDateString("en-US")
+  const template = fs.readFileSync(path.resolve(__dirname, "../utilities/template.html"), { encoding: 'utf8' });
+  var filledTemplate = Mustache.render(template, req.body);
+
     const s3=new AWS.S3();
     console.log("req,para",req.body)
-   const response= await formtopdf.createpdf(req.body);
-   console.log("Res",response)
-   
-    fs.readFile(response, function (err, data) {
+  const file_name = uuid.v1() + ".pdf"
+
+  pdf.create(filledTemplate).toBuffer(function(err, data){
       if (err) {
         console.log(err);
       }
       s3.upload({
         Bucket: "prescriptionmanager",
-        Key: response,
+        Key: file_name,
         Body: data,
         ContentType:'application/pdf',
         ACL:'public-read'
