@@ -8,7 +8,7 @@ const path = require("path");
 const Mustache = require('mustache');
 const pdf = require('html-pdf');
 
-router.post("/",async(req,res)=>{
+router.post("/",(req,res)=>{
   req.body["currdate"] = (new Date()).toLocaleDateString("en-US")
   const template = fs.readFileSync(path.resolve(__dirname, "../utilities/template.html"), { encoding: 'utf8' });
   var filledTemplate = Mustache.render(template, req.body);
@@ -34,7 +34,7 @@ router.post("/",async(req,res)=>{
         }
 
         console.log("DATA FROM S3",dataD,req.body.email)
-        sendEmail(req.body.email,req.body.name)
+        
   
         //res.status(200).send({"message":"Success"})
         const db = new AWS.DynamoDB();
@@ -63,12 +63,13 @@ router.post("/",async(req,res)=>{
                 });
               } else {
                 console.log("Successfully written to dynamodb", putRes);
-
+                
                 //res.redirect(`/prescriptionview?email=${req.body.email}`);
                 res.status(200).json({
                   message: "Upload is successful!",
                 });
-              }
+}
+               sendEmail(req.body.email,req.body.name)
             });
       });
     });
