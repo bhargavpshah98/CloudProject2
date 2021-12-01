@@ -30,11 +30,11 @@ router.post("/signup",function(req,res){
     const { name, email, password, confirm,userType,dob,address} = req.body;
        console.log("name",name,email,confirm,password,userType,typeof(userType))
     var attributeList = [];
-     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
-     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:"female"}));
+      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:name}));
+      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"gender",Value:"female"}));
       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"email",Value:email}));
       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"custom:userType",Value:userType}))
-pool.signUp(email,password,attributeList,null,function(err,result){
+  pool.signUp(email,password,attributeList,null,function(err,result){
   if (err) {
    
     if(err=="UsernameExistsException: An account with the given email already exists."){

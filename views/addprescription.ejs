@@ -195,7 +195,11 @@ const options={
   }
   else if(isNaN(morning) || isNaN(midday)|| isNaN(evening)|| isNaN(bedtime)){
     alert("Medicine count should be a numeric value");
-  }else{
+  }
+  else if(morning==0 && midday==0 && evening==0 && bedtime==0){
+    alert("Dosage has not been added");
+  }
+  else{
     fetch("/prescriptionupload",options).then(res=>{
         console.log("Res-->",res)
         res.json().then(json=>{
