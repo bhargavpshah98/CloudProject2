@@ -4,7 +4,7 @@
 ### Professor : Sanjay Garje
 ### ISA : Devangi Doshi
 ### Group Name : ACES
-### Team Members : Aishwarya Ravi(https://www.linkedin.com/in/aishwaryaravi96/),Bhargav Shah(),Dharahasini Gangalapudi(),Shruthi Srinivasan(https://www.linkedin.com/in/shruthis23/)
+### Team Members : Aishwarya Ravi(https://www.linkedin.com/in/aishwaryaravi96/),Bhargav Shah(http://linkedin.com/in/bhargavpshah),Dharahasini Gangalapudi(),Shruthi Srinivasan(https://www.linkedin.com/in/shruthis23/)
 
 
 ### Project Introduction
