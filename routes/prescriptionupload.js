@@ -64,10 +64,10 @@ router.post("/",async(req,res)=>{
               } else {
                 console.log("Successfully written to dynamodb", putRes);
 
-                res.redirect(`/prescriptionview?email=${req.body.email}`);
-                // res.status(200).json({
-                //   message: "Upload is successful!",
-                // });
+                //res.redirect(`/prescriptionview?email=${req.body.email}`);
+                res.status(200).json({
+                  message: "Upload is successful!",
+                });
               }
             });
       });
@@ -109,7 +109,7 @@ router.post("/",async(req,res)=>{
       ],
     };
     // Create the promise and SES service object
-   var sendPromise = new AWS.SES({"accessKeyId":  process.env["accessKeyId"], "secretAccessKey":  process.env["accessSecretKeyId"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
+   var sendPromise = new AWS.SES({"accessKeyId":  process.env["ACCESS_KEY_ID"], "secretAccessKey":  process.env["SECRET_ACCESS_KEY"], "region": process.env["AWS_REGION"]}).sendEmail(params).promise();
     // Handle promise's fulfilled/rejected states
    sendPromise.then(
      function(data) {

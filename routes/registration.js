@@ -92,7 +92,7 @@ function insertUserToDb(req,res) {
 // send email on registration to verify
 function verifyEmail(mail){
 console.log("verufyemail function entered")
-var ses=new AWS.SES()
+var ses=new AWS.SES({"accessKeyId":  process.env["ACCESS_KEY_ID"], "secretAccessKey":  process.env["SECRET_ACCESS_KEY"], "region": process.env["AWS_REGION"]})
 var params = {
   EmailAddress: mail
 };

@@ -189,11 +189,21 @@ const options={
   },
     body:JSON.stringify(data)
   }
+
+  if(!prescription || !name || !medicine || !sdate || !edate || !morning || !midday || !evening || !bedtime || !email){
+      alert("Please enter all required fields");
+  }
+  else if(isNaN(morning) || isNaN(midday)|| isNaN(evening)|| isNaN(bedtime)){
+    alert("Medicine count should be a numeric value");
+  }else{
     fetch("/prescriptionupload",options).then(res=>{
+        console.log("Res-->",res)
         res.json().then(json=>{
             console.log("json",json)
             if(json.message=="Upload is successful!"){
                 alert("Prescription successfully uploaded")
+              // history.back()
+               window.location=document.referrer
                 
             }
             else{
@@ -208,6 +218,7 @@ const options={
     }).catch(err=>{
         console.log("Error",err)
     })
+}
 }   
     </script>
 </body>
