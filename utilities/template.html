@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" style="zoom: 0.55;">
+<style>
+    body {
+        font-size: 25px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+    }
+
+    table {
+        page-break-inside: auto
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto
+    }
+
+    thead {
+        display: table-header-group
+    }
+
+    tfoot {
+        display: tenter code hereable-footer-group
+    }
+
+    table,
+    th,
+    td {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 1em;
+
+    }
+</style>
+
+<body>
+    <br>
+    <br>
+    <div align="center" style="font-size: 27px;">
+        <img src="https://imagesmedex.s3.amazonaws.com/Medex1.png" alt="logo" width="393" height="137" />
+        <h1 style="color: #FF5757;">Prescription </h1>
+
+        <p align="right" style="font: caption; font-size: 18px;"><b> DATE: </b> {{ currdate }}   &emsp;&emsp; &emsp;&emsp;  </p>
+
+        <label for="fname"><b>Patient Name:</b></label> {{ name }} <br><br>
+        <label for="lname"><b>Patient Email:</b></label> {{ email }} <br><br>
+        <label for="fname"><b>Prescription Name:</b></label> {{ prescription }} <br><br>
+    </div>
+
+    <br>
+    <br>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th><span>Medicine</span></th>
+                <th><span>Start Date</span></th>
+                <th><span>End Date</span></th>
+                <th><span>Morning</span></th>
+                <th><span>Afternoon</span></th>
+                <th><span>Evening</span></th>
+                <th><span>Bedtime</span></th>
+                </span></th>
+            </tr>
+        </thead>
+        <tr>
+            <td> {{ medicine }} </td>
+            <td> {{ sdate }} </td>
+            <td> {{ edate }} </td>
+            <td> {{ morning }} </td>
+            <td> {{ midday }} </td>
+            <td> {{ evening }} </td>
+            <td> {{ bedtime }} </td>
+        </tr>
+        <tbody></tbody>
+    </table>
+    <div id="pageFooter" style="background-color: #00C4CC;">
+        <hr>
+        <br>
+        <p style="text-align: center; font-size: 20px; font-weight: bolder; font-family: Arial, Helvetica, sans-serif; color: white;">SJSU Team Aces © 2021</p>
+        <br>
+    
+    </div>
+
+</body>
+
+</html>

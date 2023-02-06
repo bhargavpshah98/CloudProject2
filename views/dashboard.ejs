@@ -1,46 +1,146 @@
 <script type="text/javascript">
- const token= localStorage.getItem("token");
- const localdata=JSON.parse(localStorage.getItem("data"))
- console.log("token",localdata)
+//  const token= localStorage.getItem("token");
+//  const localdata=JSON.parse(localStorage.getItem("data"))
+//  console.log("token",localdata)
  
- window.onload=function(){
- if(localdata["custom:userType"] == "Doctor"){
-  document.getElementById('patient').style.display = "none";
-  document.getElementById('one').style.display = "flex";
-  } else {
-    document.getElementById('patient').style.display = "block";
-    document.getElementById('one').style.display = "none";
-  }
-}
-function callPatientPrescriptionApi(){
-  window.location.href=`/prescriptionview?email=${localdata.email}`
-}
+//  window.onload=async()=>{
+//    let localdata=await localStorage.getItem("")
+//  if(localdata["custom:userType"] == "Doctor"){
+//   document.getElementById('patient').style.display = "none";
+//   document.getElementById('one').style.display = "flex";
+//   } else {
+//     document.getElementById('patient').style.display = "block";
+//     document.getElementById('one').style.display = "none";
+//   }
+// }
+
 
  function callPrescriptionApi(emailId){
     //console.log("email", emailId);
     window.location.href=`/prescriptionview?email=${emailId}`
  }
- function logout(){
-   localStorage.clear();
-   location.href="/"
- }
+ 
 
 </script>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-<hr>
-<div style="display: flex;justify-content: space-between;">
+
+<div style="height:80px;align-items: center; background-color: black;overflow: hidden;display: flex;flex-direction: row;">
+<h1 style="color: white;text-align: center;flex: 1;margin: 0 auto;">Medex</h1>
+<h6 style="color: white;position: absolute;right: 15%;"><b>Welcome <%= userName%></b></h6>
+<div style="display:flex;flex-direction: row;padding-right: 10px;">
+  <i style="align-self: center;color: white;" class="fa fa-sign-out" aria-hidden="true"></i>
+<button
+onclick="logout()"
+style="color: white;height: 50px;outline: none;background-color: transparent;border: transparent;font-size: 16px;" >Logout</button>
+</div> 
+</div>
+<div style="display: flex;justify-content: space-between;background-color: aliceblue">
   <div style="display: flex;">
-  <h6><b>Welcome <%= userName%></b></h6>
+ 
   </div>
-  <div style="display: flex;justify-content: flex-end;">
-<button style="width: 100%;" class="btn btn-primary btn-block" onclick="logout()">Logout</button>
-  </div>
+  <script>
+  var token=<%- JSON.stringify(token) %>;
+  var localdata=<%- JSON.stringify(userDetails) %>
+  
+  localStorage.setItem("token",token);
+  localStorage.setItem("localdata",JSON.stringify(localdata));
+
+  window.onload=async()=>{
+    var localdata=<%- JSON.stringify(userDetails) %>;
+    if(localdata["custom:userType"] == "Doctor"){   
+      document.getElementById('patient').style.display = "none";
+      document.getElementById('one').style.display = "flex";
+    } else {
+      document.getElementById('patient').style.display = "block";
+      document.getElementById('one').style.display = "none";
+    }
+}
+  function callPatientPrescriptionApi(){
+      window.location.href=`/prescriptionview?email=${localdata.email}`
+  }
+
+  function logout(){
+   localStorage.clear();
+   location.href="/login"
+ }
+
+//  function getUser(){
+//     fetch("dashboard/getuser",options).then(res=>{
+//         console.log("Res-->",res)
+//         res.json().then(json=>{
+//             console.log("json",json)
+//             if(json.message=="Update is successful!"){
+//                 alert("Update is successful");   
+
+//             }
+//             else{
+//                 alert("Update failed");
+//             } 
+//         }).catch(error=>{
+//             console.log("Error",error)
+//             alert("Update failed")
+//         })
+//     }).catch(err=>{
+//         console.log("Error",err)
+//     })
+//  }
+
+function populateDoctorDropDown(email, name){
+  document.getElementById("doctorName").value = email
+  document.getElementById("doctorNameHolder").value = name
+}
+
+function callApi(){
+  const email =  localdata.email
+  const doctorName = document.getElementById("doctorNameHolder").value
+  const doctorEmail = document.getElementById("doctorName").value
+  
+  const data={
+       email,
+       doctorEmail,
+       doctorName
+  }
+  const options={
+      method:"POST",
+      headers: {
+      
+      'Content-Type': 'application/json'
+    },
+      body:JSON.stringify(data)
+    }
+    fetch("dashboard/update",options).then(res=>{
+        console.log("Res-->",res)
+        res.json().then(json=>{
+            console.log("json",json)
+            if(json.message=="Update is successful!"){
+                alert("Update is successful"); 
+                //window.reload();     
+            }
+            else{
+                alert("Update failed");
+            } 
+        }).catch(error=>{
+            console.log("Error",error)
+            alert("Update failed")
+        })
+    }).catch(err=>{
+        console.log("Error",err)
+    })
+  }
+
+  function reloadDashboard(){
+    window.reload();
+  }
+
+
+  </script>
+ 
 </div>
 
 <div >
     <table>
       <thead>
-      <div id="one" style="display: flex;">
+      <div id="one" style="display: none;">
         <h6 style="width: 200px;text-align: center;font-weight: bold;">Name</h6>
         <h6 style="width: 200px;text-align: center;font-weight: bold;">Gender</h6>
         <h6 style="width: 200px;text-align: center;font-weight: bold">DOB</h6>
@@ -50,7 +150,11 @@ function callPatientPrescriptionApi(){
       </thead>
           
       <tbody> 
+        <script>
+          
+        </script>
               <% data.forEach(function (data) { %>
+                
                 <% if(data.userType.S=="Patient") { %>
                      
                   <tr style="display: flex;" >
@@ -65,55 +169,116 @@ function callPatientPrescriptionApi(){
                   </tr>
                   <% }})%>
       </tbody>              
-    </table>        <div id="patient">
+    </table>        <div id="patient" style="display: none;">
                   <div 
                   class="bg-image card shadow-1-strong"
-                  style="background-image: url('https://www.parathon.com/wp-content/uploads/Healthcare2012_12_14.jpg');">
+                  style="background-image: url('Medicine.jpeg');background-size: cover;height: 400px;">
 
-                  <script src="https://d1jb05chhnmtu5.cloudfront.net/lex-web-ui-loader.min.js"></script>
-                  <script>
-                    if(localdata["custom:userType"] == "Patient"){
-
-                    var loaderOpts = {
-                      baseUrl: 'https://d1jb05chhnmtu5.cloudfront.net/',
-                      shouldLoadMinDeps: true
-                    };
-                    var loader = new ChatBotUiLoader.IframeLoader(loaderOpts);
-                    var chatbotUiConfig = {
-                            /* Example of setting session attributes on parent page
-                            lex: {
-                              sessionAttributes: {
-                                userAgent: navigator.userAgent,
-                                QNAClientFilter: ''
-                              }
-                            }
-                            */
-                          };
-                    loader.load(chatbotUiConfig)
-                      .catch(function (error) { console.error(error); });
-                        }
-                  </script>
-
-                  <div class="card-body text-white">
-                    <h5 class="card-title">Medex</h5>
-                    <p class="card-text">
-                      Medex allows to manage your medicines easily.
-                    </p>
+                  <script src="https://d12y1d3fs92wdi.cloudfront.net/lex-web-ui-loader.min.js"></script>
+<script>
+  var loaderOpts = {
+    baseUrl: 'https://d12y1d3fs92wdi.cloudfront.net/',
+    shouldLoadMinDeps: true
+  };
+  var loader = new ChatBotUiLoader.IframeLoader(loaderOpts);
+  var chatbotUiConfig = {
+          /* Example of setting session attributes on parent page
+          lex: {
+            sessionAttributes: {
+              userAgent: navigator.userAgent,
+              QNAClientFilter: ''
+            }
+          }
+          */
+        };
+  loader.load(chatbotUiConfig)
+    .catch(function (error) { console.error(error); });
+</script>
+    <div class="card-body text-white">
+      <h5 class="card-title">Medex</h5>
+      <p class="card-text">
+        Medex allows to manage your medicines easily.
+      </p>
 
 
-                  </div>
-                </div>  
-                <div style="display: flex;justify-content: center;">
-                  <button type="button" style="margin-right: 3px;"  onclick="callPatientPrescriptionApi()" class="btn btn-outline-light">View your prescription details</button>
-                  <a href="/schedule" class="btn btn-outline-light">View My Medicine Schedule</a>
+    </div>
+  </div>  
 
-                </div>
-                </div>
+  <div style="display: flex;justify-content: center;">
+    <button type="button" style="margin-right: 3px;"  onclick="callPatientPrescriptionApi()" class="btn btn-outline-light">View your prescription details</button>
+   
+    <a id="medicine"
+    href="/schedule"
+    style="margin-right: 3px;"
+    class="btn btn-outline-light">View My Medicine Schedule</a>
+  
+    <!-- Button trigger modal -->
+<% if (user[0].doctorEmail){ %>
+<button type="button"  class="btn btn-outline-light" data-toggle="modal" data-target="#exampleModalCenter" onclick="populateDoctorDropDown('<%= user[0].doctorEmail.S %>', '<%= user[0].doctorName.S %>')">
+  Update My Doctor
+</button>
+<% } %>
 
-                
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Update My Doctor</h5>
+        <button type="button" style="margin-right: 3px;" class="close" data-dismiss="modal" aria-label="Close" onclick="reloadDashboard()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+          <select
+          id="doctorName"
+          style="border-top: transparent;border-left: transparent;border-right: transparent;"
+          onchange="doctorSelected()" 
+          class="form-control" >
+          <% doctors.forEach(function(doctors){ %>
+            <option><%= doctors.email.S %></option>
+            <% }) %>     
+        </select>
+        <script>
+          var doc= <%- JSON.stringify(doctors) %>
+          
+          function doctorSelected(){
+            const val=document.getElementById("doctorName").value
+            
+            var doctorname="";
+            doc.forEach(ele=>{
+            
+              if(ele.email.S==val){
+                doctorname=ele.Name.S;
+                //break;
+              }
+            })
+            document.getElementById("doctorNameHolder").value=doctorname
+          }
+        </script>
         
+       
+        <input
+            type="text"
+            id="doctorNameHolder"
+            class="form-control"
+            value="<%= doctors[0].Name.S %>"
+          />
+      </div>
+      <div class="modal-footer">
+        <button type="button" style="margin-right: 3px;"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick = "callApi()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   </div>
+  </div>
+  </div>
+
+
                     
   
 

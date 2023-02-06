@@ -3,7 +3,9 @@
     <div class="card card-body">
       <h1 class="text-center mb-3"><i class="fas fa-user"></i>  Login</h1>
   
-      <form >
+      <form  action="/login/signin" method="POST"
+       
+       >
         <div class="form-group">
          
           <input
@@ -29,8 +31,13 @@
        
         
         <p><button
-          onclick="callApi()"
-          type="button"
+         
+          
+         
+          
+          
+          
+          type="submit"
           style=" background-color: #8064A2;margin-top: 10%;" class="btn btn-primary btn-block">Submit</button></p>
       </form>
       <p class="text-center mb-3">
@@ -42,7 +49,7 @@
 
 <script>
   function callApi(){
-    console.log("caall")
+   
   
   const email=document.getElementById("email").value
   
@@ -65,12 +72,12 @@
   },
     body:JSON.stringify(data)
   }
-  fetch("/login",options).then(res=>{
+  fetch("login/signin",options).then(res=>{
     res.json().then(json=>{
       console.log("json",json)
       if(json.message=="Success"){
         const type=json.data;
-      console.log("type",typeof(type),Object.keys(type))
+      //console.log("type",typeof(type),Object.keys(type))
       console.log("custom",type["custom:userType"])
       const userType=type["custom:userType"]
 
@@ -78,7 +85,30 @@
       
       localStorage.setItem("token",json.token)
       localStorage.setItem("data",JSON.stringify(json.data))
-      window.location.href=`/dashboardview?userType=${userType}&userName=${json.data.name}`
+     window.location.href=`/dashboard?userType=${userType}&userName=${json.data.name}`
+    //   var options={
+    //     method:'GET',
+    //     redirect: 'manual',
+    //     headers: {
+    //       'token':localStorage.getItem("token"),
+    //       'Content-Type': 'application/json'
+    //   // 'Content-Type': 'application/x-www-form-urlencoded',
+    // },
+
+    //   }
+    //   // fetch("/dashboard",options).then(req=>{
+    //   //   console.log("req",req)
+    //   //   req.json().then(obj=>{
+    //   //     console.log("req.json",obj)
+    //   //   }).catch(err=>{
+    //   //     console.log("Errorr ",err)
+    //   //   })
+    //   //   window.location.href='/dashboard'
+    //   // }).catch(err=>{
+    //   //   console.log("Err",err)
+    //   // })
+      
+      
       }
       else{
         console.log("else",json.message)

@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const AWS = require('aws-sdk');
+const moment = require("moment");
 
 /*var uuid = require('uuid');*/
 
@@ -14,8 +15,11 @@ AWS.config.update({
 const db = new AWS.DynamoDB();
 
 function getSchedule(req, res, next) {
+  const sdate=moment(req.query.sDate).format("YYYY-MM-DD")
+  const edate=moment(req.query.eDate).format("YYYY-MM-DD")
+  console.log("sdate-->",sdate)
 
-  console.log(req.query)
+  console.log("req.query-->",req.query)
   var scanInput = {
     ExpressionAttributeNames: {
       "#BT": "bedtimeCount",
@@ -23,17 +27,27 @@ function getSchedule(req, res, next) {
       "#ET": "eveningCount",
       "#MD": "middayCount",
       "#PN": "prescriptionName",
-      "#MN": "medicine"
+      "#MN": "medicine",
+     '#startDate':"startDate",
+      '#endDate':"endDate"
     },
     ExpressionAttributeValues: {
       ":u": {
         S: req.query.email,
       },
+      ":sd":{
+        S:sdate
+      },
+      ":ed":
+      {S:edate
+    }
     },
-    FilterExpression: "patientEmail = :u",
+    FilterExpression: "patientEmail = :u and  (:sd <= #endDate and :ed >=#startDate)", 
     ProjectionExpression: "#PN, #MN, #MT, #MD, #ET, #BT",
     TableName: process.env["DYNAMODB_TABLE_PRESCRIPTION"]
   };
+ 
+ 
 
   db.scan(scanInput, function (err, data) {
     if (err) {
@@ -42,7 +56,7 @@ function getSchedule(req, res, next) {
         err: "Error loading dashboard!",
       });
     } else {
-      console.log("Succesful in scanning and retrieving medicine of the user");
+      console.log("Succesful in scanning and retrieving medicine of the user",data);
 
       res.status(200).json({
         message: data.Items,
@@ -59,4 +73,3 @@ router.get("/", getSchedule);
 
 
 module.exports = router;
-

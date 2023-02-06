@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 const moment = require('moment'); 
 var schedule = require('node-cron');
 
-var morning = schedule.schedule('9 * 9 * * *', function(){
+var morning = schedule.schedule('0 9 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
@@ -63,7 +63,7 @@ var morning = schedule.schedule('9 * 9 * * *', function(){
     });
 });
 
-var midday = schedule.schedule('9 * 13 * * *', function(){
+var midday = schedule.schedule('0 13 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
@@ -121,7 +121,7 @@ var midday = schedule.schedule('9 * 13 * * *', function(){
     });
 });
 
-var evening = schedule.schedule('9 * 17 * * *', function(){
+var evening = schedule.schedule('0 17 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
@@ -179,7 +179,7 @@ var evening = schedule.schedule('9 * 17 * * *', function(){
     });
 });
 
-var night = schedule.schedule('9 * 21 * * *', function(){
+var night = schedule.schedule('0 21 * * *', function(){
     console.log("cron triggered");
     const db = new AWS.DynamoDB();
     //fetch users
